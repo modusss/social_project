@@ -25,5 +25,9 @@ module SocialProjectApp
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.assets.compile = true
+
+    # Configurar o idioma padrão para português brasileiro
+    config.i18n.default_locale = :'pt-BR'
+    config.i18n.available_locales = [:'pt-BR', :en]
   end
 end
