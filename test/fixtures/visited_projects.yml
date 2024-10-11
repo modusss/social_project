@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  visit: one
+  project: one
+  region: one
+
+two:
+  visit: two
+  project: two
+  region: two
