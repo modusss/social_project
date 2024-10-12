@@ -87,6 +87,16 @@
     <% end %>
   </div>
 
+  <h3 class="text-lg font-semibold mt-4">Projeto Relacionado</h3>
+  <div class="my-5">
+    <% @projects.each do |project| %>
+      <div>
+        <%= form.radio_button :project_id, project.id, id: "project_#{project.id}" %>
+        <%= form.label "project_#{project.id}", project.name %>
+      </div>
+    <% end %>
+  </div>
+
   <div class="my-5">
     <%= form.label :visit_date, "Data da visita" %>
     <%= form.date_field :visit_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>

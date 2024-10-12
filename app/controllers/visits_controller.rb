@@ -17,6 +17,7 @@ class VisitsController < ApplicationController
     @visit.family.members.build # Adiciona um membro vazio
     @visit.observations.build
     @visit.pending_needs.build
+    @projects = Project.all
   end
 
   # GET /visits/1/edit
