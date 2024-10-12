@@ -2,6 +2,9 @@
   <h1 class="font-bold text-4xl">New visit</h1>
 
   <%= render "form", visit: @visit %>
-
-  <%= link_to "Back to visits", visits_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <br>
+  <br>
+  <div>
+    <%= link_to I18n.t("links.back_to_visits", locale: :'pt-BR'), visits_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  </div>
 </div>

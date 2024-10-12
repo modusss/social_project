@@ -20,3 +20,6 @@ pt-BR:
       region: "Atualizar Região"
       user: "Atualizar Usuário"
       visit: "Atualizar Visita"
+  links:
+    back_to_visits: "Voltar para visitas"
+    new_visit: "Nova Visita"
