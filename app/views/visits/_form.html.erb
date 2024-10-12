@@ -91,12 +91,14 @@
 
   <h3 class="text-lg font-semibold mt-4">Projeto e Região Relacionados</h3>
   <div class="my-5">
-    <%= form.fields_for :visited_projects do |vp| %>
+    <%= form.fields_for :visited_project do |vp| %>
       <div class="mb-4">
         <h4 class="font-medium mb-2">Projeto</h4>
         <% @projects.each do |project| %>
           <div>
-            <%= vp.radio_button :project_id, project.id, id: "project_#{project.id}" %>
+            <%= vp.radio_button :project_id, project.id, 
+                                id: "project_#{project.id}", 
+                                checked: vp.object.project_id == project.id %>
             <%= vp.label :project_id, project.name, for: "project_#{project.id}" %>
           </div>
         <% end %>
@@ -106,7 +108,9 @@
         <h4 class="font-medium mb-2">Região</h4>
         <% @regions.each do |region| %>
           <div>
-            <%= vp.radio_button :region_id, region.id, id: "region_#{region.id}" %>
+            <%= vp.radio_button :region_id, region.id, 
+                                id: "region_#{region.id}", 
+                                checked: vp.object.region_id == region.id %>
             <%= vp.label :region_id, region.name, for: "region_#{region.id}" %>
           </div>
         <% end %>
@@ -147,3 +151,4 @@
     margin-bottom: 16px;
 }
 </style>
+
