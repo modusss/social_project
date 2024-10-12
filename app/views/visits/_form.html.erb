@@ -59,12 +59,16 @@
       <h3 class="text-lg font-semibold mt-4">Membros</h3>
       
       <div id="members">
-        <%= family_form.fields_for :members do |member_form| %>
-          <%= render 'member_fields', f: member_form %>
-        <% end %>
-        <%= link_to_add_association 'Adicionar novo membro', family_form, :members, 
-            class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
-            data: { association_insertion_node: '#members', association_insertion_method: 'append' } %>
+        <div id="member_fields">
+          <%= family_form.fields_for :members do |member_form| %>
+            <%= render 'member_fields', f: member_form %>
+          <% end %>
+        </div>
+        <div id="add_member_button">
+          <%= link_to_add_association 'Adicionar novo membro', family_form, :members, 
+              class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
+              data: { association_insertion_node: '#member_fields', association_insertion_method: 'append' } %>
+        </div>
       </div>
 
       
