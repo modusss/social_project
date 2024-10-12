@@ -11,19 +11,21 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= label_tag :family_search, "Buscar por família existente cadastrada" %>
-    <%= text_field_tag :family_search, nil, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full md:w-1/2", data: { family_search_target: "input" } %>
-    <%= button_tag "Buscar", type: "button", id: "search_family", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2", data: { action: "click->family-search#search" } %>
-  </div>
+  <% if form.object.new_record? %>
+    <div class="my-5">
+      <%= label_tag :family_search, "Buscar por família existente cadastrada" %>
+      <%= text_field_tag :family_search, nil, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full md:w-1/2", data: { family_search_target: "input" } %>
+      <%= button_tag "Buscar", type: "button", id: "search_family", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2", data: { action: "click->family-search#search" } %>
+    </div>
 
-  <div id="search_results" class="my-5" style="display: none;" data-family-search-target="results">
-    <!-- Resultados da busca serão inseridos aqui via JavaScript -->
-  </div>
+    <div id="search_results" class="my-5" style="display: none;" data-family-search-target="results">
+      <!-- Resultados da busca serão inseridos aqui via JavaScript -->
+    </div>
 
-  <%= button_tag "Cadastrar nova família", type: "button", id: "new_family", class: "rounded-lg py-3 px-5 bg-green-600 text-white inline-block font-medium cursor-pointer mt-2", data: { action: "click->family-search#showNewFamilyForm" } %>
+    <%= button_tag "Cadastrar nova família", type: "button", id: "new_family", class: "rounded-lg py-3 px-5 bg-green-600 text-white inline-block font-medium cursor-pointer mt-2", data: { action: "click->family-search#showNewFamilyForm" } %>
+  <% end %>
 
-  <div id="family_form" style="display: none;" data-family-search-target="familyForm">
+  <div id="family_form" style="display: <%= form.object.new_record? ? 'none' : 'block' %>;" data-family-search-target="familyForm">
     <%= form.fields_for :family do |family_form| %>
       <h3 class="text-lg font-semibold mt-4">Contato de localização</h3>
       
