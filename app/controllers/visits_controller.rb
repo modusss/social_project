@@ -25,6 +25,8 @@ class VisitsController < ApplicationController
   # POST /visits or /visits.json
   def create
     @visit = Visit.new(visit_params)
+    @visit.user_id = current_user.id # Assuming you have a current_user method
+    @visit.family_id = params[:visit][:family_id] # Ensure family_id is passed in params
 
     respond_to do |format|
       if @visit.save
@@ -69,7 +71,7 @@ class VisitsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def visit_params
       params.require(:visit).permit(
-        :user_id, :visit_date,
+        :visit_date,
         family_attributes: [:id, :reference_name, :street, :house_number, :city, :state, :phone1, :phone2,
           members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, :_destroy],
           needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
