@@ -1,0 +1,22 @@
+pt-BR:
+  actions:
+    create:
+      family: "Criar Família"
+      member: "Criar Membro"
+      need: "Criar Necessidade"
+      observation: "Criar Observação"
+      pending_need: "Criar Necessidade Pendente"
+      project: "Criar Projeto"
+      region: "Criar Região"
+      user: "Criar Usuário"
+      visit: "Criar Visita"
+    update:
+      family: "Atualizar Família"
+      member: "Atualizar Membro"
+      need: "Atualizar Necessidade"
+      observation: "Atualizar Observação"
+      pending_need: "Atualizar Necessidade Pendente"
+      project: "Atualizar Projeto"
+      region: "Atualizar Região"
+      user: "Atualizar Usuário"
+      visit: "Atualizar Visita"

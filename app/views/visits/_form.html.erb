@@ -115,7 +115,7 @@
   </div>
   -->
   <div class="inline mt-4">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit I18n.t("actions.#{form.object.new_record? ? 'create' : 'update'}.visit", locale: :'pt-BR'), class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
 
