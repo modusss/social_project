@@ -58,7 +58,9 @@
         <%= family_form.fields_for :members do |member_form| %>
           <%= render 'member_fields', f: member_form %>
         <% end %>
-        <%= link_to_add_association 'Adicionar novo membro', family_form, :members, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2" %>
+        <%= link_to_add_association 'Adicionar novo membro', family_form, :members, 
+            class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
+            data: { association_insertion_node: '#members', association_insertion_method: 'append' } %>
       </div>
 
       <h3 class="text-lg font-semibold mt-4">Necessidades</h3>
@@ -67,7 +69,9 @@
         <%= family_form.fields_for :needs do |need_form| %>
           <%= render 'need_fields', f: need_form %>
         <% end %>
-        <%= link_to_add_association 'Adicionar necessidade', family_form, :needs, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2" %>
+        <%= link_to_add_association 'Adicionar necessidade', family_form, :needs, 
+            class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
+            data: { association_insertion_node: '#needs', association_insertion_method: 'append' } %>
       </div>
     <% end %>
   </div>
@@ -83,7 +87,9 @@
     <%= form.fields_for :observations do |observation_form| %>
       <%= render 'observation_fields', f: observation_form %>
     <% end %>
-    <%= link_to_add_association 'Adicionar observação', form, :observations, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2" %>
+    <%= link_to_add_association 'Adicionar observação', form, :observations, 
+        class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
+        data: { association_insertion_node: '#observations', association_insertion_method: 'append' } %>
   </div>
 
   <div class="inline mt-4">
