@@ -1,0 +1,8 @@
+<div class="nested-fields">
+  <div class="my-5">
+    <%= f.label :observation, "Observação" %>
+    <%= f.text_area :observation, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <%= link_to_remove_association "Remover observação", f, class: "text-red-500" %>
+</div>

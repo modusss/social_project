@@ -1,0 +1,18 @@
+<div class="nested-fields">
+  <div class="my-5">
+    <%= f.label :beneficiary, "Para" %>
+    <%= f.select :beneficiary, options_for_select([]), {}, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= f.label :name, "O que" %>
+    <%= f.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= f.label :attended, "Atendido?" %>
+    <%= f.check_box :attended, class: "shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" %>
+  </div>
+
+  <%= link_to_remove_association "Remover necessidade", f, class: "text-red-500" %>
+</div>

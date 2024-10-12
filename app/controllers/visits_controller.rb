@@ -13,6 +13,9 @@ class VisitsController < ApplicationController
   # GET /visits/new
   def new
     @visit = Visit.new
+    @visit.build_family
+    @visit.observations.build
+    @visit.pending_needs.build
   end
 
   # GET /visits/1/edit
@@ -65,6 +68,14 @@ class VisitsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def visit_params
-      params.require(:visit).permit(:family_id, :user_id, :visit_date, :observations)
+      params.require(:visit).permit(
+        :user_id, :visit_date,
+        family_attributes: [:id, :reference_name, :street, :house_number, :city, :state, :phone1, :phone2,
+          members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, :_destroy],
+          needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
+        ],
+        observations_attributes: [:id, :observation, :_destroy],
+        pending_needs_attributes: [:id, :description, :_destroy]
+      )
     end
 end

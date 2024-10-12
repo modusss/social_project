@@ -1,4 +1,4 @@
-<%= form_with(model: visit, class: "contents") do |form| %>
+<%= form_with(model: visit, local: true, class: "contents") do |form| %>
   <% if visit.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(visit.errors.count, "error") %> prohibited this visit from being saved:</h2>
@@ -12,26 +12,81 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.label :family_id %>
-    <%= form.text_field :family_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= label_tag :family_search, "Buscar por família existente cadastrada" %>
+    <%= text_field_tag :family_search, nil, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", data: { family_search_target: "input" } %>
+    <%= button_tag "Buscar", type: "button", id: "search_family", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2", data: { action: "click->family-search#search" } %>
+  </div>
+
+  <div id="search_results" class="my-5" style="display: none;" data-family-search-target="results">
+    <!-- Resultados da busca serão inseridos aqui via JavaScript -->
+  </div>
+
+  <%= button_tag "Cadastrar nova família", type: "button", id: "new_family", class: "rounded-lg py-3 px-5 bg-green-600 text-white inline-block font-medium cursor-pointer mt-2", data: { action: "click->family-search#showNewFamilyForm" } %>
+
+  <div id="family_form" style="display: none;" data-family-search-target="familyForm">
+    <%= form.fields_for :family do |family_form| %>
+      <h3 class="text-lg font-semibold mt-4">Contato de localização</h3>
+      
+      <div class="my-5">
+        <%= family_form.label :phone1, "Telefone 1" %>
+        <%= family_form.text_field :phone1, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="my-5">
+        <%= family_form.label :phone2, "Telefone 2" %>
+        <%= family_form.text_field :phone2, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="my-5">
+        <%= family_form.label :street, "Rua" %>
+        <%= family_form.text_field :street, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="my-5">
+        <%= family_form.label :house_number, "Número" %>
+        <%= family_form.text_field :house_number, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="my-5">
+        <%= family_form.label :city, "Cidade" %>
+        <%= family_form.text_field :city, value: "Vitória da Conquista", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <h3 class="text-lg font-semibold mt-4">Membros</h3>
+      
+      <div id="members">
+        <%= family_form.fields_for :members do |member_form| %>
+          <%= render 'member_fields', f: member_form %>
+        <% end %>
+        <%= link_to_add_association 'Adicionar novo membro', family_form, :members, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2" %>
+      </div>
+
+      <h3 class="text-lg font-semibold mt-4">Necessidades</h3>
+      
+      <div id="needs">
+        <%= family_form.fields_for :needs do |need_form| %>
+          <%= render 'need_fields', f: need_form %>
+        <% end %>
+        <%= link_to_add_association 'Adicionar necessidade', family_form, :needs, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2" %>
+      </div>
+    <% end %>
   </div>
 
   <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :visit_date %>
+    <%= form.label :visit_date, "Data da visita" %>
     <%= form.date_field :visit_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :observations %>
-    <%= form.text_area :observations, rows: 4, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  <h3 class="text-lg font-semibold mt-4">Observações</h3>
+  
+  <div id="observations">
+    <%= form.fields_for :observations do |observation_form| %>
+      <%= render 'observation_fields', f: observation_form %>
+    <% end %>
+    <%= link_to_add_association 'Adicionar observação', form, :observations, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2" %>
   </div>
 
-  <div class="inline">
+  <div class="inline mt-4">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
