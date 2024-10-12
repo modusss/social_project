@@ -87,24 +87,40 @@
     <% end %>
   </div>
 
-  <h3 class="text-lg font-semibold mt-4">Projeto Relacionado</h3>
+  <h3 class="text-lg font-semibold mt-4">Projeto e Região Relacionados</h3>
   <div class="my-5">
-    <% @projects.each do |project| %>
-      <div>
-        <%= form.radio_button :project_id, project.id, id: "project_#{project.id}" %>
-        <%= form.label :project_id, project.name, for: "project_#{project.id}" %>
+    <%= form.fields_for :visited_projects do |vp| %>
+      <div class="mb-4">
+        <h4 class="font-medium mb-2">Projeto</h4>
+        <% @projects.each do |project| %>
+          <div>
+            <%= vp.radio_button :project_id, project.id, id: "project_#{project.id}" %>
+            <%= vp.label :project_id, project.name, for: "project_#{project.id}" %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mb-4">
+        <h4 class="font-medium mb-2">Região</h4>
+        <% @regions.each do |region| %>
+          <div>
+            <%= vp.radio_button :region_id, region.id, id: "region_#{region.id}" %>
+            <%= vp.label :region_id, region.name, for: "region_#{region.id}" %>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
 
   <div class="my-5">
     <%= form.label :visit_date, "Data da visita" %>
-    <%= form.date_field :visit_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>
+    <%= form.date_field :visit_date, value: Date.today, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>
   </div>
 
-  <h3 class="text-lg font-semibold mt-4">Observações</h3>
   
   <!--
+  <h3 class="text-lg font-semibold mt-4">Observações</h3>
+
   <div id="observations">
     <%#= form.fields_for :observations do |observation_form| %>
       <%#= render 'observation_fields', f: observation_form %>
