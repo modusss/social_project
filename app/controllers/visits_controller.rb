@@ -14,6 +14,7 @@ class VisitsController < ApplicationController
   def new
     @visit = Visit.new
     @visit.build_family
+    @visit.family.members.build # Adiciona um membro vazio
     @visit.observations.build
     @visit.pending_needs.build
   end
