@@ -5,6 +5,4 @@ class Family < ApplicationRecord
     accepts_nested_attributes_for :members, reject_if: :all_blank, allow_destroy: true
     accepts_nested_attributes_for :needs, reject_if: :all_blank, allow_destroy: true
 
-    validates :reference_name, presence: true
-    validates :phone1, presence: true
 end
