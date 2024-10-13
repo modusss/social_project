@@ -20,14 +20,13 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th scope="col" class="px-6 py-3">Data da visita</th>
-          <th scope="col" class="px-6 py-3">Nome do visitante</th>
-          <th scope="col" class="px-6 py-3">Região</th>
-          <th scope="col" class="px-6 py-3">Projeto</th>
-          <th scope="col" class="px-6 py-3">Família</th>
-          <th scope="col" class="px-6 py-3">Necessidades pendentes</th>
-          <th scope="col" class="px-6 py-3">Observações</th>
-          <th scope="col" class="px-6 py-3">Ações</th>
+          <th scope="col" class="px-6 py-3 text-center">Data da visita</th>
+          <th scope="col" class="px-6 py-3 text-center">Nome do visitante</th>
+          <th scope="col" class="px-6 py-3 text-center">Região</th>
+          <th scope="col" class="px-6 py-3 text-center">Projeto</th>
+          <th scope="col" class="px-6 py-3 text-center">Família</th>
+          <th scope="col" class="px-6 py-3 text-center">Necessidades pendentes</th>
+          <th scope="col" class="px-6 py-3 text-center">Observações</th>
         </tr>
       </thead>
       <tbody>
@@ -36,16 +35,12 @@
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               <%= visit.visit_date.strftime('%d/%m/%Y') %>
             </th>
-            <td class="px-6 py-4"><%= visit.user.name %></td>
-            <td class="px-6 py-4"><%= visit.visited_project&.region&.name %></td>
-            <td class="px-6 py-4"><%= visit.visited_project&.project&.name %></td>
-            <td class="px-6 py-4"><%= "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)" %></td>
-            <td class="px-6 py-4"><%= visit.pending_needs.first&.description || "N/A" %></td>
-            <td class="px-6 py-4"><%= visit.observations.first&.observation || "N/A" %></td>
-            <td class="px-6 py-4">
-              <%= link_to "Ver", visit_path(visit), class: "font-medium text-blue-600 dark:text-blue-500 hover:underline" %>
-              <%= link_to "Editar", edit_visit_path(visit), class: "font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2" %>
-            </td>
+            <td class="px-6 py-4 text-center"><%= visit.user.name %></td>
+            <td class="px-6 py-4 text-center"><%= visit.visited_project&.region&.name %></td>
+            <td class="px-6 py-4 text-center"><%= visit.visited_project&.project&.name %></td>
+            <td class="px-6 py-4 text-center"><%= "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)" %></td>
+            <td class="px-6 py-4 text-center"><%= visit.pending_needs.first&.description || "N/A" %></td>
+            <td class="px-6 py-4 text-center"><%= visit.observations.first&.observation || "N/A" %></td>
           </tr>
         <% end %>
       </tbody>
