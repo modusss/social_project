@@ -27,6 +27,8 @@
           <th scope="col" class="px-6 py-3 text-center">Telefones</th>
           <th scope="col" class="px-6 py-3 text-center">Qtd. Membros</th>
           <th scope="col" class="px-6 py-3 text-center">Última visita / Qtd. visitas</th>
+          <th scope="col" class="px-6 py-3 text-center">Última Observação</th>
+          <th scope="col" class="px-6 py-3 text-center">Necessidades Pendentes</th>
           <th scope="col" class="px-6 py-3 text-center">Ações</th>
         </tr>
       </thead>
@@ -47,6 +49,16 @@
             <td class="px-6 py-4 text-center">
               <%= family.last_visit_date ? family.last_visit_date.strftime('%d/%m/%Y') + " / " : '' %>
               <%= family.visits.count %>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <%= family.last_observation&.truncate(50) %>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <ul>
+                <% family.pending_needs.each do |need| %>
+                  <li><%= need.description.truncate(30) %></li>
+                <% end %>
+              </ul>
             </td>
             <td class="px-6 py-4 text-center">
               <%= link_to "Ver", family_path(family), class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out" %>
