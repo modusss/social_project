@@ -37,14 +37,14 @@ module TableHelper
     end
   
     def table_header(headers, fix_to)
-      content_tag(:thead, class: 'bg-gray-50') do
-        content_tag(:tr) do
-          headers.map do |header|
-            content_tag(:th, header, class: 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider')
-          end.join.html_safe
+        content_tag(:thead, class: 'bg-gray-50') do
+          content_tag(:tr) do
+            headers.map do |header|
+              content_tag(:th, header, class: 'px-6 py-3 text-center text-gray-700 uppercase tracking-wider font-bold text-lg')
+            end.join.html_safe
+          end
         end
       end
-    end
   
     def table_body(rows, fix_to)
       content_tag(:tbody, class: 'bg-white divide-y divide-gray-200') do
@@ -52,7 +52,7 @@ module TableHelper
           next if row.nil?
           content_tag(:tr, class: 'hover:bg-gray-50') do
             row.map do |cell|
-              content_tag(:td, cell[:content], id: cell[:id], class: "px-6 py-4 whitespace-nowrap text-sm text-gray-500 #{cell[:class]}")
+              content_tag(:td, cell[:content], id: cell[:id], class: "px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center #{cell[:class]}")
             end.join.html_safe
           end
         end.compact.join.html_safe
@@ -64,13 +64,13 @@ module TableHelper
       content_tag :table, id: table_id, class: 'min-w-full divide-y divide-gray-200' do
         concat(content_tag(:thead, class: 'bg-gray-50') do
           content_tag(:tr) do
-            headers.map { |header| content_tag(:th, header, class: 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider') }.join.html_safe
+            headers.map { |header| content_tag(:th, header, class: 'px-6 py-3 text-center text-gray-700 uppercase tracking-wider font-bold text-lg') }.join.html_safe
           end
         end)
         concat(content_tag(:tbody, class: 'bg-white divide-y divide-gray-200') do
           body.map do |row|
             content_tag(:tr, class: 'hover:bg-gray-50') do
-              row.map { |column| content_tag(:td, column, class: 'px-6 py-4 whitespace-nowrap text-sm text-gray-500') }.join.html_safe
+              row.map { |column| content_tag(:td, column, class: 'px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center') }.join.html_safe
             end
           end.join.html_safe
         end)
