@@ -3,7 +3,10 @@ class FamiliesController < ApplicationController
 
   # GET /families or /families.json
   def index
-    @families = Family.all
+    @families = Family.left_joins(:visits)
+                      .select('families.*, MAX(visits.visit_date) as last_visit_date')
+                      .group('families.id')
+                      .order('last_visit_date DESC NULLS LAST')
   end
 
   # GET /families/1 or /families/1.json
