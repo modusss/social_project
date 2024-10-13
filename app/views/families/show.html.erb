@@ -3,7 +3,7 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <div class="bg-white shadow-md rounded-lg p-6">
+  <div class="bg-white rounded-lg p-6">
     <div class="mb-6">
       <h2 class="text-xl font-semibold flex items-center">
         Endereço
@@ -40,19 +40,18 @@
 
       <%= turbo_frame_tag "new_member" %>
 
-      <table class="w-full">
-        <thead>
-          <tr>
-            <th class="text-left">Nome</th>
-            <th class="text-left">Idade</th>
-            <th class="text-left">Papel</th>
-            <th class="text-left">Firme com Jesus?</th>
-          </tr>
-        </thead>
-        <tbody id="family-members">
-          <%= render partial: 'members/member', collection: @family.members %>
-        </tbody>
-      </table>
+      <% members_data = @family.members.map do |member|
+        [
+          { header: 'Nome', content: member.name, id: "member-name-#{member.id}" },
+          { header: 'Idade', content: member.age, id: "member-age-#{member.id}" },
+          { header: 'Papel', content: member.role, id: "member-role-#{member.id}" },
+          { header: 'Firme com Jesus?', content: member.firm_in_faith ? 'Sim' : 'Não', id: "member-faith-#{member.id}" }
+        ]
+      end %>
+
+      <div class="w-full md:w-1/2">
+        <%= data_table(members_data) %>
+      </div>
     </div>
 
     <div class="mt-6">
