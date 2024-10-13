@@ -38,7 +38,13 @@
             <td class="px-6 py-4 text-center"><%= visit.user.name %></td>
             <td class="px-6 py-4 text-center"><%= visit.visited_project&.region&.name %></td>
             <td class="px-6 py-4 text-center"><%= visit.visited_project&.project&.name %></td>
-            <td class="px-6 py-4 text-center"><%= "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)" %></td>
+            <td class="px-6 py-4 text-center">
+              <%= link_to family_path(visit.family), class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out whitespace-nowrap overflow-hidden overflow-ellipsis inline-block max-w-full" do %>
+                <span class="truncate">
+                  <%= "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)" %>
+                </span>
+              <% end %>
+            </td>
             <td class="px-6 py-4 text-center"><%= visit.pending_needs.first&.description || "N/A" %></td>
             <td class="px-6 py-4 text-center"><%= visit.observations.first&.observation || "N/A" %></td>
           </tr>
