@@ -19,15 +19,25 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-  </head>
+
+    <style>
+      body {
+        min-height: 100vh;
+        position: relative;
+        padding-bottom: 60px; /* Ajuste este valor conforme a altura do seu footer */
+      }
+    </style>
+  </head> 
 
   <body>
-  <%= render 'shared/navigation' %>
+    <%= render 'shared/navigation' %>
 
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
+    <br><br><br><br><br><br>
+    <%= render 'shared/footer' %>
   </body>
 </html>
