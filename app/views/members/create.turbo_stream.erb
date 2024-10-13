@@ -1,0 +1,2 @@
+<%= turbo_stream.append "family-members", partial: "member", locals: { member: @member } %>
+<%= turbo_stream.replace "new_member", partial: "form", locals: { family: @family, member: @family.members.build } %>

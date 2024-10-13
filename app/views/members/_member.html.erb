@@ -1,27 +1,11 @@
-<div id="<%= dom_id member %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Family:</strong>
-    <%= member.family_id %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= member.name %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Age:</strong>
-    <%= member.age %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Role:</strong>
-    <%= member.role %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Firm in faith:</strong>
-    <%= member.firm_in_faith %>
-  </p>
-
-</div>
+<tr id="<%= dom_id(member) %>">
+  <td><%= member.name %></td>
+  <td><%= member.age %> anos</td>
+  <td><%= member.role %></td>
+  <td>
+    <label class="inline-flex items-center">
+      <input type="checkbox" class="form-checkbox text-blue-600" <%= 'checked' if member.firm_in_faith %> disabled>
+      <span class="ml-2"><%= member.firm_in_faith ? 'Sim' : 'Não' %></span>
+    </label>
+  </td>
+</tr>

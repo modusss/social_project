@@ -1,5 +1,5 @@
 class MembersController < ApplicationController
-  before_action :set_member, only: %i[ show edit update destroy ]
+  before_action :set_family, only: [:new, :create]
 
   # GET /members or /members.json
   def index
@@ -12,7 +12,11 @@ class MembersController < ApplicationController
 
   # GET /members/new
   def new
-    @member = Member.new
+    @member = @family.members.build
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   # GET /members/1/edit
@@ -21,15 +25,15 @@ class MembersController < ApplicationController
 
   # POST /members or /members.json
   def create
-    @member = Member.new(member_params)
+    @member = @family.members.build(member_params)
 
     respond_to do |format|
       if @member.save
-        format.html { redirect_to @member, notice: "Member was successfully created." }
-        format.json { render :show, status: :created, location: @member }
+        format.turbo_stream
+        format.html { redirect_to @family, notice: "Membro adicionado com sucesso." }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @member.errors, status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace('new_member', partial: 'form', locals: { family: @family, member: @member }) }
+        format.html { render :new }
       end
     end
   end
@@ -59,12 +63,16 @@ class MembersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_family
+      @family = Family.find(params[:family_id])
+    end
+
     def set_member
       @member = Member.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def member_params
-      params.require(:member).permit(:family_id, :name, :age, :role, :firm_in_faith)
+      params.require(:member).permit(:name, :age, :role, :firm_in_faith)
     end
 end

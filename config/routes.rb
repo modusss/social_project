@@ -5,8 +5,10 @@ Rails.application.routes.draw do
   resources :visits
   resources :regions
   resources :projects
-  resources :members
-  resources :families
+  resources :members, except: [:new, :create]
+  resources :families do
+    resources :members, only: [:new, :create]
+  end
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

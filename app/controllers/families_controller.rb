@@ -1,5 +1,5 @@
 class FamiliesController < ApplicationController
-  before_action :set_family, only: %i[ show edit update destroy ]
+  before_action :set_family, only: %i[ show edit update destroy add_member ]
 
   # GET /families or /families.json
   def index
@@ -14,6 +14,7 @@ class FamiliesController < ApplicationController
 
   # GET /families/1 or /families/1.json
   def show
+    @new_member = @family.members.build
   end
 
   # GET /families/new
@@ -64,6 +65,20 @@ class FamiliesController < ApplicationController
     end
   end
 
+  def add_member
+    @new_member = @family.members.build(member_params)
+
+    respond_to do |format|
+      if @new_member.save
+        format.turbo_stream
+        format.html { redirect_to @family, notice: "Membro adicionado com sucesso." }
+      else
+        format.turbo_stream { render turbo_stream: turbo_stream.replace('new_member_form', partial: 'members/form', locals: { family: @family, member: @new_member }) }
+        format.html { render :show }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_family
@@ -77,5 +92,9 @@ class FamiliesController < ApplicationController
         members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, :_destroy],
         needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
       )
+    end
+
+    def member_params
+      params.require(:member).permit(:name, :age, :role, :birth_date, :firm_in_faith)
     end
 end

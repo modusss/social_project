@@ -1,15 +1,62 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
+<div class="mx-auto w-full max-w-3xl">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
 
-    <%= render @family %>
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold flex items-center">
+        Endereço
+        <%= link_to edit_family_path(@family), class: "ml-2 text-blue-500" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+        <% end %>
+      </h2>
+      <p><strong>Rua:</strong> <%= @family.street %>, casa <%= @family.house_number %></p>
+      <p><strong>Bairro:</strong> <%= @family.street %></p>
+      <p><strong>Cidade:</strong> <%= @family.city %></p>
+      <p><strong>Estado:</strong> <%= @family.state %></p>
+    </div>
 
-    <%= link_to "Edit this family", edit_family_path(@family), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to families", families_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this family", @family, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold flex items-center">
+        Contato
+        <%= link_to edit_family_path(@family), class: "ml-2 text-blue-500" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+        <% end %>
+      </h2>
+      <p><strong>Telefone 1:</strong> <%= @family.phone1 %></p>
+      <p><strong>Telefone 2:</strong> <%= @family.phone2 %></p>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-semibold flex items-center mb-4">
+        Integrantes
+        <%= link_to "Adicionar Integrante", new_family_member_path(@family), class: "ml-2 text-blue-500", data: { turbo_frame: "new_member" } %>
+      </h2>
+
+      <%= turbo_frame_tag "new_member" %>
+
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th class="text-left">Nome</th>
+            <th class="text-left">Idade</th>
+            <th class="text-left">Papel</th>
+            <th class="text-left">Firme com Jesus?</th>
+          </tr>
+        </thead>
+        <tbody id="family-members">
+          <%= render partial: 'members/member', collection: @family.members %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-6">
+      <%= link_to "Voltar para famílias", families_path, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     </div>
   </div>
 </div>
