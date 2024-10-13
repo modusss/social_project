@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "new_member" do %>
-  <%= form_with(model: [family, member], local: false) do |form| %>
+  <%= form_with(model: [family, member], local: false, class: local_assigns[:hide_form] ? 'hidden' : '') do |form| %>
     <div class="member-container">
       <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
         <div style="flex: 1 1 300px">

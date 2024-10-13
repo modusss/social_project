@@ -35,13 +35,14 @@
     <div>
       <h2 class="text-xl font-semibold flex items-center mb-4">
         Integrantes
-        <%= link_to "Adicionar Integrante", new_family_member_path(@family), class: "ml-2 text-blue-500", data: { turbo_frame: "new_member" } %>
+        <%= link_to "Adicionar Integrante", new_family_member_path(@family, hide_form: false), class: "ml-2 text-blue-500", data: { turbo_frame: "new_member" } %>
       </h2>
 
       <div class="w-full md:w-1/2">
-        <%= turbo_frame_tag "new_member" %>
+      <%= turbo_frame_tag "new_member" do %>
+        <%= render 'members/form', family: @family, member: Member.new, hide_form: true %>
+      <% end %>
       </div>
-
       <div id="members-table" class="w-full md:w-1/2">
         <%= render 'members/table', family: @family %>
       </div>

@@ -14,6 +14,7 @@ class MembersController < ApplicationController
   def new
     @family = Family.find(params[:family_id])
     @member = @family.members.build
+    @hide_form = params[:hide_form]
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -34,19 +35,19 @@ class MembersController < ApplicationController
         format.turbo_stream { 
           render turbo_stream: [
             turbo_stream.update('members-table', partial: 'members/table', locals: { family: @family }),
-            turbo_stream.update('new_member', partial: 'members/form', locals: { family: @family, member: Member.new })
+            turbo_stream.update('new_member', partial: 'members/form', locals: { family: @family, member: Member.new, hide_form: true })
           ]
         }
         format.html { redirect_to @family, notice: 'Membro adicionado com sucesso.' }
       else
         format.turbo_stream { 
-          render turbo_stream: turbo_stream.replace('new_member', partial: 'members/form', locals: { family: @family, member: @member })
+          render turbo_stream: turbo_stream.replace('new_member', partial: 'members/form', locals: { family: @family, member: @member, hide_form: false })
         }
         format.html { render :new }
       end
     end
   end
-
+  
   # PATCH/PUT /members/1 or /members/1.json
   def update
     respond_to do |format|
