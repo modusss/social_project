@@ -3,7 +3,8 @@ class VisitsController < ApplicationController
 
   # GET /visits or /visits.json
   def index
-    @visits = Visit.all
+    @visits = Visit.includes(:user, :family, :pending_needs, :observations, visited_project: [:region, :project])
+                   .order(visit_date: :desc)
   end
 
   # GET /visits/1 or /visits/1.json
