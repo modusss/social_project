@@ -16,6 +16,7 @@ class FamiliesController < ApplicationController
   # GET /families/new
   def new
     @family = Family.new
+    @family.members.build  # Isso adiciona um membro em branco por padrão
   end
 
   # GET /families/1/edit
@@ -68,6 +69,10 @@ class FamiliesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def family_params
-      params.require(:family).permit(:reference_name, :street, :house_number, :city, :state, :phone1, :phone2)
+      params.require(:family).permit(
+        :reference_name, :street, :house_number, :city, :state, :phone1, :phone2,
+        members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, :_destroy],
+        needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
+      )
     end
 end
