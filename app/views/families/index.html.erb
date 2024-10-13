@@ -21,12 +21,12 @@
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3 text-center">Nome de Referência</th>
-          <th scope="col" class="px-6 py-3 text-center">Endereço</th>
-          <th scope="col" class="px-6 py-3 text-center">Cidade</th>
-          <th scope="col" class="px-6 py-3 text-center">Estado</th>
+          <th scope="col" class="px-6 py-3 text-center">Endereço Completo</th>
           <th scope="col" class="px-6 py-3 text-center">Telefones</th>
           <th scope="col" class="px-6 py-3 text-center">Qtd. Membros</th>
-          <th scope="col" class="px-6 py-3 text-center">Última visita / Qtd. visitas</th>
+          <th scope="col" class="px-6 py-3 text-center">Última visita</th>
+          <th scope="col" class="px-6 py-3 text-center">Qtd. visitas</th>
+          <th scope="col" class="px-6 py-3 text-center">Região da última visita</th>
           <th scope="col" class="px-6 py-3 text-center">Última Observação</th>
           <th scope="col" class="px-6 py-3 text-center">Necessidades Pendentes</th>
           <th scope="col" class="px-6 py-3 text-center">Ações</th>
@@ -38,24 +38,31 @@
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               <%= family.reference_name %>
             </th>
-            <td class="px-6 py-4 text-center"><%= "#{family.street}, #{family.house_number}" %></td>
-            <td class="px-6 py-4 text-center"><%= family.city %></td>
-            <td class="px-6 py-4 text-center"><%= family.state %></td>
+            <td class="px-6 py-4 text-center">
+              <%= "#{family.street}, #{family.house_number} - #{family.city}/#{family.state}" %>
+            </td>
             <td class="px-6 py-4 text-center">
               <%= family.phone1 %>
               <%= "/ #{family.phone2}" if family.phone2.present? %>
             </td>
             <td class="px-6 py-4 text-center"><%= family.members.count %></td>
             <td class="px-6 py-4 text-center">
-              <%= family.last_visit_date ? family.last_visit_date.strftime('%d/%m/%Y') + " / " : '' %>
-              <%= family.visits.count %>
+              <% if family.last_visit_date %>
+                <%= family.last_visit_date.strftime('%d/%m/%Y') %>
+              <% else %>
+                Sem visitas
+              <% end %>
+            </td>
+            <td class="px-6 py-4 text-center"><%= family.visits.count %></td>
+            <td class="px-6 py-4 text-center">
+              <%= family.visits.find { |v| v.id == family.last_visit_id }&.region&.name || 'Sem região' %>
             </td>
             <td class="px-6 py-4 text-center">
               <%= family.last_observation&.truncate(50) %>
             </td>
             <td class="px-6 py-4 text-center">
               <ul>
-                <% family.pending_needs.each do |need| %>
+                <% family.recent_pending_needs.each do |need| %>
                   <li><%= need.description.truncate(30) %></li>
                 <% end %>
               </ul>
