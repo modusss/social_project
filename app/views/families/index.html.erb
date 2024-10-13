@@ -25,6 +25,7 @@
           <th scope="col" class="px-6 py-3 text-center">Cidade</th>
           <th scope="col" class="px-6 py-3 text-center">Estado</th>
           <th scope="col" class="px-6 py-3 text-center">Telefones</th>
+          <th scope="col" class="px-6 py-3 text-center">Qtd. Membros</th>
           <th scope="col" class="px-6 py-3 text-center">Última visita / Qtd. visitas</th>
           <th scope="col" class="px-6 py-3 text-center">Ações</th>
         </tr>
@@ -42,6 +43,7 @@
               <%= family.phone1 %>
               <%= "/ #{family.phone2}" if family.phone2.present? %>
             </td>
+            <td class="px-6 py-4 text-center"><%= family.members.count %></td>
             <td class="px-6 py-4 text-center">
               <%= family.last_visit_date ? family.last_visit_date.strftime('%d/%m/%Y') + " / " : '' %>
               <%= family.visits.count %>
