@@ -11,42 +11,73 @@
     </div>
   <% end %>
 
+  <h3 class="text-lg font-semibold mt-4">Contato e localização</h3>
+  
   <div class="my-5">
-    <%= form.label :reference_name %>
+    <%= form.label :reference_name, "Nome de Referência" %>
     <%= form.text_field :reference_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :street %>
-    <%= form.text_field :street, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
+    <div style="flex: 1 1 300px;">
+      <%= form.label :phone1, "Telefone 1" %>
+      <%= form.text_field :phone1, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div style="flex: 1 1 300px;">
+      <%= form.label :phone2, "Telefone 2" %>
+      <%= form.text_field :phone2, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+  </div>
+
+  <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
+    <div style="flex: 1 1 300px;">
+      <%= form.label :street, "Rua" %>
+      <%= form.text_field :street, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div style="flex: 0 0 100px;">
+      <%= form.label :house_number, "Número" %>
+      <%= form.text_field :house_number, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
   </div>
 
   <div class="my-5">
-    <%= form.label :house_number %>
-    <%= form.text_field :house_number, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.label :city, "Cidade" %>
+    <%= form.text_field :city, value: "Vitória da Conquista", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full md:w-64" %>
   </div>
 
   <div class="my-5">
-    <%= form.label :city %>
-    <%= form.text_field :city, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.label :state, "Estado" %>
+    <%= form.text_field :state, value: "Bahia", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full md:w-64" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :state %>
-    <%= form.text_field :state, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  <h3 class="text-lg font-semibold mt-4">Membros</h3>
+  
+  <div id="members">
+    <div id="member_fields">
+      <%= form.fields_for :members do |member_form| %>
+        <%= render 'member_fields', f: member_form %>
+      <% end %>
+    </div>
+    <div id="add_member_button">
+      <%= link_to_add_association 'Adicionar novo membro', form, :members, 
+          class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
+          data: { association_insertion_node: '#member_fields', association_insertion_method: 'append' } %>
+    </div> 
   </div>
 
-  <div class="my-5">
-    <%= form.label :phone1 %>
-    <%= form.text_field :phone1, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :phone2 %>
-    <%= form.text_field :phone2, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="inline">
+  <div class="inline mt-4">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
+
+<style>
+.member-container {
+    background-color: #f0f4f8;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+</style>

@@ -1,0 +1,40 @@
+<div class="member-container nested-fields">
+  <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
+    <div style="flex: 1 1 300px">
+      <%= f.label :name, "Nome" %>
+      <%= f.text_field :name, class: "block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" %>
+    </div>
+
+    <div style="flex: 1 1 300px">
+      <%= f.label :role, "Papel familiar" %>
+      <%= f.select :role, 
+                   options_for_select([
+                     ["avô", "avô"], 
+                     ["avó", "avó"], 
+                     ["pai", "pai"], 
+                     ["mãe", "mãe"], 
+                     ["filho", "filho"], 
+                     ["filha", "filha"]
+                   ], f.object.role),
+                   {},
+                   class: "block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" %>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :age, "Idade (ou preencha a data de nascimento)" %>
+    <%= f.number_field :age, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-30" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :birth_date, "Data de nascimento (ou preencha a idade)" %>
+    <%= f.date_field :birth_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-30" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :firm_in_faith, "Firme com Jesus?", class: "mr-2" %>
+    <%= f.check_box :firm_in_faith, class: "shadow rounded-md border border-gray-400 outline-none" %>
+  </div>
+
+  <%= link_to_remove_association "Remover membro", f, class: "text-red-500" %>
+</div>
