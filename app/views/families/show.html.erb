@@ -38,19 +38,12 @@
         <%= link_to "Adicionar Integrante", new_family_member_path(@family), class: "ml-2 text-blue-500", data: { turbo_frame: "new_member" } %>
       </h2>
 
-      <%= turbo_frame_tag "new_member" %>
-
-      <% members_data = @family.members.map do |member|
-        [
-          { header: 'Nome', content: member.name, id: "member-name-#{member.id}" },
-          { header: 'Idade', content: member.age, id: "member-age-#{member.id}" },
-          { header: 'Papel', content: member.role, id: "member-role-#{member.id}" },
-          { header: 'Firme com Jesus?', content: member.firm_in_faith ? 'Sim' : 'Não', id: "member-faith-#{member.id}" }
-        ]
-      end %>
-
       <div class="w-full md:w-1/2">
-        <%= data_table(members_data) %>
+        <%= turbo_frame_tag "new_member" %>
+      </div>
+
+      <div id="members-table" class="w-full md:w-1/2">
+        <%= render 'members/table', family: @family %>
       </div>
     </div>
 

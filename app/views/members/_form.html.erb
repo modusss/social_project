@@ -1,23 +1,44 @@
 <%= turbo_frame_tag "new_member" do %>
   <%= form_with(model: [family, member], local: false) do |form| %>
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <%= form.label :name, "Nome" %>
-        <%= form.text_field :name, class: "w-full" %>
+    <div class="member-container">
+      <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
+        <div style="flex: 1 1 300px">
+          <%= form.label :name, "Nome" %>
+          <%= form.text_field :name, class: "block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" %>
+        </div>
+
+        <div style="flex: 1 1 300px">
+          <%= form.label :role, "Papel familiar" %>
+          <%= form.select :role, 
+                          options_for_select([
+                            ["avô", "avô"], 
+                            ["avó", "avó"], 
+                            ["pai", "pai"], 
+                            ["mãe", "mãe"], 
+                            ["filho", "filho"], 
+                            ["filha", "filha"]
+                          ], form.object.role),
+                          {},
+                          class: "block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" %>
+        </div>
       </div>
-      <div>
-        <%= form.label :age, "Idade" %>
-        <%= form.number_field :age, class: "w-full" %>
+
+      <div class="mb-4">
+        <%= form.label :age, "Idade (ou preencha a data de nascimento)" %>
+        <%= form.number_field :age, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-30" %>
       </div>
-      <div>
-        <%= form.label :role, "Papel" %>
-        <%= form.text_field :role, class: "w-full" %>
+
+      <div class="mb-4">
+        <%= form.label :birth_date, "Data de nascimento (ou preencha a idade)" %>
+        <%= form.date_field :birth_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-30" %>
       </div>
-      <div>
-        <%= form.label :firm_in_faith, "Firme com Jesus?" %>
-        <%= form.check_box :firm_in_faith %>
+
+      <div class="mb-4">
+        <%= form.label :firm_in_faith, "Firme com Jesus?", class: "mr-2" %>
+        <%= form.check_box :firm_in_faith, class: "shadow rounded-md border border-gray-400 outline-none" %>
       </div>
+
+      <%= form.submit "Adicionar Membro", class: "mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
     </div>
-    <%= form.submit "Adicionar Membro", class: "mt-4 bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
 <% end %>

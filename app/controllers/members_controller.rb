@@ -12,6 +12,7 @@ class MembersController < ApplicationController
 
   # GET /members/new
   def new
+    @family = Family.find(params[:family_id])
     @member = @family.members.build
     respond_to do |format|
       format.html
@@ -25,14 +26,22 @@ class MembersController < ApplicationController
 
   # POST /members or /members.json
   def create
+    @family = Family.find(params[:family_id])
     @member = @family.members.build(member_params)
 
     respond_to do |format|
       if @member.save
-        format.turbo_stream
-        format.html { redirect_to @family, notice: "Membro adicionado com sucesso." }
+        format.turbo_stream { 
+          render turbo_stream: [
+            turbo_stream.update('members-table', partial: 'members/table', locals: { family: @family }),
+            turbo_stream.update('new_member', partial: 'members/form', locals: { family: @family, member: Member.new })
+          ]
+        }
+        format.html { redirect_to @family, notice: 'Membro adicionado com sucesso.' }
       else
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('new_member', partial: 'form', locals: { family: @family, member: @member }) }
+        format.turbo_stream { 
+          render turbo_stream: turbo_stream.replace('new_member', partial: 'members/form', locals: { family: @family, member: @member })
+        }
         format.html { render :new }
       end
     end
@@ -73,6 +82,6 @@ class MembersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def member_params
-      params.require(:member).permit(:name, :age, :role, :firm_in_faith)
+      params.require(:member).permit(:name, :age, :role, :birth_date, :firm_in_faith)
     end
 end
