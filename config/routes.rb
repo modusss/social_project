@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'visits#index'  # Adicione esta linha
+  root to: 'families#index'  # Adicione esta linha
   devise_for :users
   resources :needs
   resources :visits
