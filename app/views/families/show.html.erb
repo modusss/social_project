@@ -4,30 +4,26 @@
   <% end %>
 
   <div class="bg-white rounded-lg p-6">
-    <div class="mb-6">
-      <h2 class="text-xl font-semibold flex items-center">
-        Endereço
-        <%= link_to edit_family_path(@family), class: "ml-2 text-blue-500" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
-        <% end %>
+    <div class="mb-6 flex justify-between items-center">
+      <h2 class="text-xl font-semibold">
+        Informações da Família
       </h2>
+      <%= link_to edit_family_path(@family), class: "text-blue-500" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        </svg>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold">Endereço</h2>
       <p><strong>Rua:</strong> <%= @family.street %>, casa <%= @family.house_number %></p>
-      <p><strong>Bairro:</strong> <%= @family.street %></p>
       <p><strong>Cidade:</strong> <%= @family.city %></p>
       <p><strong>Estado:</strong> <%= @family.state %></p>
     </div>
 
     <div class="mb-6">
-      <h2 class="text-xl font-semibold flex items-center">
-        Contato
-        <%= link_to edit_family_path(@family), class: "ml-2 text-blue-500" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
-        <% end %>
-      </h2>
+      <h2 class="text-xl font-semibold">Contato</h2>
       <p><strong>Telefone 1:</strong> <%= @family.phone1 %></p>
       <p><strong>Telefone 2:</strong> <%= @family.phone2 %></p>
     </div>
