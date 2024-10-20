@@ -60,15 +60,17 @@
         <%= render 'member_fields', f: member_form %>
       <% end %>
     </div>
-    <div id="add_member_button">
+    <div id="add_member_button" class="text-right" style="float: right;">
       <%= link_to_add_association 'Adicionar novo membro', form, :members, 
-          class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
+          class: "rounded-lg py-3 px-5 bg-green-600 text-white inline-block font-medium cursor-pointer mt-2",
           data: { association_insertion_node: '#member_fields', association_insertion_method: 'append' } %>
     </div> 
   </div>
-
+  <br>
+  <br>
+  <br>
   <div class="inline mt-4">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit t('actions.update.family'), class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
 
