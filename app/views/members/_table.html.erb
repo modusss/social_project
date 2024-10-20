@@ -1,4 +1,4 @@
-<% members_data = family.members.map do |member|
+<% members_data = family.members.reject { |member| member.name.blank? }.map do |member|
     [
       { header: 'Nome', content: member.name, id: "member-name-#{member.id}" },
       { header: 'Idade', content: member.age, id: "member-age-#{member.id}" },
