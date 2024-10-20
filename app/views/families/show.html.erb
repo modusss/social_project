@@ -17,22 +17,28 @@
 
     <div class="mb-6">
       <h2 class="text-xl font-semibold">Endereço</h2>
-      <p><strong>Rua:</strong> <%= @family.street %>, casa <%= @family.house_number %></p>
-      <p><strong>Cidade:</strong> <%= @family.city %></p>
-      <p><strong>Estado:</strong> <%= @family.state %></p>
+      <% if @family.street.present? && @family.house_number.present? %>
+        <p><strong>Rua:</strong> <%= @family.street %>, casa <%= @family.house_number %></p>
+      <% end %>
+      <% if @family.city.present? %>
+        <p><strong>Cidade:</strong> <%= @family.city %></p>
+      <% end %>
+      <% if @family.state.present? %>
+        <p><strong>Estado:</strong> <%= @family.state %></p>
+      <% end %>
     </div>
 
     <div class="mb-6">
       <h2 class="text-xl font-semibold">Contato</h2>
-      <p><strong>Telefone 1:</strong> <%= @family.phone1 %></p>
-      <p><strong>Telefone 2:</strong> <%= @family.phone2 %></p>
+      <% if @family.phone1.present? %>
+        <p><strong>Telefone 1:</strong> <%= @family.phone1 %></p>
+      <% end %>
+      <% if @family.phone2.present? %>
+        <p><strong>Telefone 2:</strong> <%= @family.phone2 %></p>
+      <% end %>
     </div>
 
     <div>
-      <h2 class="text-xl font-semibold flex items-center mb-4">
-        Integrantes
-        <%= link_to "Adicionar Integrante", new_family_member_path(@family, hide_form: false), class: "ml-2 text-blue-500", data: { turbo_frame: "new_member" } %>
-      </h2>
 
       <div class="w-full md:w-1/2">
       <%= turbo_frame_tag "new_member" do %>
