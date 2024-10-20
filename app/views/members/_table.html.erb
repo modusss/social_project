@@ -1,3 +1,7 @@
+<% if family.nil? %>
+  <p>Não há membros adicionados para esta família</p>
+<% else %>
+  <h6 class="text-lg font-bold">Membros da família</h6>
 <% members_data = family.members.reject { |member| member.name.blank? }.map do |member|
     [
       { header: 'Nome', content: member.name, id: "member-name-#{member.id}" },
@@ -8,3 +12,5 @@
   end %>
   
   <%= data_table(members_data) %>
+<% end %>
+
