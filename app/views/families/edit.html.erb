@@ -2,7 +2,9 @@
   <h1 class="font-bold text-4xl">Editar Família</h1>
 
   <%= render "form", family: @family %>
-
-  <%= link_to "Show this family", @family, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-  <%= link_to "Back to families", families_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <br>
+  <br>
+  <br>
+  <%= link_to t('links.show_family'), @family, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <%= link_to t('links.back_to_families'), families_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
 </div>
