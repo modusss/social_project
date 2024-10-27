@@ -2,3 +2,8 @@
 
 require_relative "../config/application"
 require "importmap/commands"
+
+pin "application", preload: true
+pin "turbo-rails", to: "turbo.min.js", preload: true
+pin "stimulus", to: "stimulus.min.js", preload: true
+pin "stimulus-loading", to: "stimulus-loading.js", preload: true
