@@ -101,20 +101,28 @@ pt-BR:
       blank: "não pode ficar em branco"
       confirmation: "não é igual à confirmação"
   activerecord:
+    models:
+      user: "Usuário"
+    attributes:
+      user:
+        name: "Nome"
+        email: "E-mail"
+        phone: "Telefone"
+        password: "Senha"
+        password_confirmation: "Confirmação de senha"
+        role: "Função"
     errors:
       models:
         user:
           attributes:
             email:
               taken: "já está em uso"
+              blank: "não pode ficar em branco"
             password:
               blank: "não pode ficar em branco"
             password_confirmation:
               confirmation: "não é igual à senha"
-    models:
-      user: "usuário"
-    attributes:
-      user:
-        email: "E-mail"
-        password: "Senha"
-        password_confirmation: "Confirmação de senha"
+            name:
+              blank: "não pode ficar em branco"
+            role:
+              blank: "não pode ficar em branco"

@@ -25,3 +25,97 @@ pt-BR:
     new_visit: "Nova Visita"
     show_family: "Mostrar esta família"
     back_to_families: "Voltar para famílias"
+
+  notifications:
+    success:
+      created: "%{model} criado(a) com sucesso."
+      updated: "%{model} atualizado(a) com sucesso."
+      destroyed: "%{model} excluído(a) com sucesso."
+    error:
+      create: "Erro ao criar %{model}."
+      update: "Erro ao atualizar %{model}."
+      destroy: "Erro ao excluir %{model}."
+
+  activerecord:
+    models:
+      family:
+        one: "Família"
+        other: "Famílias"
+      member:
+        one: "Membro"
+        other: "Membros"
+      need: "Necessidade"
+      observation: "Observação"
+      pending_need: "Necessidade Pendente"
+      project: "Projeto"
+      region: "Região"
+      user: "Usuário"
+      visit: "Visita"
+      visited_project: "Projeto Visitado"
+    attributes:
+      family:
+        reference_name: "Nome de referência"
+        street: "Rua"
+        house_number: "Número da casa"
+        city: "Cidade"
+        state: "Estado"
+        phone1: "Telefone 1"
+        phone2: "Telefone 2"
+      member:
+        name: "Nome"
+        age: "Idade"
+        role: "Papel"
+        firm_in_faith: "Firme na fé"
+        birth_date: "Data de nascimento"
+      need:
+        name: "Nome"
+        beneficiary: "Beneficiário"
+        attended: "Atendida"
+      observation:
+        observation: "Observação"
+      pending_need:
+        description: "Descrição"
+      project:
+        name: "Nome"
+        description: "Descrição"
+      region:
+        name: "Nome"
+        description: "Descrição"
+      visit:
+        visit_date: "Data da visita"
+        observations: "Observações"
+      visited_project:
+        visit: "Visita"
+        project: "Projeto"
+        region: "Região"
+
+  # Adicione mensagens de erro específicas para cada modelo, se necessário
+  errors:
+    models:
+      family:
+        attributes:
+          reference_name:
+            blank: "O nome de referência não pode ficar em branco"
+      member:
+        attributes:
+          name:
+            blank: "O nome não pode ficar em branco"
+      # ... adicione mais modelos e atributos conforme necessário
+
+  # Adicione esta seção para mensagens padrão do Rails
+  helpers:
+    submit:
+      create: "Criar %{model}"
+      update: "Atualizar %{model}"
+      submit: "Salvar %{model}"
+
+  # Mensagens específicas para ações CRUD
+  flash:
+    actions:
+      create:
+        notice: "%{resource_name} foi criado(a) com sucesso."
+      update:
+        notice: "%{resource_name} foi atualizado(a) com sucesso."
+      destroy:
+        notice: "%{resource_name} foi excluído(a) com sucesso."
+        alert: "%{resource_name} não pôde ser excluído(a)."
