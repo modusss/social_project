@@ -5,20 +5,7 @@
       <%= f.text_field :name, class: "block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" %>
     </div>
 
-    <div style="flex: 1 1 300px">
-      <%= f.label :role, "Papel familiar" %>
-      <%= f.select :role, 
-                   options_for_select([
-                     ["avô", "avô"], 
-                     ["avó", "avó"], 
-                     ["pai", "pai"], 
-                     ["mãe", "mãe"], 
-                     ["filho", "filho"], 
-                     ["filha", "filha"]
-                   ], f.object.role),
-                   {},
-                   class: "block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2" %>
-    </div>
+
   </div>
 
   <div class="flex space-x-4 mb-4">
