@@ -1,5 +1,6 @@
 class FamiliesController < ApplicationController
   before_action :set_family, only: %i[ show edit update destroy add_member ]
+  before_action :calculate_ages, only: %i[ show edit]
 
   # GET /families or /families.json
   def index
@@ -111,5 +112,19 @@ class FamiliesController < ApplicationController
 
     def member_params
       params.require(:member).permit(:name, :age, :role, :birth_date, :firm_in_faith)
+    end
+
+    def calculate_ages
+      if action_name == 'index'
+        @families.each do |family|
+          family.members.each do |member|
+            member.age = member.calculate_age
+          end
+        end
+      elsif action_name == 'show'
+        @family.members.each do |member|
+          member.age = member.calculate_age
+        end
+      end
     end
 end
