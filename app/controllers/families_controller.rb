@@ -115,13 +115,14 @@ class FamiliesController < ApplicationController
     end
 
     def calculate_ages
-      if action_name == 'index'
+      case action_name
+      when 'index'
         @families.each do |family|
           family.members.each do |member|
             member.age = member.calculate_age
           end
         end
-      elsif action_name == 'show'
+      when 'show', 'edit'
         @family.members.each do |member|
           member.age = member.calculate_age
         end
