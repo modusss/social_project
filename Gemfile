@@ -15,6 +15,7 @@ gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'devise'
 gem 'cocoon'
+gem 'sassc'
 gem "stimulus-rails"
 # Use Tailwind CSS [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails"
@@ -48,6 +49,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem 'binding_of_caller'
+  gem 'better_errors'
+  gem 'dotenv-rails'
+  gem 'capistrano-sidekiq'
 end
 
 group :development do
