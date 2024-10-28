@@ -25,7 +25,7 @@ pt-BR:
     new_visit: "Nova Visita"
     show_family: "Mostrar esta família"
     back_to_families: "Voltar para famílias"
-
+    back_to_family: "Voltar para a família"
   notifications:
     success:
       created: "%{model} criado(a) com sucesso."

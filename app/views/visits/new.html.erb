@@ -1,10 +1,10 @@
 <div class="mx-auto md:w-2/3 w-full" data-controller="family-search">
   <h1 class="font-bold text-4xl">Nova família visitada</h1>
 
-  <%= render "form", visit: @visit %>
+  <%= render "form", visit: @visit, family: @family, projects: @projects, regions: @regions %>
   <br>
   <br>
   <div>
-    <%= link_to I18n.t("links.back_to_visits", locale: :'pt-BR'), visits_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to I18n.t("links.back_to_family", locale: :'pt-BR'), family_path(@family), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 </div>

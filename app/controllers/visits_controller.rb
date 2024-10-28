@@ -13,6 +13,7 @@ class VisitsController < ApplicationController
 
   # GET /visits/new
   def new
+    @family = Family.find(params[:family_id])
     @visit = Visit.new
     prepare_form_data
   end

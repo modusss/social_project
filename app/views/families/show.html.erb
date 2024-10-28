@@ -55,46 +55,9 @@
       <%= render 'visits/table', family: @family %>
     </div>
 
-    <div class="mt-6">
-      <h2 class="text-xl font-semibold">Registrar Nova Visita</h2>
-      <%= form_with(model: [@family, Visit.new], local: true) do |form| %>
-        <div class="my-5">
-          <%= form.label :visit_date, "Data da visita" %>
-          <%= form.date_field :visit_date, value: Date.today, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>
-        </div>
-
-        <div class="my-5">
-          <%= form.fields_for :visited_project, @family.visits.build.build_visited_project do |vp| %>
-            <div class="mb-4">
-              <h4 class="font-medium mb-2">Projeto</h4>
-              <% @projects.each do |project| %>
-                <div>
-                  <%= vp.radio_button :project_id, project.id, id: "project_#{project.id}" %>
-                  <%= vp.label :project_id, project.name, for: "project_#{project.id}" %>
-                </div>
-              <% end %>
-            </div>
-
-            <div class="mb-4">
-              <h4 class="font-medium mb-2">Região</h4>
-              <% @regions.each do |region| %>
-                <div>
-                  <%= vp.radio_button :region_id, region.id, id: "region_#{region.id}" %>
-                  <%= vp.label :region_id, region.name, for: "region_#{region.id}" %>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-
-        <div class="inline mt-4">
-          <%= form.submit "Adicionar Visita", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
-        </div>
-      <% end %>
-    </div>
 
     <div class="mt-6">
-      <%= link_to "Voltar para famílias", families_path, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <%= link_to "Registrar Nova Visita", new_family_visit_path(@family), class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium" %>
     </div>
   </div>
 </div>

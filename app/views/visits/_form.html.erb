@@ -1,4 +1,4 @@
-<%= form_with(model: visit, local: true, class: "contents") do |form| %>
+<%= form_with(model: [family, visit], local: true) do |form| %>
   <% if visit.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(visit.errors.count, "error") %> prohibited this visit from being saved:</h2>
@@ -11,80 +11,18 @@
     </div>
   <% end %>
 
-  <div id="family_form" style="display: block;" data-family-search-target="familyForm">
-    <%= form.fields_for :family do |family_form| %>
-      <h3 class="text-lg font-semibold mt-4">Contato e localização</h3>
-      
-      <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
-        <div style="flex: 1 1 300px;">
-          <%= family_form.label :phone1, "Telefone 1" %>
-          <%= family_form.text_field :phone1, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-        </div>
-
-        <div style="flex: 1 1 300px;">
-          <%= family_form.label :phone2, "Telefone 2" %>
-          <%= family_form.text_field :phone2, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-        </div>
-      </div>
-
-      <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
-        <div style="flex: 1 1 300px;">
-          <%= family_form.label :street, "Rua" %>
-          <%= family_form.text_field :street, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-        </div>
-
-        <div style="flex: 0 0 100px;">
-          <%= family_form.label :house_number, "Número" %>
-          <%= family_form.text_field :house_number, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-        </div>
-      </div>
-
-      <div class="my-5">
-        <%= family_form.label :city, "Cidade" %>
-        <%= family_form.text_field :city, value: "Vitória da Conquista", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full md:w-64" %>
-      </div>
-
-      <h3 class="text-lg font-semibold mt-4">Membros</h3>
-      
-      <div id="members">
-        <div id="member_fields">
-          <%= family_form.fields_for :members do |member_form| %>
-              <%= render 'member_fields', f: member_form %>
-          <% end %>
-        </div>
-        <div id="add_member_button">
-          <%= link_to_add_association 'Adicionar novo membro', family_form, :members, 
-              class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
-              data: { association_insertion_node: '#member_fields', association_insertion_method: 'append' } %>
-        </div> 
-      </div>
-
-      
-      <!--  
-      <h3 class="text-lg font-semibold mt-4">Necessidades</h3>
-
-      <div id="needs">
-        <%#= family_form.fields_for :needs do |need_form| %>
-          <%#= render 'need_fields', f: need_form %>
-        <%# end %>
-        <%#= link_to_add_association 'Adicionar necessidade', family_form, :needs, 
-            class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
-            data: { association_insertion_node: '#needs', association_insertion_method: 'append' } %>
-      </div>
-      -->
-    <% end %>
+  <div class="my-5">
+    <%= form.label :visit_date, "Data da visita" %>
+    <%= form.date_field :visit_date, value: Date.today, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>
   </div>
 
-  <h3 class="text-lg font-semibold mt-4">Projeto e Região Relacionados</h3>
   <div class="my-5">
-    <%= form.fields_for :visited_project do |vp| %>
+    <%= form.fields_for :visited_project, visit.build_visited_project do |vp| %>
       <div class="mb-4">
         <h4 class="font-medium mb-2">Projeto</h4>
-        <% @projects.each do |project| %>
+        <% projects.each do |project| %>
           <div>
-            <%= vp.radio_button :project_id, project.id, 
-                                id: "project_#{project.id}", 
-                                checked: vp.object.project_id == project.id %>
+            <%= vp.radio_button :project_id, project.id, id: "project_#{project.id}" %>
             <%= vp.label :project_id, project.name, for: "project_#{project.id}" %>
           </div>
         <% end %>
@@ -92,11 +30,9 @@
 
       <div class="mb-4">
         <h4 class="font-medium mb-2">Região</h4>
-        <% @regions.each do |region| %>
+        <% regions.each do |region| %>
           <div>
-            <%= vp.radio_button :region_id, region.id, 
-                                id: "region_#{region.id}", 
-                                checked: vp.object.region_id == region.id %>
+            <%= vp.radio_button :region_id, region.id, id: "region_#{region.id}" %>
             <%= vp.label :region_id, region.name, for: "region_#{region.id}" %>
           </div>
         <% end %>
@@ -104,29 +40,10 @@
     <% end %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :visit_date, "Data da visita" %>
-    <%= form.date_field :visit_date, value: Date.today, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>
-  </div>
-
-  
-  <!--
-  <h3 class="text-lg font-semibold mt-4">Observações</h3>
-
-  <div id="observations">
-    <%#= form.fields_for :observations do |observation_form| %>
-      <%#= render 'observation_fields', f: observation_form %>
-    <%# end %>
-    <%#= link_to_add_association 'Adicionar observação', form, :observations, 
-        class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer mt-2",
-        data: { association_insertion_node: '#observations', association_insertion_method: 'append' } %>
-  </div>
-  -->
   <div class="inline mt-4">
-    <%= form.submit I18n.t("actions.#{form.object.new_record? ? 'create' : 'update'}.visit", locale: :'pt-BR'), class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit "Adicionar Visita", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
-
 
 <style>
 .member-container {
@@ -137,4 +54,3 @@
     margin-bottom: 16px;
 }
 </style>
-
