@@ -24,16 +24,17 @@ class VisitsController < ApplicationController
 
   # POST /visits or /visits.json
   def create
-    @visit = Visit.new(visit_params)
-    @visit.user = current_user # Assuming you have a current_user method
+    @family = Family.find(params[:family_id])
+    @visit = @family.visits.build(visit_params)
+    @visit.user = current_user
 
     respond_to do |format|
       if @visit.save
-        format.html { redirect_to @visit, notice: "Visit was successfully created." }
+        format.html { redirect_to @family, notice: "Visita foi criada com sucesso." }
         format.json { render :show, status: :created, location: @visit }
       else
         prepare_form_data
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render 'families/show', status: :unprocessable_entity }
         format.json { render json: @visit.errors, status: :unprocessable_entity }
       end
     end

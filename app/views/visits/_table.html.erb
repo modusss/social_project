@@ -1,0 +1,15 @@
+<% if family.visits.empty? %>
+  <p>Não há visitas registradas para esta família</p>
+<% else %>
+  <h6 class="text-lg font-bold">Visitas da família</h6>
+  <% visits_data = family.visits.map do |visit|
+      [
+        { header: 'Data da Visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
+        { header: 'Projeto', content: visit&.visited_project&.project&.name, id: "visit-project-#{visit.id}" },
+        { header: 'Região', content: visit&.visited_project&.region&.name, id: "visit-region-#{visit.id}" }
+        # Add more fields as needed
+      ]
+    end %>
+  
+  <%= data_table(visits_data) %>
+<% end %>

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :members, except: [:new, :create]
   resources :families do
     resources :members, only: [:new, :create]
+    resources :visits, only: [:create]
   end
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

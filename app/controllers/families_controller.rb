@@ -1,6 +1,7 @@
 class FamiliesController < ApplicationController
   before_action :set_family, only: %i[ show edit update destroy add_member ]
   before_action :calculate_ages, only: %i[ show edit]
+  before_action :prepare_form_data, only: %i[ show ]
 
   # GET /families or /families.json
   def index
@@ -127,5 +128,10 @@ class FamiliesController < ApplicationController
           member.age = member.calculate_age
         end
       end
+    end
+
+    def prepare_form_data
+      @projects = Project.all
+      @regions = Region.all
     end
 end
