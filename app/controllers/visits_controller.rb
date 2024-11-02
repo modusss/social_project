@@ -48,8 +48,9 @@ class VisitsController < ApplicationController
   # PATCH/PUT /visits/1 or /visits/1.json
   def update
     respond_to do |format|
+      @family = Family.find(params[:family_id])
       if @visit.update(visit_params)
-        format.html { redirect_to @visit, notice: "Visit was successfully updated." }
+        format.html { redirect_to @family, notice: "Visita foi atualizada com sucesso." }
         format.json { render :show, status: :ok, location: @visit }
       else
         prepare_form_data
