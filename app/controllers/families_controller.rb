@@ -14,15 +14,18 @@ class FamiliesController < ApplicationController
                       .includes(:members, :observations, :pending_needs, visits: :region)
 
     @rows = @families.map do |family|
+      last_visit = family.visits.order(visit_date: :desc).first
+      last_visit_region = last_visit.present? ? (last_visit&.region&.name || 'Sem região') : 'Sem região'
+      last_visit_observation = last_visit.present? ? (last_visit.observations.last&.observation&.truncate(50) || 'Sem observações') : 'Sem observações'
       [
         { header: 'Nome de Referência', content: family.reference_name, id: "family-name-#{family.id}" },
         { header: 'Endereço Completo', content: "#{family.street}, #{family.house_number} - #{family.city}/#{family.state}", id: "family-address-#{family.id}" },
         { header: 'Telefones', content: [family.phone1, family.phone2].compact.join(' / '), id: "family-phones-#{family.id}" },
         { header: 'Qtd. Membros', content: family.members.count, id: "family-members-count-#{family.id}" },
-        { header: 'Última visita', content: family.last_visit_date ? family.last_visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
+        { header: 'Última visita', content: last_visit.present? ? last_visit.visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
         { header: 'Qtd. visitas', content: family.visits.count, id: "family-visits-count-#{family.id}" },
-        { header: 'Região da última visita', content: family.visits.find { |v| v.id == family.last_visit_id }&.region&.name || 'Sem região', id: "family-last-visit-region-#{family.id}" },
-        { header: 'Última Observação', content: family.observations.last&.observation&.truncate(50) || 'Sem observações', id: "family-last-observation-#{family.id}" },
+        { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
+        { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}" },
         { header: 'Necessidades Pendentes', content: family.pending_needs.map { |need| need.description.truncate(30) }.join(', '), id: "family-pending-needs-#{family.id}" },
         { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
       ]

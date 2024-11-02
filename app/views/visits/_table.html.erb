@@ -3,7 +3,7 @@
 <% else %>
   <h6 class="text-lg font-bold">Visitas da família</h6>
   <% total_visits = family.visits.count %>
-  <% visits_data = family.visits.order(visit_date: :desc).each_with_index.map do |visit, index|
+  <% visits_data = family.visits.order(visit_date: :desc, id: :desc).each_with_index.map do |visit, index|
       [
         { header: 'Nº', content: total_visits - index, id: "visit-number-#{visit.id}" },
         { header: 'Data da Visita', content: I18n.l(visit.visit_date, format: '%A, %d de %B de %Y'), id: "visit-date-#{visit.id}" },
