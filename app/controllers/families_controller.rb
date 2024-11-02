@@ -27,6 +27,7 @@ class FamiliesController < ApplicationController
         { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
         { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}" },
         { header: 'Necessidades Pendentes', content: family.pending_needs.map { |need| need.description.truncate(30) }.join(', '), id: "family-pending-needs-#{family.id}" },
+        { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" },
         { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
       ]
     end

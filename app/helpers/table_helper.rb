@@ -52,7 +52,9 @@ module TableHelper
           next if row.nil?
           content_tag(:tr, class: 'hover:bg-gray-50') do
             row.map do |cell|
-              content_tag(:td, cell[:content], id: cell[:id], class: "px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center #{cell[:class]}")
+              default_classes = "px-6 py-4 text-sm text-gray-500"
+              cell_classes = cell[:class].present? ? "#{default_classes} #{cell[:class]}" : "#{default_classes} whitespace-nowrap text-center"
+              content_tag(:td, cell[:content], id: cell[:id], class: cell_classes)
             end.join.html_safe
           end
         end.compact.join.html_safe
