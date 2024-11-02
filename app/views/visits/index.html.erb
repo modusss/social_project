@@ -16,40 +16,22 @@
     </div>
   </div>
 
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-center">Data da visita</th>
-          <th scope="col" class="px-6 py-3 text-center">Nome do visitante</th>
-          <th scope="col" class="px-6 py-3 text-center">Região</th>
-          <th scope="col" class="px-6 py-3 text-center">Projeto</th>
-          <th scope="col" class="px-6 py-3 text-center">Família</th>
-          <th scope="col" class="px-6 py-3 text-center">Necessidades pendentes</th>
-          <th scope="col" class="px-6 py-3 text-center">Observações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @visits.each_with_index do |visit, index| %>
-          <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              <%= visit.visit_date.strftime('%d/%m/%Y') %>
-            </th>
-            <td class="px-6 py-4 text-center"><%= visit.user.name %></td>
-            <td class="px-6 py-4 text-center"><%= visit.visited_project&.region&.name %></td>
-            <td class="px-6 py-4 text-center"><%= visit.visited_project&.project&.name %></td>
-            <td class="px-6 py-4 text-center">
-              <%= link_to family_path(visit.family), class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out whitespace-nowrap overflow-hidden overflow-ellipsis inline-block max-w-full" do %>
-                <span class="truncate">
-                  <%= "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)" %>
-                </span>
-              <% end %>
-            </td>
-            <td class="px-6 py-4 text-center"><%= visit.pending_needs.first&.description || "N/A" %></td>
-            <td class="px-6 py-4 text-center"><%= visit.observations.first&.observation || "N/A" %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div>
+    <% visits_data = @visits.map do |visit|
+      [
+        { header: 'Data da visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
+        { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
+        { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
+        { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
+        { header: 'Família', content: link_to("#{visit.family.reference_name} (#{visit.family.members.count} pessoas)", 
+          family_path(visit.family), 
+          class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"), 
+          id: "family-#{visit.id}" },
+        { header: 'Necessidades pendentes', content: visit.pending_needs.first&.description || "N/A", id: "needs-#{visit.id}" },
+        { header: 'Observações', content: visit.observations.first&.observation || "N/A", id: "observations-#{visit.id}" }
+      ]
+    end %>
+
+    <%= data_table(visits_data) %>
   </div>
 </div>
