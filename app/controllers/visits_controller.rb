@@ -20,6 +20,10 @@ class VisitsController < ApplicationController
 
   # GET /visits/1/edit
   def edit
+    @family = Family.find(params[:family_id])
+    @visit = Visit.find(params[:id])
+    @projects = Project.all
+    @regions = Region.all
     prepare_form_data
   end
 

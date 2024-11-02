@@ -8,8 +8,12 @@
         { header: 'Nº', content: total_visits - index, id: "visit-number-#{visit.id}" },
         { header: 'Data da Visita', content: I18n.l(visit.visit_date, format: '%A, %d de %B de %Y'), id: "visit-date-#{visit.id}" },
         { header: 'Projeto', content: visit&.visited_project&.project&.name, id: "visit-project-#{visit.id}" },
-        { header: 'Região', content: visit&.visited_project&.region&.name, id: "visit-region-#{visit.id}" }
-        # Add more fields as needed
+        { header: 'Região', content: visit&.visited_project&.region&.name, id: "visit-region-#{visit.id}" },
+        { 
+          header: 'Ações', 
+          content: link_to('Editar', edit_family_visit_path(family, visit), class: 'text-blue-600 hover:text-blue-800'),
+          id: "visit-actions-#{visit.id}"
+        }
       ]
     end %>
   

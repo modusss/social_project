@@ -1,4 +1,4 @@
-<%= form_with(model: [family, visit], local: true) do |form| %>
+<%= form_with(model: [@family, @visit], local: true) do |form| %>
   <% if visit.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(visit.errors.count, "error") %> prohibited this visit from being saved:</h2>
@@ -13,14 +13,14 @@
 
   <div class="my-5">
     <%= form.label :visit_date, "Data da visita" %>
-    <%= form.date_field :visit_date, value: Date.today, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>
+    <%= form.date_field :visit_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-48" %>
   </div>
 
   <div class="my-5">
-    <%= form.fields_for :visited_project, visit.build_visited_project do |vp| %>
+    <%= form.fields_for :visited_project, (visit.visited_project || visit.build_visited_project) do |vp| %>
       <div class="mb-4">
         <h4 class="font-medium mb-2">Projeto</h4>
-        <% projects.each do |project| %>
+        <% @projects.each do |project| %>
           <div>
             <%= vp.radio_button :project_id, project.id, id: "project_#{project.id}" %>
             <%= vp.label :project_id, project.name, for: "project_#{project.id}" %>
@@ -30,7 +30,7 @@
 
       <div class="mb-4">
         <h4 class="font-medium mb-2">Região</h4>
-        <% regions.each do |region| %>
+        <% @regions.each do |region| %>
           <div>
             <%= vp.radio_button :region_id, region.id, id: "region_#{region.id}" %>
             <%= vp.label :region_id, region.name, for: "region_#{region.id}" %>
@@ -40,8 +40,20 @@
     <% end %>
   </div>
 
+  <div class="my-5">
+    <h4 class="font-medium mb-2">Observações</h4>
+    <% visit.observations.build if visit.observations.empty? %>
+    <%= form.fields_for :observations do |observation| %>
+      <div class="mb-4">
+        <%= observation.label :observation, "Observação" %>
+        <%= observation.text_area :observation, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+    <% end %>
+  </div>
+
   <div class="inline mt-4">
-    <%= form.submit "Adicionar Visita", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit visit.new_record? ? "Adicionar Visita" : "Atualizar Visita", 
+                    class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
 
