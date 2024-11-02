@@ -21,7 +21,7 @@ class VisitsController < ApplicationController
   # GET /visits/1/edit
   def edit
     @family = Family.find(params[:family_id])
-    @visit = Visit.find(params[:id])
+    @visit = @family.visits.find(params[:id])
     @projects = Project.all
     @regions = Region.all
     prepare_form_data
@@ -87,11 +87,13 @@ class VisitsController < ApplicationController
     end
 
     def prepare_form_data
-      @visit.build_family unless @visit.family
-      @visit.family.members.build if @visit.family.members.empty?
-      @visit.observations.build if @visit.observations.empty?
-      @visit.pending_needs.build if @visit.pending_needs.empty?
-      @visit.build_visited_project unless @visit.visited_project
+      if @visit.new_record?
+        @visit.build_family unless @visit.family
+        @visit.family.members.build if @visit.family.members.empty?
+        @visit.observations.build if @visit.observations.empty?
+        @visit.pending_needs.build if @visit.pending_needs.empty?
+        @visit.build_visited_project unless @visit.visited_project
+      end
       @projects = Project.all
       @regions = Region.all
     end
