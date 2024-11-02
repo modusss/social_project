@@ -41,7 +41,6 @@
   </div>
 
   <div class="my-5">
-    <h4 class="font-medium mb-2">Observações</h4>
     <% visit.observations.build if visit.observations.empty? %>
     <%= form.fields_for :observations do |observation| %>
       <div class="mb-4">
