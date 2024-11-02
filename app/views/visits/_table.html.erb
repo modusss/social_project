@@ -2,9 +2,9 @@
   <p>Não há visitas registradas para esta família</p>
 <% else %>
   <h6 class="text-lg font-bold">Visitas da família</h6>
-  <% visits_data = family.visits.map do |visit|
+  <% visits_data = family.visits.order(visit_date: :desc).map do |visit|
       [
-        { header: 'Data da Visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
+        { header: 'Data da Visita', content: I18n.l(visit.visit_date, format: '%A, %d de %B de %Y'), id: "visit-date-#{visit.id}" },
         { header: 'Projeto', content: visit&.visited_project&.project&.name, id: "visit-project-#{visit.id}" },
         { header: 'Região', content: visit&.visited_project&.region&.name, id: "visit-region-#{visit.id}" }
         # Add more fields as needed
