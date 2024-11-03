@@ -23,12 +23,18 @@
   <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">
     <div style="flex: 1 1 300px;">
       <%= form.label :phone1, "Telefone 1" %>
-      <%= form.text_field :phone1, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      <%= form.text_field :phone1, 
+          class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full",
+          placeholder: "(XX) X XXXX-XXXX",
+          data: { controller: "phone-mask" } %>
     </div>
 
     <div style="flex: 1 1 300px;">
       <%= form.label :phone2, "Telefone 2" %>
-      <%= form.text_field :phone2, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      <%= form.text_field :phone2, 
+          class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full",
+          placeholder: "(XX) X XXXX-XXXX",
+          data: { controller: "phone-mask" } %>
     </div>
   </div>
 
