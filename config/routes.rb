@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :families do
     resources :members, only: [:new, :create]
     resources :visits, only: [:new, :create, :edit, :update]
-    resources :needs, only: [:new, :create, :edit, :update]
+    resources :needs, only: [:new, :create, :edit, :update, :destroy]
   end
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

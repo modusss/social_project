@@ -5,7 +5,18 @@
       { header: 'Atendida?', content: need.attended ? 'Sim' : 'Não', id: "need-attended-#{need.id}" },
       { 
         header: 'Ações', 
-        content: link_to('Editar', edit_family_need_path(family, need), class: 'text-blue-600 hover:text-blue-800'),
+        content: safe_join([
+          link_to('Editar', edit_family_need_path(family, need), 
+                 class: 'text-blue-600 hover:text-blue-800 mr-2'),
+          button_to('Remover', 
+                 family_need_path(family, need), 
+                 method: :delete,
+                 class: 'text-red-600 hover:text-red-800 inline',
+                 form: { 
+                   class: 'inline-block',
+                   data: { turbo_confirm: 'Tem certeza que deseja remover esta necessidade?' }
+                 })
+        ], ' | '),
         id: "need-actions-#{need.id}"
       }
     ]

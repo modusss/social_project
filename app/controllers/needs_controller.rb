@@ -61,10 +61,11 @@ class NeedsController < ApplicationController
 
   # DELETE /needs/1 or /needs/1.json
   def destroy
-    @need.destroy!
+    @need = @family.needs.find(params[:id])
+    @need.destroy
 
     respond_to do |format|
-      format.html { redirect_to needs_path, status: :see_other, notice: "Need was successfully destroyed." }
+      format.html { redirect_to family_path(@family), notice: "Necessidade removida com sucesso." }
       format.json { head :no_content }
     end
   end
