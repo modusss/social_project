@@ -35,8 +35,8 @@ class FamiliesController < ApplicationController
         { 
           header: 'Telefones', 
           content: [
-            helpers.whatsapp_link(family.phone1),
-            helpers.whatsapp_link(family.phone2)
+            helpers.phone_links(family.phone1),
+            helpers.phone_links(family.phone2)
           ].reject(&:blank?).join(' / ').html_safe, 
           id: "family-phones-#{family.id}" 
         },
