@@ -1,4 +1,5 @@
 class NeedsController < ApplicationController
+  before_action :set_family
   before_action :set_need, only: %i[ show edit update destroy ]
 
   # GET /needs or /needs.json
@@ -12,7 +13,7 @@ class NeedsController < ApplicationController
 
   # GET /needs/new
   def new
-    @need = Need.new
+    @need = @family.needs.build
   end
 
   # GET /needs/1/edit
@@ -21,11 +22,11 @@ class NeedsController < ApplicationController
 
   # POST /needs or /needs.json
   def create
-    @need = Need.new(need_params)
+    @need = @family.needs.build(need_params)
 
     respond_to do |format|
       if @need.save
-        format.html { redirect_to @need, notice: "Need was successfully created." }
+        format.html { redirect_to family_path(@family), notice: "Necessidade registrada com sucesso." }
         format.json { render :show, status: :created, location: @need }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +39,7 @@ class NeedsController < ApplicationController
   def update
     respond_to do |format|
       if @need.update(need_params)
-        format.html { redirect_to @need, notice: "Need was successfully updated." }
+        format.html { redirect_to family_path(@family), notice: "Necessidade atualizada com sucesso." }
         format.json { render :show, status: :ok, location: @need }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -59,12 +60,16 @@ class NeedsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_family
+      @family = Family.find(params[:family_id])
+    end
+
     def set_need
-      @need = Need.find(params[:id])
+      @need = @family.needs.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def need_params
-      params.require(:need).permit(:family_id, :name, :beneficiary, :attended)
+      params.require(:need).permit(:name, :beneficiary, :attended)
     end
 end

@@ -1,0 +1,14 @@
+<% needs_data = family.needs.map do |need|
+    [
+      { header: 'Nome', content: need.name, id: "need-name-#{need.id}" },
+      { header: 'Beneficiário', content: need.beneficiary, id: "need-beneficiary-#{need.id}" },
+      { header: 'Atendida?', content: need.attended ? 'Sim' : 'Não', id: "need-attended-#{need.id}" },
+      { 
+        header: 'Ações', 
+        content: link_to('Editar', edit_family_need_path(family, need), class: 'text-blue-600 hover:text-blue-800'),
+        id: "need-actions-#{need.id}"
+      }
+    ]
+  end %>
+
+<%= data_table(needs_data) %>
