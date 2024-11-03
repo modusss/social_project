@@ -18,29 +18,40 @@ class NeedsController < ApplicationController
 
   # GET /needs/1/edit
   def edit
+    @need = @family.needs.find(params[:id])
   end
 
   # POST /needs or /needs.json
   def create
-    @need = @family.needs.build(need_params)
+    @needs = if params[:needs].present?
+      params[:needs].map do |need_params|
+        @family.needs.build(need_params.permit(:name, :beneficiary, :attended))
+      end
+    else
+      [@family.needs.build(need_params)]
+    end
+
+    success = @needs.all? { |need| need.save }
 
     respond_to do |format|
-      if @need.save
-        format.html { redirect_to family_path(@family), notice: "Necessidade registrada com sucesso." }
-        format.json { render :show, status: :created, location: @need }
+      if success
+        format.html { redirect_to family_path(@family), notice: "Necessidades registradas com sucesso." }
+        format.json { render :show, status: :created }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @need.errors, status: :unprocessable_entity }
+        format.json { render json: @needs.map(&:errors), status: :unprocessable_entity }
       end
     end
   end
 
   # PATCH/PUT /needs/1 or /needs/1.json
   def update
+    @need = @family.needs.find(params[:id])
+    
     respond_to do |format|
       if @need.update(need_params)
         format.html { redirect_to family_path(@family), notice: "Necessidade atualizada com sucesso." }
-        format.json { render :show, status: :ok, location: @need }
+        format.json { render :show, status: :ok }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @need.errors, status: :unprocessable_entity }
@@ -69,6 +80,10 @@ class NeedsController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
+    def needs_params
+      params.require(:needs).permit(:name, :beneficiary, :attended)
+    end
+
     def need_params
       params.require(:need).permit(:name, :beneficiary, :attended)
     end

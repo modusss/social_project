@@ -2,7 +2,6 @@
   <% if need.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
       <h2><%= pluralize(need.errors.count, "error") %> prohibited this need from being saved:</h2>
-
       <ul>
         <% need.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,23 +10,80 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :name, "Nome da necessidade", class: "block text-gray-700" %>
-    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+  <div id="needs-container" data-controller="nested-form">
+    <div data-nested-form-target="entries">
+      <div class="need-fields mb-4 p-4 border rounded-lg bg-gray-50">
+        <% if need.new_record? %>
+          <%= fields_for 'needs[]', need do |need_fields| %>
+            <div class="my-5">
+              <%= need_fields.label :name, "Nome da necessidade", class: "block text-gray-700" %>
+              <%= need_fields.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+            </div>
 
-  <div class="my-5">
-    <%= form.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
-    <%= form.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+            <div class="my-5">
+              <%= need_fields.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
+              <%= need_fields.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+            </div>
 
-  <div class="my-5">
-    <%= form.label :attended, "Atendida?", class: "block text-gray-700" %>
-    <%= form.check_box :attended, class: "block mt-2 h-5 w-5" %>
+            <div class="my-5">
+              <%= need_fields.label :attended, "Atendida?", class: "block text-gray-700" %>
+              <%= need_fields.check_box :attended, class: "block mt-2 h-5 w-5" %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="my-5">
+            <%= form.label :name, "Nome da necessidade", class: "block text-gray-700" %>
+            <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+          </div>
+
+          <div class="my-5">
+            <%= form.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
+            <%= form.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+          </div>
+
+          <div class="my-5">
+            <%= form.label :attended, "Atendida?", class: "block text-gray-700" %>
+            <%= form.check_box :attended, class: "block mt-2 h-5 w-5" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% if need.new_record? %>
+      <template data-nested-form-target="template">
+        <%= fields_for 'needs[]', Need.new, child_index: 'NEW_RECORD' do |need_fields| %>
+          <div class="need-fields mb-4 p-4 border rounded-lg bg-gray-50">
+            <div class="my-5">
+              <%= need_fields.label :name, "Nome da necessidade", class: "block text-gray-700" %>
+              <%= need_fields.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+            </div>
+
+            <div class="my-5">
+              <%= need_fields.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
+              <%= need_fields.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+            </div>
+
+            <div class="my-5">
+              <%= need_fields.label :attended, "Atendida?", class: "block text-gray-700" %>
+              <%= need_fields.check_box :attended, class: "block mt-2 h-5 w-5" %>
+            </div>
+          </div>
+        <% end %>
+      </template>
+
+      <div class="mb-4">
+        <button type="button" 
+                data-action="nested-form#add"
+                class="rounded-lg py-2 px-4 bg-green-600 text-white inline-block font-medium hover:bg-green-700">
+          <i class="fas fa-plus"></i> Adicionar outra necessidade
+        </button>
+      </div>
+    <% end %>
   </div>
 
   <div class="inline">
-    <%= form.submit "Salvar", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit need.new_record? ? "Criar Necessidades" : "Atualizar Necessidade", 
+        class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
     <%= link_to "Voltar", family_path(@family), class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 <% end %>

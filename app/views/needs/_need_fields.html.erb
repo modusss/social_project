@@ -1,0 +1,16 @@
+<div class="need-fields mb-4 p-4 border rounded-lg bg-gray-50" data-controller="need-form">
+  <div class="my-5">
+    <%= form.label :name, "Nome da necessidade", class: "block text-gray-700" %>
+    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
+    <%= form.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :attended, "Atendida?", class: "block text-gray-700" %>
+    <%= form.check_box :attended, class: "block mt-2 h-5 w-5" %>
+  </div>
+</div>
