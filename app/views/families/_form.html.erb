@@ -14,8 +14,10 @@
   <h3 class="text-lg font-semibold mt-4">Contato e localização</h3>
   
   <div class="my-5">
-    <%= form.label :reference_name, "Nome de Referência" %>
-    <%= form.text_field :reference_name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.label :reference_name, "Nome de Referência Identificador" %>
+    <%= form.text_field :reference_name, 
+        class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full",
+        placeholder: "Exemplo: casa de dona Nina, família da Maria, etc." %>
   </div>
 
   <div class="my-5" style="display: flex; flex-wrap: wrap; gap: 1rem;">

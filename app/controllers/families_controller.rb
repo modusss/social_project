@@ -18,7 +18,19 @@ class FamiliesController < ApplicationController
       last_visit_region = last_visit.present? ? (last_visit&.region&.name || 'Sem região') : 'Sem região'
       last_visit_observation = last_visit.present? ? (last_visit.observations.last&.observation&.truncate(50) || 'Sem observações') : 'Sem observações'
       [
-        { header: 'Nome de Referência', content: family.reference_name, id: "family-name-#{family.id}" },
+        { 
+          header: 'Família', 
+          content: helpers.link_to(
+            if family.reference_name.present?
+              "#{family.reference_name} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+            else
+              "#{family.members.pluck(:name).join(', ')} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+            end,
+            family_path(family), 
+            class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
+          ), 
+          id: "family-#{family.id}" 
+        },
         { header: 'Endereço Completo', content: "#{family.street}, #{family.house_number} - #{family.city}/#{family.state}", id: "family-address-#{family.id}" },
         { header: 'Telefones', content: [family.phone1, family.phone2].compact.join(' / '), id: "family-phones-#{family.id}" },
         { header: 'Qtd. Membros', content: family.members.count, id: "family-members-count-#{family.id}" },
