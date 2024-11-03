@@ -33,7 +33,6 @@ class FamiliesController < ApplicationController
         },
         { header: 'Endereço Completo', content: "#{family.street}, #{family.house_number} - #{family.city}/#{family.state}", id: "family-address-#{family.id}" },
         { header: 'Telefones', content: [family.phone1, family.phone2].compact.join(' / '), id: "family-phones-#{family.id}" },
-        { header: 'Qtd. Membros', content: family.members.count, id: "family-members-count-#{family.id}" },
         { header: 'Última visita', content: last_visit.present? ? last_visit.visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
         { header: 'Qtd. visitas', content: family.visits.count, id: "family-visits-count-#{family.id}" },
         { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
