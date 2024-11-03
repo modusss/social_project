@@ -32,10 +32,16 @@
     <div class="mb-6">
       <h2 class="text-xl font-semibold">Contato</h2>
       <% if @family.phone1.present? %>
-        <p><strong>Telefone 1:</strong> <%= @family.phone1 %></p>
+        <p>
+          <strong>Telefone 1:</strong> 
+          <%= phone_links(@family.phone1) %>
+        </p>
       <% end %>
       <% if @family.phone2.present? %>
-        <p><strong>Telefone 2:</strong> <%= @family.phone2 %></p>
+        <p>
+          <strong>Telefone 2:</strong> 
+          <%= phone_links(@family.phone2) %>
+        </p>
       <% end %>
     </div>
 
