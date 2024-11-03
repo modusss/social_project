@@ -24,14 +24,16 @@ module ApplicationHelper
   def phone_links(phone_number)
     return '' if phone_number.blank?
     
-    # Remove caracteres não numéricos
+    # Remove todos os caracteres não numéricos (espaços, traços, parênteses)
     formatted_number = phone_number.gsub(/[^\d]/, '')
+    return '' if formatted_number.blank?
+
     # Adiciona o código do país (55 para Brasil) se não existir
     formatted_number = "55#{formatted_number}" unless formatted_number.start_with?('55')
     
     links = []
     
-    # Link para ligação
+    # Link para ligação (usando número formatado)
     links << link_to(
       raw('<i class="fas fa-phone text-green-600"></i>'),
       "tel:+#{formatted_number}",
@@ -39,7 +41,7 @@ module ApplicationHelper
       title: "Ligar"
     )
 
-    # Link para WhatsApp
+    # Link para WhatsApp (usando número formatado)
     links << link_to(
       raw('<i class="fab fa-whatsapp text-green-600"></i>'),
       "https://wa.me/#{formatted_number}",
@@ -48,7 +50,7 @@ module ApplicationHelper
       title: "Abrir WhatsApp"
     )
 
-    # Número do telefone
+    # Número do telefone (mantém o formato original para exibição)
     links << content_tag(:span, phone_number, class: "ml-2 text-gray-600")
 
     safe_join(links, ' ')
