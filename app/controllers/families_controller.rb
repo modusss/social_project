@@ -12,6 +12,8 @@ class FamiliesController < ApplicationController
                       .group('families.id')
                       .order('last_visit_date DESC NULLS LAST')
                       .includes(:members, :observations, :pending_needs, visits: :region)
+                      .page(params[:page])
+                      .per(100)
 
     @rows = @families.map do |family|
       last_visit = family.visits.order(visit_date: :desc).first
