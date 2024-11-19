@@ -122,10 +122,15 @@ class FamiliesController < ApplicationController
 
   def search
     @families = Family.left_joins(:visits)
+                      .left_joins(:members)
                       .select('families.*, 
                               MAX(visits.visit_date) as last_visit_date,
                               MAX(visits.id) as last_visit_id')
-                      .where('families.reference_name ILIKE ?', "%#{params[:query]}%")
+                      .where('families.reference_name ILIKE :query OR 
+                             (families.reference_name IS NULL AND members.name ILIKE :query) OR
+                             families.phone1 ILIKE :query OR 
+                             families.phone2 ILIKE :query', 
+                             query: "%#{params[:query]}%")
                       .group('families.id')
                       .order('last_visit_date DESC NULLS LAST')
                       .includes(:members, :observations, :pending_needs, visits: :region)
