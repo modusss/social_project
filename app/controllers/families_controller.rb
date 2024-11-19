@@ -120,6 +120,27 @@ class FamiliesController < ApplicationController
     end
   end
 
+  def search
+    @families = Family.left_joins(:visits)
+                      .select('families.*, 
+                              MAX(visits.visit_date) as last_visit_date,
+                              MAX(visits.id) as last_visit_id')
+                      .where('families.reference_name ILIKE ?', "%#{params[:query]}%")
+                      .group('families.id')
+                      .order('last_visit_date DESC NULLS LAST')
+                      .includes(:members, :observations, :pending_needs, visits: :region)
+                      .page(params[:page])
+                      .per(100)
+
+    @rows = build_rows(@families)
+
+    respond_to do |format|
+      format.turbo_stream { 
+        render turbo_stream: turbo_stream.replace('families_table', partial: 'families/table', locals: { rows: @rows })
+      }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_family
@@ -157,5 +178,45 @@ class FamiliesController < ApplicationController
     def prepare_form_data
       @projects = Project.all
       @regions = Region.all
+    end
+
+    # Move a lógica de construção das rows para um método separado
+    def build_rows(families)
+      families.map do |family|
+        last_visit = family.visits.order(visit_date: :desc).first
+        last_visit_region = last_visit.present? ? (last_visit&.region&.name || 'Sem região') : 'Sem região'
+        last_visit_observation = last_visit.present? ? (last_visit.observations.last&.observation&.truncate(50) || 'Sem observações') : 'Sem observações'
+        [
+          { 
+            header: 'Família', 
+            content: helpers.link_to(
+              if family.reference_name.present?
+                "#{family.reference_name} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+              else
+                "#{family.members.pluck(:name).join(', ')} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+              end,
+              family_path(family), 
+              class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
+            ), 
+            id: "family-#{family.id}" 
+          },
+          { header: 'Endereço Completo', content: "#{family.street}, #{family.house_number} - #{family.city}/#{family.state}", id: "family-address-#{family.id}" },
+          { 
+            header: 'Telefones', 
+            content: [
+              helpers.phone_links(family.phone1),
+              helpers.phone_links(family.phone2)
+            ].reject(&:blank?).join(' / ').html_safe, 
+            id: "family-phones-#{family.id}" 
+          },
+          { header: 'Última visita', content: last_visit.present? ? last_visit.visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
+          { header: 'Qtd. visitas', content: family.visits.count, id: "family-visits-count-#{family.id}" },
+          { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
+          { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}", class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left" },
+          { header: 'Necessidades Pendentes', content: family.needs.where(attended: false).pluck(:name).join(", "), id: "family-needs-#{family.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
+          { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" },
+          { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
+        ]
+      end
     end
 end

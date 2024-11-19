@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resources :projects
   resources :members, except: [:new, :create]
   resources :families do
+    collection do
+      post 'search'
+    end
     resources :members, only: [:new, :create]
     resources :visits, only: [:new, :create, :edit, :update]
     resources :needs, only: [:new, :create, :edit, :update, :destroy]
