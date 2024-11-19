@@ -1,0 +1,7 @@
+<div id="visits_table">
+  <% if visits_data.empty? %>
+    <p>Não há visitas registradas</p>
+  <% else %>
+    <%= data_table(visits_data) %>
+  <% end %>
+</div>

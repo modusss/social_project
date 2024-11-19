@@ -2,7 +2,13 @@ Rails.application.routes.draw do
   root to: 'families#index'  # Adicione esta linha
   devise_for :users
   resources :needs
-  resources :visits
+  resources :visits do
+    collection do
+      post 'search'
+    end
+    resources :members, only: [:new, :create]
+    resources :needs, only: [:new, :create, :edit, :update, :destroy]
+  end
   resources :regions
   resources :projects
   resources :members, except: [:new, :create]

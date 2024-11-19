@@ -7,6 +7,8 @@ class VisitsController < ApplicationController
                    .order(visit_date: :desc)
                    .page(params[:page])
                    .per(100)
+
+    @visits_data = build_visits_data(@visits)
   end
 
   # GET /visits/1 or /visits/1.json
@@ -72,6 +74,29 @@ class VisitsController < ApplicationController
     end
   end
 
+  def search
+    @visits = Visit.select('DISTINCT visits.*')
+                   .includes(:user, :family, :pending_needs, :observations, visited_project: [:region, :project])
+                   .joins(:family)
+                   .joins('LEFT JOIN members ON members.family_id = families.id')
+                   .where('families.reference_name ILIKE :query OR 
+                          members.name ILIKE :query', 
+                         query: "%#{params[:query]}%")
+                   .order(visit_date: :desc)
+                   .page(params[:page])
+                   .per(100)
+
+    @visits_data = build_visits_data(@visits)
+
+    respond_to do |format|
+      format.turbo_stream { 
+        render turbo_stream: turbo_stream.replace('visits_table', 
+               partial: 'visits/table_index', 
+               locals: { visits_data: @visits_data })
+      }
+    end
+  end
+
   private
     def set_visit
       @visit = Visit.find(params[:id])
@@ -99,5 +124,27 @@ class VisitsController < ApplicationController
       end
       @projects = Project.all
       @regions = Region.all
+    end
+
+    def build_visits_data(visits)
+      visits.map do |visit|
+        [
+          { header: 'Data da visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
+          { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
+          { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
+          { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
+          { header: 'Família', content: helpers.link_to("#{visit.family.reference_name} (#{visit.family.members.count} pessoas)", 
+            family_path(visit.family), 
+            class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"), 
+            id: "family-#{visit.id}" },
+          { header: 'Necessidades pendentes', content: visit.family.needs.where(attended: false).pluck(:name).join(", "), id: "needs-#{visit.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
+          { 
+            header: 'Observações', 
+            content: visit.observations.first&.observation || "N/A", 
+            id: "observations-#{visit.id}",
+            class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left"
+          }
+        ]
+      end
     end
 end

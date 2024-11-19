@@ -16,33 +16,23 @@
 
   <div class="flex justify-between items-center mb-6">
     <div class="w-1/2">
-      <input type="text" placeholder="Pesquisar por família" class="w-full px-4 py-2 border rounded-lg">
+      <%= form_with url: search_visits_path, method: :post, class: "flex gap-2", data: { turbo_stream: true } do |f| %>
+        <%= f.text_field :query, 
+            placeholder: "Pesquisar visitas", 
+            class: "w-full px-4 py-2 border rounded-lg",
+            data: { 
+              action: "keyup->search#submit",
+              search_target: "input" 
+            } %>
+        <%= f.submit "Buscar", 
+            class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer" %>
+      <% end %>
     </div>
   </div>
 
   <div>
-    <% visits_data = @visits.map do |visit|
-      [
-        { header: 'Data da visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
-        { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
-        { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
-        { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
-        { header: 'Família', content: link_to("#{visit.family.reference_name} (#{visit.family.members.count} pessoas)", 
-          family_path(visit.family), 
-          class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"), 
-          id: "family-#{visit.id}" },
-        { header: 'Necessidades pendentes', content: visit.family.needs.where(attended: false).pluck(:name).join(", "), id: "needs-#{visit.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
-        { 
-          header: 'Observações', 
-          content: visit.observations.first&.observation || "N/A", 
-          id: "observations-#{visit.id}",
-          class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left"
-        }
-      ]
-    end %>
-
-    <%= data_table(visits_data) %>
-
+    <%= render 'table_index', visits_data: @visits_data %>
+    
     <div class="mt-6 flex justify-center">
       <%= paginate @visits, theme: 'tailwind', window: 2,
         class: "pagination",
