@@ -137,6 +137,14 @@ class VisitsController < ApplicationController
             family_path(visit.family), 
             class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"), 
             id: "family-#{visit.id}" },
+            { 
+              header: 'Telefones', 
+              content: [
+                helpers.phone_links(visit.family.phone1),
+                helpers.phone_links(visit.family.phone2)
+              ].reject(&:blank?).join(' / ').html_safe, 
+              id: "family-phones-#{visit.family.id}" 
+            },
           { header: 'Necessidades pendentes', content: visit.family.needs.where(attended: false).pluck(:name).join(", "), id: "needs-#{visit.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
           { 
             header: 'Observações', 

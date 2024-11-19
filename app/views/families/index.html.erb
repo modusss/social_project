@@ -18,7 +18,7 @@
     <div class="w-1/2">
       <%= form_with url: search_families_path, method: :post, class: "flex gap-2", data: { turbo_stream: true } do |f| %>
         <%= f.text_field :query, 
-            placeholder: "Pesquisar por família", 
+            placeholder: "Pesquisar nome da família, membros ou telefone", 
             class: "w-full px-4 py-2 border rounded-lg",
             data: { 
               action: "keyup->search#submit",
