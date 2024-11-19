@@ -5,6 +5,8 @@ class VisitsController < ApplicationController
   def index
     @visits = Visit.includes(:user, :family, :pending_needs, :observations, visited_project: [:region, :project])
                    .order(visit_date: :desc)
+                   .page(params[:page])
+                   .per(100)
   end
 
   # GET /visits/1 or /visits/1.json

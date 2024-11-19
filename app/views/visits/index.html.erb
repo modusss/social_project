@@ -42,5 +42,12 @@
     end %>
 
     <%= data_table(visits_data) %>
+
+    <div class="mt-6 flex justify-center">
+      <%= paginate @visits, theme: 'tailwind', window: 2,
+        class: "pagination",
+        previous_label: '← Anterior',
+        next_label: 'Próxima →' %>
+    </div>
   </div>
 </div>
