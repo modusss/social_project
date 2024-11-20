@@ -7,48 +7,75 @@
 
   <h1 class="text-3xl font-bold text-center mb-6">Lista de Famílias</h1>
 
-  <div class="flex justify-center space-x-4 mb-6">
+  <div class="flex justify-center space-x-4 mb-8">
     <%= link_to "Listar por família", families_path, 
         class: "px-4 py-2 #{current_page?(families_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
     <%= link_to "Listar por visitas", visits_path, 
         class: "px-4 py-2 #{current_page?(visits_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
   </div>
 
-  <div class="flex justify-between items-center mb-6">
-    <div class="w-1/2">
-      <%= form_with url: search_families_path, method: :post, class: "space-y-4", data: { turbo_stream: true } do |f| %>
-        <div class="flex gap-6 mb-3">
-          <div class="flex items-center">
-            <%= f.radio_button :search_type, 'name', class: "mr-2", checked: true %>
-            <%= f.label :search_type_name, "Nome de integrante", class: "text-sm text-gray-600" %>
-          </div>
-          
-          <div class="flex items-center">
-            <%= f.radio_button :search_type, 'phone', class: "mr-2" %>
-            <%= f.label :search_type_phone, "Telefone", class: "text-sm text-gray-600" %>
-          </div>
-          
-          <div class="flex items-center">
-            <%= f.radio_button :search_type, 'need', class: "mr-2" %>
-            <%= f.label :search_type_need, "Necessidade", class: "text-sm text-gray-600" %>
-          </div>
-        </div>
+  <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+    <div class="flex justify-between items-start">
+      <div class="w-2/3">
+        <%= form_with url: search_families_path, method: :post, class: "space-y-6", data: { turbo_stream: true } do |f| %>
+          <div class="space-y-4">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Buscar famílias por:</h2>
+            
+            <div class="grid grid-cols-3 gap-6">
+              <div class="relative flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer transition-all">
+                <%= f.radio_button :search_type, 'name', class: "peer/name absolute opacity-0", checked: true %>
+                <%= f.label :search_type_name, class: "flex items-center cursor-pointer w-full peer-checked/name:text-blue-600" do %>
+                  <div class="w-5 h-5 border-2 border-gray-300 rounded-full mr-3 flex items-center justify-center peer-checked/name:border-blue-600">
+                    <div class="w-2.5 h-2.5 bg-blue-600 rounded-full peer-checked/name:block hidden"></div>
+                  </div>
+                  <span class="text-sm font-medium">Nome de integrante</span>
+                <% end %>
+              </div>
 
-        <div class="flex gap-2">
-          <%= f.text_field :query, 
-              placeholder: "Digite sua busca...", 
-              class: "w-full px-4 py-2 border rounded-lg",
-              data: { 
-                action: "keyup->search#submit",
-                search_target: "input" 
-              } %>
-          <%= f.submit "Buscar", 
-              class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer" %>
-        </div>
-      <% end %>
-    </div>
-    <div>
-      <%= link_to "+ Nova família", new_family_path, class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" %>
+              <div class="relative flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer transition-all">
+                <%= f.radio_button :search_type, 'phone', class: "peer/phone absolute opacity-0" %>
+                <%= f.label :search_type_phone, class: "flex items-center cursor-pointer w-full peer-checked/phone:text-blue-600" do %>
+                  <div class="w-5 h-5 border-2 border-gray-300 rounded-full mr-3 flex items-center justify-center peer-checked/phone:border-blue-600">
+                    <div class="w-2.5 h-2.5 bg-blue-600 rounded-full peer-checked/phone:block hidden"></div>
+                  </div>
+                  <span class="text-sm font-medium">Telefone</span>
+                <% end %>
+              </div>
+
+              <div class="relative flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-500 cursor-pointer transition-all">
+                <%= f.radio_button :search_type, 'need', class: "peer/need absolute opacity-0" %>
+                <%= f.label :search_type_need, class: "flex items-center cursor-pointer w-full peer-checked/need:text-blue-600" do %>
+                  <div class="w-5 h-5 border-2 border-gray-300 rounded-full mr-3 flex items-center justify-center peer-checked/need:border-blue-600">
+                    <div class="w-2.5 h-2.5 bg-blue-600 rounded-full peer-checked/need:block hidden"></div>
+                  </div>
+                  <span class="text-sm font-medium">Necessidade</span>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+              <%= f.text_field :query, 
+                  placeholder: "Digite sua busca...", 
+                  class: "flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all",
+                  data: { 
+                    action: "keyup->search#submit",
+                    search_target: "input" 
+                  } %>
+              <%= f.submit "Buscar", 
+                  class: "px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium transition-all cursor-pointer" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="flex items-center">
+        <%= link_to new_family_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-all" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Nova família
+        <% end %>
+      </div>
     </div>
   </div>
 
