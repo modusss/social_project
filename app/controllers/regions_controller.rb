@@ -74,6 +74,8 @@ class RegionsController < ApplicationController
         [
           { header: 'Nome', content: region.name, id: "region-name-#{region.id}" },
           { header: 'Descrição', content: region.description, id: "region-description-#{region.id}" },
+          { header: 'Projetos', content: region.projects.distinct.count, id: "region-projects-#{region.id}" },
+          { header: 'Famílias', content: region.families.count, id: "region-families-#{region.id}" },
           { 
             header: 'Ações', 
             content: helpers.safe_join([

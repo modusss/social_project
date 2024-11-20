@@ -74,6 +74,8 @@ class ProjectsController < ApplicationController
         [
           { header: 'Nome', content: project.name, id: "project-name-#{project.id}" },
           { header: 'Descrição', content: project.description, id: "project-description-#{project.id}" },
+          { header: 'Visitas', content: project.visits.count, id: "project-visits-#{project.id}" },
+          { header: 'Famílias visitadas', content: project.families.distinct.count, id: "project-families-#{project.id}" },
           { 
             header: 'Ações', 
             content: helpers.safe_join([
