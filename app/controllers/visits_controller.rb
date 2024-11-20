@@ -75,16 +75,31 @@ class VisitsController < ApplicationController
   end
 
   def search
-    @visits = Visit.select('DISTINCT visits.*')
-                   .includes(:user, :family, :pending_needs, :observations, visited_project: [:region, :project])
-                   .joins(:family)
-                   .joins('LEFT JOIN members ON members.family_id = families.id')
-                   .where('families.reference_name ILIKE :query OR 
-                          members.name ILIKE :query', 
-                         query: "%#{params[:query]}%")
-                   .order(visit_date: :desc)
-                   .page(params[:page])
-                   .per(100)
+    base_query = Visit.select('DISTINCT visits.*')
+                     .includes(:user, :family, :pending_needs, :observations, visited_project: [:region, :project])
+                     .joins(:family)
+                     .joins('LEFT JOIN members ON members.family_id = families.id')
+
+    @visits = case params[:search_type]
+             when 'name'
+               base_query.where('families.reference_name ILIKE :query OR 
+                               members.name ILIKE :query', 
+                              query: "%#{params[:query]}%")
+             when 'phone'
+               base_query.where('families.phone1 ILIKE :query OR 
+                               families.phone2 ILIKE :query', 
+                              query: "%#{params[:query]}%")
+             when 'need'
+               base_query.joins(family: :needs)
+                        .where('needs.name ILIKE :query AND needs.attended = false', 
+                              query: "%#{params[:query]}%")
+             else
+               base_query.none
+             end
+
+    @visits = @visits.order(visit_date: :desc)
+                     .page(params[:page])
+                     .per(100)
 
     @visits_data = build_visits_data(@visits)
 
