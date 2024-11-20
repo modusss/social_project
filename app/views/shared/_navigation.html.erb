@@ -11,6 +11,8 @@
         </div>
       </div>
       <div class="hidden sm:ml-6 sm:flex sm:items-center">
+        <!-- Listar projetos -->
+        <%= link_to 'Projetos', projects_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
         <!-- Listar regiões -->
         <%= link_to 'Regiões', regions_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
         <% if user_signed_in? %>

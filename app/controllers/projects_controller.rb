@@ -4,6 +4,7 @@ class ProjectsController < ApplicationController
   # GET /projects or /projects.json
   def index
     @projects = Project.all
+    @projects_data = build_projects_data(@projects)
   end
 
   # GET /projects/1 or /projects/1.json
@@ -38,7 +39,7 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
-        format.html { redirect_to @project, notice: "Project was successfully updated." }
+        format.html { redirect_to projects_path, notice: "Projeto atualizado com sucesso." }
         format.json { render :show, status: :ok, location: @project }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -66,5 +67,31 @@ class ProjectsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def project_params
       params.require(:project).permit(:name, :description)
+    end
+
+    def build_projects_data(projects)
+      projects.map do |project|
+        [
+          { header: 'Nome', content: project.name, id: "project-name-#{project.id}" },
+          { header: 'Descrição', content: project.description, id: "project-description-#{project.id}" },
+          { 
+            header: 'Ações', 
+            content: helpers.safe_join([
+              helpers.link_to(
+                "Editar", 
+                edit_project_path(project),
+                class: "rounded-lg py-2 px-3 bg-gray-100 text-gray-700 hover:bg-gray-200 inline-block font-medium mr-2"
+              ),
+              helpers.link_to(
+                "Excluir", 
+                project_path(project), 
+                method: :delete, 
+                data: { confirm: 'Tem certeza que deseja excluir este projeto?' },
+                class: "rounded-lg py-2 px-3 bg-red-100 text-red-700 hover:bg-red-200 inline-block font-medium"
+              )
+            ])
+          }
+        ]
+      end
     end
 end

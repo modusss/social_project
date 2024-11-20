@@ -3,19 +3,14 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <% content_for :title, "Projects" %>
+  <% content_for :title, "Projetos" %>
 
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Projects</h1>
-    <%= link_to "New project", new_project_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="font-bold text-4xl">Projetos</h1>
+    <%= link_to "Novo projeto", new_project_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
   </div>
 
   <div id="projects" class="min-w-full">
-    <% @projects.each do |project| %>
-      <%= render project %>
-      <p>
-        <%= link_to "Show this project", project, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
-    <% end %>
+    <%= data_table(@projects_data) %>
   </div>
 </div>
