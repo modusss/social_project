@@ -29,7 +29,7 @@ class FamiliesController < ApplicationController
               if family.reference_name.present?
                 "#{family.reference_name} (#{family.members.count} pessoas)"
               else
-                "#{family.members.pluck(:name).join(', ')} (#{family.members.count} pessoas)"
+                "#{family.members.first.name} (#{family.members.count} pessoas)"
               end
             end,
             family_path(family), 
@@ -220,7 +220,7 @@ class FamiliesController < ApplicationController
                 if family.reference_name.present?
                   "#{family.reference_name} (#{family.members.count} pessoas)"
                 else
-                  "#{family.members.pluck(:name).join(', ')} (#{family.members.count} pessoas)"
+                  "#{family.members.first.name} (#{family.members.count} pessoas)"
                 end
               end,
               family_path(family), 
