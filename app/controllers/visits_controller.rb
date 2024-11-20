@@ -154,7 +154,11 @@ class VisitsController < ApplicationController
               if visit.family.members.count == 1
                 visit.family.members.first.name
               else
-                "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)"
+                if visit.family.reference_name.present?
+                  "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)"
+                else
+                  "#{visit.family.members.first.name} (#{visit.family.members.count} pessoas)"
+                end
               end,
               family_path(visit.family), 
               class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
