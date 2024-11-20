@@ -121,27 +121,42 @@ class FamiliesController < ApplicationController
   end
 
   def search
-    @families = Family.left_joins(:visits)
-                      .left_joins(:members)
+    base_query = Family.left_joins(:visits)
                       .select('families.*, 
                               MAX(visits.visit_date) as last_visit_date,
                               MAX(visits.id) as last_visit_id')
-                      .where('families.reference_name ILIKE :query OR 
-                             (families.reference_name IS NULL AND members.name ILIKE :query) OR
-                             families.phone1 ILIKE :query OR 
-                             families.phone2 ILIKE :query', 
-                             query: "%#{params[:query]}%")
-                      .group('families.id')
-                      .order('last_visit_date DESC NULLS LAST')
-                      .includes(:members, :observations, :pending_needs, visits: :region)
-                      .page(params[:page])
-                      .per(100)
+
+    @families = case params[:search_type]
+                when 'name'
+                  base_query.left_joins(:members)
+                           .where('families.reference_name ILIKE :query OR 
+                                  members.name ILIKE :query', 
+                                 query: "%#{params[:query]}%")
+                when 'phone'
+                  base_query.where('families.phone1 ILIKE :query OR 
+                                  families.phone2 ILIKE :query', 
+                                 query: "%#{params[:query]}%")
+                when 'need'
+                  base_query.joins(:needs)
+                           .where('needs.name ILIKE :query AND needs.attended = false', 
+                                 query: "%#{params[:query]}%")
+                else
+                  base_query.none
+                end
+
+    @families = @families.group('families.id')
+                        .order('last_visit_date DESC NULLS LAST')
+                        .includes(:members, :observations, :pending_needs, visits: :region)
+                        .page(params[:page])
+                        .per(100)
 
     @rows = build_rows(@families)
 
     respond_to do |format|
       format.turbo_stream { 
-        render turbo_stream: turbo_stream.replace('families_table', partial: 'families/table', locals: { rows: @rows })
+        render turbo_stream: turbo_stream.replace('families_table', 
+               partial: 'families/table', 
+               locals: { rows: @rows })
       }
     end
   end

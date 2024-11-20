@@ -16,16 +16,35 @@
 
   <div class="flex justify-between items-center mb-6">
     <div class="w-1/2">
-      <%= form_with url: search_families_path, method: :post, class: "flex gap-2", data: { turbo_stream: true } do |f| %>
-        <%= f.text_field :query, 
-            placeholder: "Pesquisar nome da família, membros ou telefone", 
-            class: "w-full px-4 py-2 border rounded-lg",
-            data: { 
-              action: "keyup->search#submit",
-              search_target: "input" 
-            } %>
-        <%= f.submit "Buscar", 
-            class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer" %>
+      <%= form_with url: search_families_path, method: :post, class: "space-y-4", data: { turbo_stream: true } do |f| %>
+        <div class="flex gap-6 mb-3">
+          <div class="flex items-center">
+            <%= f.radio_button :search_type, 'name', class: "mr-2", checked: true %>
+            <%= f.label :search_type_name, "Nome de integrante", class: "text-sm text-gray-600" %>
+          </div>
+          
+          <div class="flex items-center">
+            <%= f.radio_button :search_type, 'phone', class: "mr-2" %>
+            <%= f.label :search_type_phone, "Telefone", class: "text-sm text-gray-600" %>
+          </div>
+          
+          <div class="flex items-center">
+            <%= f.radio_button :search_type, 'need', class: "mr-2" %>
+            <%= f.label :search_type_need, "Necessidade", class: "text-sm text-gray-600" %>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <%= f.text_field :query, 
+              placeholder: "Digite sua busca...", 
+              class: "w-full px-4 py-2 border rounded-lg",
+              data: { 
+                action: "keyup->search#submit",
+                search_target: "input" 
+              } %>
+          <%= f.submit "Buscar", 
+              class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer" %>
+        </div>
       <% end %>
     </div>
     <div>
