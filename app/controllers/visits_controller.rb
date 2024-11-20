@@ -145,9 +145,6 @@ class VisitsController < ApplicationController
       visits.map do |visit|
         [
           { header: 'Data da visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
-          { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
-          { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
-          { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
           { 
             header: 'Família', 
             content: helpers.link_to(
@@ -165,8 +162,11 @@ class VisitsController < ApplicationController
             ), 
             id: "family-#{visit.id}" 
           },
-            { 
-              header: 'Telefones', 
+          { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
+          { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
+          { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
+          { 
+            header: 'Telefones', 
               content: [
                 helpers.phone_links(visit.family.phone1),
                 helpers.phone_links(visit.family.phone2)
