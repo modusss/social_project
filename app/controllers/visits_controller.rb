@@ -81,15 +81,15 @@ class VisitsController < ApplicationController
                      .joins('LEFT JOIN members ON members.family_id = families.id')
 
     @visits = case params[:search_type]
-             when 'name'
+             when 'Nome'
                base_query.where('families.reference_name ILIKE :query OR 
                                members.name ILIKE :query', 
                               query: "%#{params[:query]}%")
-             when 'phone'
+             when 'Telefone'
                base_query.where('families.phone1 ILIKE :query OR 
                                families.phone2 ILIKE :query', 
                               query: "%#{params[:query]}%")
-             when 'need'
+             when 'Tipo de necessidade'
                base_query.joins(family: :needs)
                         .where('needs.name ILIKE :query AND needs.attended = false', 
                               query: "%#{params[:query]}%")
