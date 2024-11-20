@@ -23,10 +23,14 @@ class FamiliesController < ApplicationController
         { 
           header: 'Família', 
           content: helpers.link_to(
-            if family.reference_name.present?
-              "#{family.reference_name} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+            if family.members.count == 1
+              family.members.first.name
             else
-              "#{family.members.pluck(:name).join(', ')} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+              if family.reference_name.present?
+                "#{family.reference_name} (#{family.members.count} pessoas)"
+              else
+                "#{family.members.pluck(:name).join(', ')} (#{family.members.count} pessoas)"
+              end
             end,
             family_path(family), 
             class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
@@ -210,10 +214,14 @@ class FamiliesController < ApplicationController
           { 
             header: 'Família', 
             content: helpers.link_to(
-              if family.reference_name.present?
-                "#{family.reference_name} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+              if family.members.count == 1
+                family.members.first.name
               else
-                "#{family.members.pluck(:name).join(', ')} (#{family.members.count} #{family.members.count == 1 ? 'pessoa' : 'pessoas'})"
+                if family.reference_name.present?
+                  "#{family.reference_name} (#{family.members.count} pessoas)"
+                else
+                  "#{family.members.pluck(:name).join(', ')} (#{family.members.count} pessoas)"
+                end
               end,
               family_path(family), 
               class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"

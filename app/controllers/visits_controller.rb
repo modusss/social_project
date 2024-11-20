@@ -148,10 +148,19 @@ class VisitsController < ApplicationController
           { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
           { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
           { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
-          { header: 'Família', content: helpers.link_to("#{visit.family.reference_name} (#{visit.family.members.count} pessoas)", 
-            family_path(visit.family), 
-            class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"), 
-            id: "family-#{visit.id}" },
+          { 
+            header: 'Família', 
+            content: helpers.link_to(
+              if visit.family.members.count == 1
+                visit.family.members.first.name
+              else
+                "#{visit.family.reference_name} (#{visit.family.members.count} pessoas)"
+              end,
+              family_path(visit.family), 
+              class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
+            ), 
+            id: "family-#{visit.id}" 
+          },
             { 
               header: 'Telefones', 
               content: [
