@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'families#index'  # Adicione esta linha
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
   resources :needs
   resources :visits do
     collection do

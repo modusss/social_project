@@ -3,36 +3,68 @@
     <div class="px-6 py-4">
       <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Editar <%= resource_name.to_s.humanize %></h2>
 
+      <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-blue-700">
+              <strong>Importante:</strong> A senha atual só é necessária se você estiver alterando seu e-mail ou senha.
+              Para atualizar apenas nome ou telefone, pode deixar os campos de senha em branco.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="mb-6">
-          <%= f.label :email, "E-mail", class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= f.label :name, "Nome", class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= f.text_field :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+
+        <div class="mb-6">
+          <%= f.label :phone, "Telefone", class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= f.telephone_field :phone, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+
+        <div class="mb-6">
+          <%= f.label :email, "E-mail", class: "block text-gray-700 text-sm font-bold mb-2 flex items-center" %>
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+            Requer senha atual para alteração
+          </span>
         </div>
 
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
           <div class="mb-6 text-sm text-gray-600">Aguardando confirmação para: <%= resource.unconfirmed_email %></div>
         <% end %>
 
-        <div class="mb-6">
-          <%= f.label :password, "Nova senha", class: "block text-gray-700 text-sm font-bold mb-2" %>
-          <%= f.password_field :password, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
-          <p class="text-gray-600 text-xs italic mt-1">Deixe em branco se não quiser alterar</p>
-          <% if @minimum_password_length %>
-            <p class="text-gray-600 text-xs italic"><%= @minimum_password_length %> caracteres no mínimo</p>
-          <% end %>
-        </div>
+        <div class="border-t border-gray-200 my-6 pt-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Alteração de Senha</h3>
+          
+          <div class="mb-6">
+            <%= f.label :password, "Nova senha", class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= f.password_field :password, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+            <p class="text-gray-600 text-xs italic mt-1">Deixe em branco se não quiser alterar</p>
+            <% if @minimum_password_length %>
+              <p class="text-gray-600 text-xs italic"><%= @minimum_password_length %> caracteres no mínimo</p>
+            <% end %>
+          </div>
 
-        <div class="mb-6">
-          <%= f.label :password_confirmation, "Confirmar nova senha", class: "block text-gray-700 text-sm font-bold mb-2" %>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
-        </div>
+          <div class="mb-6">
+            <%= f.label :password_confirmation, "Confirmar nova senha", class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          </div>
 
-        <div class="mb-6">
-          <%= f.label :current_password, "Senha atual", class: "block text-gray-700 text-sm font-bold mb-2" %>
-          <%= f.password_field :current_password, autocomplete: "current-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
-          <p class="text-gray-600 text-xs italic mt-1">Precisamos da sua senha atual para confirmar as alterações</p>
+          <div class="mb-6">
+            <%= f.label :current_password, "Senha atual", class: "block text-gray-700 text-sm font-bold mb-2" %>
+            <%= f.password_field :current_password, autocomplete: "current-password", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          </div>
         </div>
 
         <div class="flex items-center justify-center">
