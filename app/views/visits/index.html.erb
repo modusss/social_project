@@ -14,42 +14,44 @@
         class: "px-4 py-2 #{current_page?(visits_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
   </div>
 
-  <div class="flex justify-between items-center mb-6">
-    <div class="w-2/3">
-      <%= form_with url: search_visits_path, method: :post, class: "space-y-6", data: { turbo_stream: true } do |f| %>
-        <div class="space-y-4">
-          <h2 class="text-lg font-semibold text-gray-700 mb-4">Buscar visitas por:</h2>
-          
-          <div data-controller="radio">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <% ['Nome', 'Telefone', 'Tipo de necessidade'].each do |type| %>
-                <div class="radio-option <%= 'selected' if params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>" data-action="click->radio#select" data-radio-target="option" data-type="<%= type %>">
-                  <%= f.radio_button :search_type, type, class: "hidden", checked: params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>
-                  <div class="flex items-center">
-                    <div class="circle"></div>
-                    <div class="flex flex-col ml-3">
-                      <span class="text-lg font-semibold"><%= type.capitalize %></span>
-                      <span class="text-sm text-gray-500"><%= type == 'Nome' ? 'Família ou membro' : type == 'Telefone' ? 'Número de contato' : 'Emprego, cesta básica, etc.' %></span>
+  <div class="card mb-6">
+    <div class="flex justify-between items-center">
+      <div class="w-2/3">
+        <%= form_with url: search_visits_path, method: :post, class: "space-y-6", data: { turbo_stream: true } do |f| %>
+          <div class="space-y-4">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Buscar visitas por:</h2>
+            
+            <div data-controller="radio">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <% ['Nome', 'Telefone', 'Tipo de necessidade'].each do |type| %>
+                  <div class="radio-option <%= 'selected' if params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>" data-action="click->radio#select" data-radio-target="option" data-type="<%= type %>">
+                    <%= f.radio_button :search_type, type, class: "hidden", checked: params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>
+                    <div class="flex items-center">
+                      <div class="circle"></div>
+                      <div class="flex flex-col ml-3">
+                        <span class="text-lg font-semibold"><%= type.capitalize %></span>
+                        <span class="text-sm text-gray-500"><%= type == 'Nome' ? 'Família ou membro' : type == 'Telefone' ? 'Número de contato' : 'Emprego, cesta básica, etc.' %></span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              <% end %>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+              <%= f.text_field :query, 
+                  placeholder: "Digite sua busca...", 
+                  class: "flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all",
+                  data: { 
+                    action: "keyup->search#submit",
+                    search_target: "input" 
+                  } %>
+              <%= f.submit "Buscar", 
+                  class: "px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium transition-all cursor-pointer" %>
             </div>
           </div>
-
-          <div class="flex gap-3 mt-6">
-            <%= f.text_field :query, 
-                placeholder: "Digite sua busca...", 
-                class: "flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all",
-                data: { 
-                  action: "keyup->search#submit",
-                  search_target: "input" 
-                } %>
-            <%= f.submit "Buscar", 
-                class: "px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium transition-all cursor-pointer" %>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 

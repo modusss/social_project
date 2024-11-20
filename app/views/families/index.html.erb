@@ -14,7 +14,7 @@
         class: "px-4 py-2 #{current_page?(visits_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
   </div>
 
-  <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+  <div class="card mb-8">
     <div class="flex justify-between items-start">
       <div class="w-2/3">
         <%= form_with url: search_families_path, method: :post, class: "space-y-6", data: { turbo_stream: true } do |f| %>
