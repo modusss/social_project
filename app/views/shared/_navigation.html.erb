@@ -7,22 +7,47 @@
         </div>
         <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
           <%= link_to 'Home', root_path, class: 'border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium' %>
-          <!-- Adicione mais links de navegação aqui conforme necessário -->
         </div>
       </div>
       <div class="hidden sm:ml-6 sm:flex sm:items-center">
-        <!-- Listar projetos -->
-        <%= link_to 'Projetos', projects_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
-        <!-- Listar regiões -->
-        <%= link_to 'Regiões', regions_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
+        <%= link_to 'Projetos', projects_path, class: 'text-black hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium' %>
+        <%= link_to 'Regiões', regions_path, class: 'text-black hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium' %>
         <% if user_signed_in? %>
-          <%= link_to 'Editar perfil', edit_user_registration_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
-          <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
+          <%= link_to 'Editar perfil', edit_user_registration_path, class: 'text-black hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium' %>
+          <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: 'text-black hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium' %>
         <% else %>
-          <%= link_to 'Registrar', new_user_registration_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
-          <%= link_to 'Entrar', new_user_session_path, class: 'text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' %>
+          <%= link_to 'Registrar', new_user_registration_path, class: 'text-black hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium' %>
+          <%= link_to 'Entrar', new_user_session_path, class: 'text-black hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium' %>
+        <% end %>
+      </div>
+      <div class="flex items-center sm:hidden">
+        <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden sm:hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <%= link_to 'Home', root_path, class: 'text-black hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium' %>
+        <%= link_to 'Projetos', projects_path, class: 'text-black hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium' %>
+        <%= link_to 'Regiões', regions_path, class: 'text-black hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium' %>
+        <% if user_signed_in? %>
+          <%= link_to 'Editar perfil', edit_user_registration_path, class: 'text-black hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium' %>
+          <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: 'text-black hover:bg-gray-700 hover:text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium' %>
+        <% else %>
+          <%= link_to 'Registrar', new_user_registration_path, class: 'text-black hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium' %>
+          <%= link_to 'Entrar', new_user_session_path, class: 'text-black hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium' %>
         <% end %>
       </div>
     </div>
   </div>
 </nav>
+
+<script>
+  function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('hidden');
+  }
+</script>
