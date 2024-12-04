@@ -144,7 +144,6 @@ class VisitsController < ApplicationController
     def build_visits_data(visits)
       visits.map do |visit|
         [
-          { header: 'Data da visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
           { 
             header: 'Família', 
             content: helpers.link_to(
@@ -162,9 +161,6 @@ class VisitsController < ApplicationController
             ), 
             id: "family-#{visit.id}" 
           },
-          { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
-          { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
-          { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
           { 
             header: 'Telefones', 
               content: [
@@ -173,6 +169,10 @@ class VisitsController < ApplicationController
               ].reject(&:blank?).join(' / ').html_safe, 
               id: "family-phones-#{visit.family.id}" 
             },
+          { header: 'Data da visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
+          { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
+          { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
+          { header: 'Projeto', content: visit.visited_project&.project&.name, id: "project-#{visit.id}" },
           { header: 'Necessidades pendentes', content: visit.family.needs.where(attended: false).pluck(:name).join(", "), id: "needs-#{visit.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
           { 
             header: 'Observações', 

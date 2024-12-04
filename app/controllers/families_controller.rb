@@ -50,8 +50,8 @@ class FamiliesController < ApplicationController
         { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
         { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}", class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left" },
         { header: 'Necessidades Pendentes', content: family.needs.where(attended: false).pluck(:name).join(", "), id: "family-needs-#{family.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
-        { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" },
-        { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
+        { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" }#,
+        # { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
       ]
     end
   end
@@ -240,8 +240,8 @@ class FamiliesController < ApplicationController
           { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
           { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}", class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left" },
           { header: 'Necessidades Pendentes', content: family.needs.where(attended: false).pluck(:name).join(", "), id: "family-needs-#{family.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
-          { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" },
-          { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
+          { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" }#,
+          #{ header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
         ]
       end
     end
