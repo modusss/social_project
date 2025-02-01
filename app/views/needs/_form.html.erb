@@ -24,7 +24,8 @@
               <%= need_fields.label :beneficiary, "Beneficiários", class: "block text-gray-700" %>
               <div class="mt-2 space-y-2">
                 <% @family.members.each do |member| %>
-                  <div class="flex items-center">
+                  <div class="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer"
+                       data-action="click->need#toggleCheckbox">
                     <%= check_box_tag "needs[][beneficiary_members][]", 
                         member.name,
                         need.beneficiary&.include?(member.name),
@@ -33,7 +34,7 @@
                           action: "change->need#updateBeneficiaries",
                           target: need_fields.field_id(:beneficiary)
                         } %>
-                    <%= label_tag nil, member.name, class: "ml-2 block text-sm text-gray-900" %>
+                    <%= label_tag nil, member.name, class: "ml-2 block text-sm text-gray-900 cursor-pointer select-none flex-grow" %>
                   </div>
                 <% end %>
                 <%= need_fields.hidden_field :beneficiary %>
@@ -55,7 +56,8 @@
             <%= form.label :beneficiary, "Beneficiários", class: "block text-gray-700" %>
             <div class="mt-2 space-y-2">
               <% @family.members.each do |member| %>
-                <div class="flex items-center">
+                <div class="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer"
+                     data-action="click->need#toggleCheckbox">
                   <%= check_box_tag "needs[][beneficiary_members][]", 
                       member.name,
                       need.beneficiary&.include?(member.name),
@@ -64,7 +66,7 @@
                         action: "change->need#updateBeneficiaries",
                         target: form.field_id(:beneficiary)
                       } %>
-                  <%= label_tag nil, member.name, class: "ml-2 block text-sm text-gray-900" %>
+                  <%= label_tag nil, member.name, class: "ml-2 block text-sm text-gray-900 cursor-pointer select-none flex-grow" %>
                 </div>
               <% end %>
               <%= form.hidden_field :beneficiary %>
@@ -92,7 +94,8 @@
               <%= need_fields.label :beneficiary, "Beneficiários", class: "block text-gray-700" %>
               <div class="mt-2 space-y-2">
                 <% @family.members.each do |member| %>
-                  <div class="flex items-center">
+                  <div class="flex items-center hover:bg-gray-50 p-1 rounded cursor-pointer"
+                       data-action="click->need#toggleCheckbox">
                     <%= check_box_tag "needs[][beneficiary_members][]", 
                         member.name,
                         @family.members.first&.name == member.name,
@@ -101,7 +104,7 @@
                           action: "change->need#updateBeneficiaries",
                           target: need_fields.field_id(:beneficiary)
                         } %>
-                    <%= label_tag nil, member.name, class: "ml-2 block text-sm text-gray-900" %>
+                    <%= label_tag nil, member.name, class: "ml-2 block text-sm text-gray-900 cursor-pointer select-none flex-grow" %>
                   </div>
                 <% end %>
                 <%= need_fields.hidden_field :beneficiary %>
