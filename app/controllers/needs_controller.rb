@@ -51,7 +51,7 @@ class NeedsController < ApplicationController
     respond_to do |format|
       if @need.update(need_params)
         format.html { redirect_to family_path(@family), notice: "Necessidade atualizada com sucesso." }
-        format.json { render :show, status: :ok }
+        format.json { render json: { status: :ok } }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @need.errors, status: :unprocessable_entity }

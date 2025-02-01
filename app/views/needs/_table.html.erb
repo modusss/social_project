@@ -2,7 +2,36 @@
     [
       { header: 'Nome', content: need.name, id: "need-name-#{need.id}" },
       { header: 'Beneficiário', content: need.beneficiary, id: "need-beneficiary-#{need.id}" },
-      { header: 'Atendida?', content: need.attended ? 'Sim' : 'Não', id: "need-attended-#{need.id}" },
+      { 
+        header: 'Atendida?', 
+        content: tag.div(data: { controller: "toggle-need" }) do
+          check_box_tag(
+            "need_attended_#{need.id}",
+            "1",
+            need.attended,
+            data: {
+              action: "change->toggle-need#toggle",
+              need_id: need.id,
+              family_id: family.id,
+              toggle_need_target: "checkbox"
+            },
+            class: "sr-only peer"
+          ) +
+          label_tag(
+            "need_attended_#{need.id}",
+            class: "flex w-[51px] h-[31px] bg-gray-200 peer-focus:outline-none rounded-full peer 
+                   peer-checked:after:translate-x-[20px] peer-checked:bg-blue-600 
+                   after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
+                   after:bg-white after:border after:rounded-full after:h-[27px] after:w-[27px] 
+                   after:transition-all relative cursor-pointer"
+          ) do
+            tag.span(need.attended ? "Sim" : "Não",
+                    class: "absolute left-[60px] top-[5px] text-sm",
+                    data: { toggle_need_target: "status" })
+          end
+        end,
+        id: "need-attended-#{need.id}"
+      },
       { 
         header: 'Ações', 
         content: safe_join([
