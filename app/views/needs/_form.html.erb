@@ -22,7 +22,11 @@
 
             <div class="my-5">
               <%= need_fields.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
-              <%= need_fields.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+              <%= need_fields.select :beneficiary,
+                    options_for_select(@family.members.collect { |member| [member.name, member.name] }, 
+                                     need.beneficiary || @family.members.first&.name),
+                    { include_blank: true },
+                    class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
             </div>
 
             <div class="my-5">
@@ -38,7 +42,11 @@
 
           <div class="my-5">
             <%= form.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
-            <%= form.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+            <%= form.select :beneficiary,
+                  options_for_select(@family.members.collect { |member| [member.name, member.name] }, 
+                                   need.beneficiary || @family.members.first&.name),
+                  { include_blank: true },
+                  class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
           </div>
 
           <div class="my-5">
@@ -60,7 +68,11 @@
 
             <div class="my-5">
               <%= need_fields.label :beneficiary, "Beneficiário", class: "block text-gray-700" %>
-              <%= need_fields.text_field :beneficiary, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+              <%= need_fields.select :beneficiary,
+                    options_for_select(@family.members.collect { |member| [member.name, member.name] },
+                                     @family.members.first&.name),
+                    { include_blank: true },
+                    class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
             </div>
 
             <div class="my-5">
