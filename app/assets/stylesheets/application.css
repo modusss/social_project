@@ -59,3 +59,12 @@
     background-color: #3b82f6;
     border-radius: 50%;
   }
+
+  .text-18 {
+    font-size: 18px !important;
+  }
+
+  .table-18 th,
+  .table-18 td {
+    font-size: 18px !important;
+  }

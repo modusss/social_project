@@ -23,7 +23,7 @@ module TableHelper
     # Tabela de dados com estilos Tailwind CSS
     def data_table(rows, fix_to = 3)
       content_tag(:div, class: 'relative overflow-x-auto shadow-md sm:rounded-lg') do
-        table_wrapper('scrollable', rows, 'min-w-full divide-y divide-gray-200', fix_to)
+        table_wrapper('scrollable', rows, 'min-w-full divide-y divide-gray-200 table-18', fix_to)
       end
     end
   
