@@ -40,11 +40,6 @@
                 <%= need_fields.hidden_field :beneficiary %>
               </div>
             </div>
-
-            <div class="my-5">
-              <%= need_fields.label :attended, "Atendida?", class: "block text-gray-700" %>
-              <%= need_fields.check_box :attended, class: "block mt-2 h-5 w-5" %>
-            </div>
           <% end %>
         <% else %>
           <div class="my-5">
@@ -71,11 +66,6 @@
               <% end %>
               <%= form.hidden_field :beneficiary %>
             </div>
-          </div>
-
-          <div class="my-5">
-            <%= form.label :attended, "Atendida?", class: "block text-gray-700" %>
-            <%= form.check_box :attended, class: "block mt-2 h-5 w-5" %>
           </div>
         <% end %>
       </div>
@@ -109,11 +99,6 @@
                 <% end %>
                 <%= need_fields.hidden_field :beneficiary %>
               </div>
-            </div>
-
-            <div class="my-5">
-              <%= need_fields.label :attended, "Atendida?", class: "block text-gray-700" %>
-              <%= need_fields.check_box :attended, class: "block mt-2 h-5 w-5" %>
             </div>
           </div>
         <% end %>
