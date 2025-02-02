@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     collection do
       post 'search'
     end
-    resources :members, only: [:new, :create]
+    resources :members, only: [:new, :create, :edit, :update]
     resources :visits, only: [:new, :create, :edit, :update]
     resources :needs, only: [:new, :create, :edit, :update, :destroy]
   end

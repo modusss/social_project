@@ -6,7 +6,36 @@
     [
       { header: 'Nome', content: member.name, id: "member-name-#{member.id}" },
       { header: 'Idade', content: member.age, id: "member-age-#{member.id}" },
-      { header: 'Firme com Jesus?', content: member.firm_in_faith ? 'Sim' : '', id: "member-faith-#{member.id}" }
+      { 
+        header: 'Firme com Jesus?', 
+        content: tag.div(data: { controller: "toggle-member" }) do
+          check_box_tag(
+            "member_firm_in_faith_#{member.id}",
+            "1",
+            member.firm_in_faith,
+            data: {
+              action: "change->toggle-member#toggle",
+              member_id: member.id,
+              family_id: family.id,
+              toggle_member_target: "checkbox"
+            },
+            class: "sr-only peer"
+          ) +
+          label_tag(
+            "member_firm_in_faith_#{member.id}",
+            class: "flex w-[51px] h-[31px] bg-gray-200 peer-focus:outline-none rounded-full peer 
+                   peer-checked:after:translate-x-[20px] peer-checked:bg-blue-600 
+                   after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
+                   after:bg-white after:border after:rounded-full after:h-[27px] after:w-[27px] 
+                   after:transition-all relative cursor-pointer"
+          ) do
+            tag.span(member.firm_in_faith ? "Sim" : "Não",
+                    class: "absolute left-[60px] top-[5px] text-sm",
+                    data: { toggle_member_target: "status" })
+          end
+        end,
+        id: "member-faith-#{member.id}"
+      }
     ]
   end %>
   

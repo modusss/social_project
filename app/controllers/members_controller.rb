@@ -50,10 +50,12 @@ class MembersController < ApplicationController
   
   # PATCH/PUT /members/1 or /members/1.json
   def update
+    @member = Member.find(params[:id])
+    
     respond_to do |format|
       if @member.update(member_params)
-        format.html { redirect_to @member, notice: "Member was successfully updated." }
-        format.json { render :show, status: :ok, location: @member }
+        format.html { redirect_to @member, notice: "Membro atualizado com sucesso." }
+        format.json { render json: { status: :ok } }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @member.errors, status: :unprocessable_entity }
