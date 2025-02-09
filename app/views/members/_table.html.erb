@@ -6,6 +6,7 @@
     [
       { header: 'Nome', content: member.name, id: "member-name-#{member.id}" },
       { header: 'Idade', content: member.age, id: "member-age-#{member.id}" },
+      { header: 'Papel', content: member.role || 'Não definido', id: "member-role-#{member.id}" },
       { 
         header: 'Firme com Jesus?', 
         content: tag.div(class: "flex justify-center items-center", data: { controller: "toggle-member" }) do
