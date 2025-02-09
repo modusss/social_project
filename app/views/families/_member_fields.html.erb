@@ -8,7 +8,7 @@
     <div class="flex-1 min-w-[250px]">
       <%= f.label :role, "Papel", class: "block font-semibold text-gray-700 mb-2" %>
       <div class="flex flex-wrap gap-4">
-        <% [["filho", "filho"], ["filha", "filha"], ["pai", "pai"], ["mãe", "mãe"], ["parente", "parente"], ["não definir", nil]].each do |label, value| %>
+        <% [["filho", "filho"], ["filha", "filha"], ["pai", "pai"], ["mãe", "mãe"], ["parente", "parente"], ["não definir", '']].each do |label, value| %>
           <div class="flex items-center">
             <%= f.radio_button :role, value, checked: f.object.role == value, class: "form-radio h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" %>
             <%= f.label :role, label, value: value, class: "ml-2 text-gray-700" %>

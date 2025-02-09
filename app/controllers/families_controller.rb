@@ -176,7 +176,11 @@ class FamiliesController < ApplicationController
         :reference_name, :street, :house_number, :city, :state, :phone1, :phone2,
         members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, :_destroy],
         needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
-      )
+      ).tap do |whitelisted|
+        whitelisted[:members_attributes].each do |_, member_attrs|
+          member_attrs[:role] = nil if member_attrs[:role].blank?
+        end
+      end
     end
 
     def member_params
