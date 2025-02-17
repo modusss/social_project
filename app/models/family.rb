@@ -1,4 +1,7 @@
 class Family < ApplicationRecord
+    include ActionView::Helpers
+    include FamiliesHelper
+
     has_many :visits, dependent: :destroy
     has_many :members, dependent: :destroy
     has_many :needs, dependent: :destroy

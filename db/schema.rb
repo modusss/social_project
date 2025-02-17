@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_12_112432) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_17_233546) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_12_112432) do
     t.string "phone2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "neighborhood"
+    t.boolean "financed_house", default: false
+    t.decimal "financing_value", precision: 10, scale: 2
+    t.decimal "rent_value", precision: 10, scale: 2
+    t.boolean "has_loan", default: false
+    t.decimal "loan_value", precision: 10, scale: 2
+    t.date "food_basket_start_date"
+    t.integer "food_basket_duration_months"
+    t.decimal "family_income", precision: 10, scale: 2
+    t.string "housing_type"
   end
 
   create_table "members", force: :cascade do |t|

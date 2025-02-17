@@ -174,10 +174,13 @@ class FamiliesController < ApplicationController
     def family_params
       params.require(:family).permit(
         :reference_name, :street, :house_number, :city, :state, :phone1, :phone2,
+        :neighborhood, :housing_type, :financed_house, :financing_value,
+        :rent_value, :has_loan, :loan_value, :family_income,
+        :food_basket_start_date, :food_basket_duration_months,
         members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, :_destroy],
         needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
       ).tap do |whitelisted|
-        whitelisted[:members_attributes].each do |_, member_attrs|
+        whitelisted[:members_attributes]&.each do |_, member_attrs|
           member_attrs[:role] = nil if member_attrs[:role].blank?
         end
       end
