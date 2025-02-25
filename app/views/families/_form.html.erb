@@ -1,9 +1,8 @@
-<%= form_with(model: family, class: "contents max-w-4xl mx-auto") do |form| %>
+<%= form_with(model: family, class: "max-w-4xl mx-auto") do |form| %>
   <% if family.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(family.errors.count, "error") %> prohibited this family from being saved:</h2>
-
-      <ul>
+    <div class="bg-red-50 text-red-500 px-4 py-3 rounded-lg mb-6">
+      <h2 class="font-semibold"><%= pluralize(family.errors.count, "erro") %> impediram o salvamento:</h2>
+      <ul class="list-disc list-inside">
         <% family.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,151 +10,183 @@
     </div>
   <% end %>
 
-  <div class="bg-white p-6 rounded-lg shadow-sm">
-    <h3 class="text-lg font-semibold text-gray-700 mb-4">Contato e localização</h3>
+  <%# Seção de Identificação %>
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+    <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+      <h3 class="text-lg font-medium text-gray-900">Identificação da Família</h3>
+    </div>
     
-    <div class="space-y-6">
+    <div class="p-6 space-y-6">
       <div>
-        <%= form.label :reference_name, "Nome de Referência Identificador", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.label :reference_name, "Nome de Referência", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= form.text_field :reference_name, 
-            class: "block w-full max-w-2xl shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm",
-            placeholder: "Exemplo: casa de dona Nina, família da Maria, etc." %>
+            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+            placeholder: "Ex: Família da Maria, Casa do João" %>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <%= form.label :phone1, "Telefone 1", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.label :phone1, "Telefone Principal", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= form.text_field :phone1, 
-              class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm",
+              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
               placeholder: "(XX) X XXXX-XXXX",
               data: { controller: "phone-mask" } %>
         </div>
 
         <div>
-          <%= form.label :phone2, "Telefone 2", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.label :phone2, "Telefone Alternativo", class: "block text-sm font-medium text-gray-700 mb-1" %>
           <%= form.text_field :phone2, 
-              class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm",
+              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
               placeholder: "(XX) X XXXX-XXXX",
               data: { controller: "phone-mask" } %>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
-        <div class="md:col-span-5">
+  <%# Seção de Endereço %>
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+    <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+      <h3 class="text-lg font-medium text-gray-900">Endereço</h3>
+    </div>
+    
+    <div class="p-6 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+        <div class="md:col-span-4">
           <%= form.label :street, "Rua", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.text_field :street, class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= form.text_field :street, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
         </div>
 
-        <div class="md:col-span-1">
+        <div class="md:col-span-2">
           <%= form.label :house_number, "Número", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.text_field :house_number, class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= form.text_field :house_number, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <%= form.label :neighborhood, "Bairro", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.text_field :neighborhood, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        </div>
+
         <div>
           <%= form.label :city, "Cidade", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.text_field :city, value: "Vitória da Conquista", 
-              class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= form.text_field :city, value: "Vitória da Conquista", class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
         </div>
 
         <div>
           <%= form.label :state, "Estado", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.text_field :state, value: "Bahia", 
-              class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= form.text_field :state, value: "Bahia", class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
         </div>
       </div>
     </div>
 
-    <h3 class="text-lg font-semibold text-gray-700 mt-8 mb-4">Membros</h3>
-    
-    <div id="members" class="space-y-4">
-      <div id="member_fields">
-        <%= form.fields_for :members do |member_form| %>
-          <%= render 'member_fields', f: member_form %>
-        <% end %>
-      </div>
-      
-      <div class="flex justify-end mt-4">
-        <%= link_to_add_association 'Adicionar novo membro', form, :members, 
-            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
+    <%# Seção de Membros %>
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+      <div class="border-b border-gray-200 bg-gray-50 px-6 py-4 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900">Membros da Família</h3>
+        <%= link_to_add_association 'Adicionar membro', form, :members, 
+            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200",
             data: { 
               association_insertion_node: '#member_fields', 
               association_insertion_method: 'append' 
             } %>
       </div>
-    </div>
-
-    <div class="bg-white p-6 rounded-lg shadow-sm mt-6">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">Informações de Moradia e Financeiras</h3>
       
-      <div class="space-y-6">
-        <div class="mb-6">
-          <%= form.label :neighborhood, "Bairro", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.text_field :neighborhood, class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+      <div class="p-6">
+        <div id="member_fields" class="space-y-6">
+          <%= form.fields_for :members do |member_form| %>
+            <%= render 'member_fields', f: member_form %>
+          <% end %>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <%= form.label :housing_type, "Tipo de moradia", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <div class="space-x-6">
-              <%= form.radio_button :housing_type, 'own', class: "mr-2 rounded-full border-gray-300" %>
-              <%= form.label :housing_type_own, "Casa própria", class: "mr-4 text-sm text-gray-700" %>
-              
-              <%= form.radio_button :housing_type, 'rented', class: "mr-2 rounded-full border-gray-300" %>
-              <%= form.label :housing_type_rented, "Casa alugada", class: "text-sm text-gray-700" %>
-            </div>
+      </div>
+    </div>
+    
+    <div class="p-6 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <%= form.label :housing_type, "Tipo de moradia", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <div class="space-x-6">
+            <%= form.radio_button :housing_type, 'own', class: "rounded-full border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <%= form.label :housing_type_own, "Casa própria", class: "inline-block text-sm text-gray-700" %>
+            
+            <%= form.radio_button :housing_type, 'rented', class: "ml-4 rounded-full border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <%= form.label :housing_type_rented, "Casa alugada", class: "inline-block text-sm text-gray-700" %>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <%= form.label :financing_value, "Valor do financiamento", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <div>
+          <%= form.label :financed_house, class: "block text-sm font-medium text-gray-700 mb-2" do %>
+            <%= form.check_box :financed_house, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <span class="ml-2">Casa financiada?</span>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <%= form.label :financing_value, "Valor do financiamento", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <div class="relative rounded-md shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-gray-500 sm:text-sm">R$</span>
+            </div>
             <%= form.number_field :financing_value, step: '0.01', 
-                class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
-                  <div>
-                  <%= form.label :financed_house, class: "block text-sm font-medium text-gray-700 mb-2" do %>
-                    <%= form.check_box :financed_house, class: "mr-2 rounded border-gray-300" %>
-                    Casa financiada?
-                  <% end %>
-                </div>
+                class: "block w-full rounded-md border-gray-300 pl-8 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <div>
+          <%= form.label :rent_value, "Valor do aluguel", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <div class="relative rounded-md shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-gray-500 sm:text-sm">R$</span>
             </div>
-
-          <div>
-            <%= form.label :rent_value, "Valor do aluguel", class: "block text-sm font-medium text-gray-700 mb-1" %>
             <%= form.number_field :rent_value, step: '0.01', 
-                class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                class: "block w-full rounded-md border-gray-300 pl-8 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
           </div>
+        </div>
 
-          <div>
-            <%= form.label :family_income, "Renda familiar", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <div>
+          <%= form.label :family_income, "Renda familiar", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <div class="relative rounded-md shadow-sm">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <span class="text-gray-500 sm:text-sm">R$</span>
+            </div>
             <%= form.number_field :family_income, step: '0.01', 
-                class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+                class: "block w-full rounded-md border-gray-300 pl-8 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-sm mt-6">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">Informações da Cesta Básica</h3>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <%# Seção de Cesta Básica %>
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+    <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+      <h3 class="text-lg font-medium text-gray-900">Cesta Básica</h3>
+    </div>
+    
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <%= form.label :food_basket_start_date, "Data de início da cesta básica", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.date_field :food_basket_start_date, class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= form.label :food_basket_start_date, "Data de início", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.date_field :food_basket_start_date, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
         </div>
 
         <div>
-          <%= form.label :food_basket_duration_months, "Tempo liberado (meses)", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= form.number_field :food_basket_duration_months, class: "block w-full shadow-sm rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+          <%= form.label :food_basket_duration_months, "Duração (meses)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= form.number_field :food_basket_duration_months, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="mt-8">
-      <%= form.submit t('actions.update.family'), 
-          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
-    </div>
+  <%# Botões de Ação %>
+  <div class="flex justify-end space-x-3">
+    <%= link_to "Cancelar", families_path, 
+        class: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    
+    <%= form.submit class: "px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
   </div>
 <% end %>
 
