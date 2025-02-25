@@ -103,23 +103,25 @@
     </div>
     
     <div class="p-6 space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <%= form.label :housing_type, "Tipo de moradia", class: "block text-sm font-medium text-gray-700 mb-2" %>
-          <div class="space-x-6">
-            <%= form.radio_button :housing_type, 'own', class: "rounded-full border-gray-300 text-blue-600 focus:ring-blue-500" %>
-            <%= form.label :housing_type_own, "Casa própria", class: "inline-block text-sm text-gray-700" %>
-            
-            <%= form.radio_button :housing_type, 'rented', class: "ml-4 rounded-full border-gray-300 text-blue-600 focus:ring-blue-500" %>
-            <%= form.label :housing_type_rented, "Casa alugada", class: "inline-block text-sm text-gray-700" %>
+      <div class="grid grid-cols-1 gap-6">
+        <div class="flex flex-col md:flex-row md:items-center md:gap-12">
+          <div class="mb-4 md:mb-0">
+            <%= form.label :housing_type, "Tipo de moradia", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <div class="space-x-6">
+              <%= form.radio_button :housing_type, 'own', class: "rounded-full border-gray-300 text-blue-600 focus:ring-blue-500" %>
+              <%= form.label :housing_type_own, "Casa própria", class: "inline-block text-sm text-gray-700" %>
+              
+              <%= form.radio_button :housing_type, 'rented', class: "ml-4 rounded-full border-gray-300 text-blue-600 focus:ring-blue-500" %>
+              <%= form.label :housing_type_rented, "Casa alugada", class: "inline-block text-sm text-gray-700" %>
+            </div>
           </div>
-        </div>
 
-        <div>
-          <%= form.label :financed_house, class: "block text-sm font-medium text-gray-700 mb-2" do %>
-            <%= form.check_box :financed_house, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-            <span class="ml-2">Casa financiada?</span>
-          <% end %>
+          <div>
+            <%= form.label :financed_house, class: "flex items-center text-sm font-medium text-gray-700" do %>
+              <%= form.check_box :financed_house, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2" %>
+              Casa financiada?
+            <% end %>
+          </div>
         </div>
       </div>
 
