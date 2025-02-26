@@ -41,47 +41,46 @@
   <div class="border-t border-gray-200 pt-4 mb-6">
     <h4 class="text-sm font-medium text-gray-900 mb-4">Informações de Emprego e Renda</h4>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+    <div class="mb-6">
       <%# Profissão %>
-      <div>
+      <div class="mb-4">
         <%= f.label :profession, "Profissão", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.text_field :profession, 
             class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
             placeholder: "Ex: Pedreiro, Professora, etc." %>
       </div>
-
-      <%# Está empregado? %>
-      <div class="flex items-center h-full pt-6">
-        <%= f.check_box :employed, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500",
-            data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "income-field-#{f.object_id}" } %>
-        <%= f.label :employed, "Está empregado?", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
     </div>
 
     <%# Renda %>
-    <div id="income-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.employed %>">
-      <div class="mb-4">
-        <%= f.label :income, "Renda", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <div class="relative rounded-md shadow-sm">
-          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <span class="text-gray-500 sm:text-sm">R$</span>
-          </div>
-          <%= f.number_field :income, step: '0.01', 
-              class: "block w-full rounded-md border-gray-300 pl-8 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+    <%# Está empregado? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <%= f.label :employed, class: "flex items-center" do %>
+        <%= f.check_box :employed, 
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2",
+            data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "income-field-#{f.object_id}" } %>
+        <span class="text-sm text-gray-700">Está empregado?</span>
+      <% end %>
+    <div id="income-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.employed %> mb-6">
+      <%= f.label :income, "Renda", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <div class="relative rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <span class="text-gray-500 sm:text-sm">R$</span>
         </div>
+        <%= f.number_field :income, step: '0.01', 
+            class: "block w-full rounded-md border-gray-300 pl-8 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
       </div>
+    </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <%# Possui benefício? %>
-      <div class="flex items-center">
-        <%= f.check_box :has_benefit, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500",
-            data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "benefit-value-field-#{f.object_id}" } %>
-        <%= f.label :has_benefit, "Possui benefício?", 
-            class: "ml-2 text-sm text-gray-700" %>
+      <div>
+        <%= f.label :has_benefit, class: "flex items-center" do %>
+          <%= f.check_box :has_benefit, 
+              class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2",
+              data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "benefit-value-field-#{f.object_id}" } %>
+          <span class="text-sm text-gray-700">Possui benefício?</span>
+        <% end %>
       </div>
 
       <%# Valor do benefício %>
