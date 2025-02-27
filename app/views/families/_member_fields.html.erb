@@ -40,15 +40,70 @@
   <%# Papel na Família %>
   <div class="mb-6">
     <%= f.label :role, "Papel na Família", class: "block text-sm font-medium text-gray-700 mb-2" %>
-    <div class="flex flex-wrap gap-4">
-      <% [["Pai", "pai"], ["Mãe", "mãe"], ["Filho", "filho"], ["Filha", "filha"], ["Parente", "parente"], ["Não definir", '']].each do |label, value| %>
-        <div class="flex items-center">
-          <%= f.radio_button :role, value, 
-              class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
-          <%= f.label "role_#{value}", label, 
-              class: "ml-2 text-sm text-gray-700" %>
-        </div>
-      <% end %>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-3">
+      <%# Pai e Mãe %>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "pai", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_pai, "Pai", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "mãe", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_mãe, "Mãe", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      
+      <%# Marido e Esposa %>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "marido", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_marido, "Marido", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "esposa", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_esposa, "Esposa", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      
+      <%# Filho e Filha %>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "filho", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_filho, "Filho", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "filha", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_filha, "Filha", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      
+      <%# Acompanhante e Paciente %>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "acompanhante", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_acompanhante, "Acompanhante", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      <div class="flex items-center">
+        <%= f.radio_button :role, "paciente", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_paciente, "Paciente", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
+      
+      <%# Não definir (sozinho na última linha) %>
+      <div class="flex items-center col-span-2 md:col-span-4 mt-2">
+        <%= f.radio_button :role, "", 
+            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :role_, "Não definir", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
     </div>
   </div>
 
@@ -89,11 +144,11 @@
       </div>
 
       <div>
-        <%= f.label :disability, "Deficiência física", 
+        <%= f.label :disability, "Deficiência física ou doença", 
             class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.text_field :disability, 
             class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-            placeholder: "Descreva a deficiência, se houver" %>
+            placeholder: "Descreva a deficiência ou doença" %>
       </div>
     </div>
     
