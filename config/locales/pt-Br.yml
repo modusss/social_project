@@ -65,7 +65,7 @@ pt-BR:
         name: "Nome"
         age: "Idade"
         role: "Papel"
-        firm_in_faith: "Firme na fé"
+        firm_in_faith: "Já aceitou Jesus"
         birth_date: "Data de nascimento"
       need:
         name: "Nome"
