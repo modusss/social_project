@@ -178,7 +178,8 @@ class FamiliesController < ApplicationController
         :rent_value, :has_loan, :loan_value, :family_income,
         :food_basket_start_date, :food_basket_duration_months,
         members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, 
-                            :profession, :employed, :income, :has_benefit, :benefit_value, :_destroy],
+                            :profession, :employed, :income, :has_benefit, :benefit_value, 
+                            :can_read, :lives_in_house, :lives_with_partner, :cpf, :_destroy],
         needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
       ).tap do |whitelisted|
         whitelisted[:members_attributes]&.each do |_, member_attrs|
