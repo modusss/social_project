@@ -88,11 +88,12 @@
             class: "ml-2 text-sm text-gray-700" %>
       </div>
 
-      <div class="flex items-center">
-        <%= f.check_box :has_disability, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-        <%= f.label :has_disability, "Possui deficiência física?", 
-            class: "ml-2 text-sm text-gray-700" %>
+      <div>
+        <%= f.label :disability, "Deficiência física", 
+            class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :disability, 
+            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+            placeholder: "Descreva a deficiência, se houver" %>
       </div>
     </div>
     
