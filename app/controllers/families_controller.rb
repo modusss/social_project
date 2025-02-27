@@ -65,10 +65,12 @@ class FamiliesController < ApplicationController
   def new
     @family = Family.new
     @family.members.build  # Isso adiciona um membro em branco por padrão
+    set_member_indices
   end
 
   # GET /families/1/edit
   def edit
+    set_member_indices
   end
 
   # POST /families or /families.json
@@ -161,6 +163,12 @@ class FamiliesController < ApplicationController
                partial: 'families/table', 
                locals: { rows: @rows })
       }
+    end
+  end
+
+  def set_member_indices
+    @family.members.each_with_index do |member, index|
+      member.index = index + 1
     end
   end
 

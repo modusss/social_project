@@ -1,5 +1,8 @@
 <div class="member-container nested-fields bg-gray-50 border border-gray-200 rounded-lg p-6 relative" data-member-container>
-
+  <%# Número do membro no canto superior esquerdo %>
+  <div class="top-2 left-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium member-number" style="margin-bottom: 15px;">
+    <%= f.object.index %>
+  </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
     <%# Nome %>
@@ -47,30 +50,34 @@
     </div>
   </div>
 
-  <%# Novos campos de status %>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-    <%# Sabe ler? %>
-    <div class="flex items-center">
-      <%= f.check_box :can_read, 
-          class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-      <%= f.label :can_read, "Sabe ler?", 
-          class: "ml-2 text-sm text-gray-700" %>
-    </div>
+  <%# Novos campos de status com título %>
+  <div class="border-t border-gray-200 pt-4 mb-6">
+    <h4 class="text-sm font-medium text-gray-900 mb-4">Informações Adicionais</h4>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <%# Sabe ler? %>
+      <div class="flex items-center">
+        <%= f.check_box :can_read, 
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :can_read, "Sabe ler?", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
 
-    <%# Mora na casa? %>
-    <div class="flex items-center">
-      <%= f.check_box :lives_in_house, 
-          class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-      <%= f.label :lives_in_house, "Mora na casa?", 
-          class: "ml-2 text-sm text-gray-700" %>
-    </div>
+      <%# Mora na casa? %>
+      <div class="flex items-center">
+        <%= f.check_box :lives_in_house, 
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :lives_in_house, "Mora na casa?", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
 
-    <%# Vive com cônjuge/parceiro? %>
-    <div class="flex items-center">
-      <%= f.check_box :lives_with_partner, 
-          class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-      <%= f.label :lives_with_partner, "Vive com cônjuge/parceiro?", 
-          class: "ml-2 text-sm text-gray-700" %>
+      <%# Vive com cônjuge/parceiro? %>
+      <div class="flex items-center">
+        <%= f.check_box :lives_with_partner, 
+            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :lives_with_partner, "Vive com cônjuge/parceiro?", 
+            class: "ml-2 text-sm text-gray-700" %>
+      </div>
     </div>
   </div>
 
