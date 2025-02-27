@@ -8,7 +8,7 @@
       { header: 'Idade', content: member.age, id: "member-age-#{member.id}" },
       { header: 'Papel', content: member.role.presence || '', id: "member-role-#{member.id}" },
       { 
-        header: 'Firme com Jesus?', 
+        header: 'Já aceitou Jesus?', 
         content: tag.div(class: "flex justify-center items-center", data: { controller: "toggle-member" }) do
           check_box_tag(
             "member_firm_in_faith_#{member.id}",
