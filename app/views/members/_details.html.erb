@@ -1,0 +1,108 @@
+<button class="text-blue-600 hover:text-blue-800 focus:outline-none text-sm font-medium" 
+        onclick="document.getElementById('member-details-content-<%= member.id %>').classList.toggle('hidden')">
+  <i class="fas fa-eye mr-1"></i> Ver detalhes
+</button>
+
+<div id="member-details-content-<%= member.id %>" class="hidden mt-3 bg-gray-50 p-4 rounded-md shadow-sm">
+  <h4 class="font-medium text-gray-800 mb-3 text-base">
+    <i class="fas fa-user-circle text-indigo-600 mr-1"></i> Informações Pessoais
+  </h4>
+  <div class="grid grid-cols-1 gap-y-3 text-sm">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div class="mb-2 sm:mb-0 sm:w-1/2">
+        <i class="fas fa-id-card text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">CPF:</span> 
+        <span class="text-gray-900 ml-1"><%= member.cpf.present? ? member.cpf : "Não informado" %></span>
+      </div>
+      
+      <div class="sm:w-1/2">
+        <i class="fas fa-book text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Sabe ler:</span> 
+        <span class="text-gray-900 ml-1"><%= member.can_read ? "Sim" : "Não" %></span>
+      </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div class="mb-2 sm:mb-0 sm:w-1/2">
+        <i class="fas fa-home text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Mora na casa:</span> 
+        <span class="text-gray-900 ml-1"><%= member.lives_in_house ? "Sim" : "Não" %></span>
+      </div>
+      
+      <div class="sm:w-1/2">
+        <i class="fas fa-heart text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Vive com parceiro(a):</span> 
+        <span class="text-gray-900 ml-1"><%= member.lives_with_partner ? "Sim" : "Não" %></span>
+      </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div class="mb-2 sm:mb-0 sm:w-1/2">
+        <i class="fas fa-church text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Congrega em igreja:</span> 
+        <span class="text-gray-900 ml-1"><%= member.attends_church ? "Sim" : "Não" %></span>
+      </div>
+      
+      <div class="sm:w-1/2">
+        <i class="fas fa-wheelchair text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Deficiência:</span> 
+        <span class="text-gray-900 ml-1"><%= member.disability.present? ? member.disability : "Não" %></span>
+      </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div class="mb-2 sm:mb-0 sm:w-1/2">
+        <i class="fas fa-tshirt text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Tamanho de roupa:</span> 
+        <span class="text-gray-900 ml-1"><%= member.clothing_size.present? ? member.clothing_size : "Não informado" %></span>
+      </div>
+      
+      <div class="sm:w-1/2">
+        <i class="fas fa-shoe-prints text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Tamanho de calçado:</span> 
+        <span class="text-gray-900 ml-1"><%= member.shoe_size.present? ? member.shoe_size : "Não informado" %></span>
+      </div>
+    </div>
+  </div>
+  
+  <h4 class="font-medium text-gray-800 mt-5 mb-3 text-base">
+    <i class="fas fa-money-bill-wave text-indigo-600 mr-1"></i> Informações Financeiras
+  </h4>
+  <div class="grid grid-cols-1 gap-y-3 text-sm">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div class="mb-2 sm:mb-0 sm:w-1/2">
+        <i class="fas fa-briefcase text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Profissão:</span> 
+        <span class="text-gray-900 ml-1"><%= member.profession.present? ? member.profession : "Não informada" %></span>
+      </div>
+      
+      <div class="sm:w-1/2">
+        <i class="fas fa-user-tie text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Empregado:</span> 
+        <span class="text-gray-900 ml-1"><%= member.employed ? "Sim" : "Não" %></span>
+      </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div class="mb-2 sm:mb-0 sm:w-1/2">
+        <i class="fas fa-dollar-sign text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Renda:</span> 
+        <span class="text-gray-900 ml-1"><%= member.income.present? ? number_to_currency(member.income, unit: "R$", separator: ",", delimiter: ".") : "Não informada" %></span>
+      </div>
+      
+      <div class="sm:w-1/2">
+        <i class="fas fa-hand-holding-usd text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Recebe benefício:</span> 
+        <span class="text-gray-900 ml-1"><%= member.has_benefit ? "Sim" : "Não" %></span>
+      </div>
+    </div>
+    
+    <% if member.has_benefit && member.benefit_value.present? %>
+      <div>
+        <i class="fas fa-coins text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Valor do benefício:</span> 
+        <span class="text-gray-900 ml-1"><%= number_to_currency(member.benefit_value, unit: "R$", separator: ",", delimiter: ".") %></span>
+      </div>
+    <% end %>
+  </div>
+</div> 

@@ -3,7 +3,47 @@ class MembersController < ApplicationController
 
   # GET /members or /members.json
   def index
-    @members = Member.all
+    @family = Family.find(params[:family_id])
+    @members = @family.members
+    
+    @rows = @members.map do |member|
+      [
+        { 
+          header: 'Nome', 
+          content: member.name.to_s + (member.firm_in_faith ? 
+            "<span class='ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'>
+              <svg class='mr-1 h-3 w-3 text-green-500' fill='currentColor' viewBox='0 0 20 20'>
+                <path fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd' />
+              </svg>
+              Aceita Jesus
+            </span>".html_safe : ""),
+          id: "member-name-#{member.id}" 
+        },
+        { 
+          header: 'Idade', 
+          content: (member.age || (member.birth_date.present? ? ((Date.today - member.birth_date) / 365.25).floor : "Não informado")) +
+            (member.birth_date.present? ? "<span class='text-xs text-gray-400 block'>#{member.birth_date.strftime("%d/%m/%Y")}</span>".html_safe : ""),
+          id: "member-age-#{member.id}" 
+        },
+        { 
+          header: 'Papel', 
+          content: member.role.present? ? 
+            "<span class='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>#{member.role.capitalize}</span>".html_safe : 
+            "<span class='text-gray-400'>Não definido</span>".html_safe,
+          id: "member-role-#{member.id}" 
+        },
+        { 
+          header: 'Detalhes', 
+          content: render_to_string(partial: 'members/details', locals: { member: member }),
+          id: "member-details-#{member.id}" 
+        },
+        { 
+          header: 'Ações', 
+          content: render_to_string(partial: 'members/actions', locals: { family: @family, member: member }),
+          id: "member-actions-#{member.id}" 
+        }
+      ]
+    end
   end
 
   # GET /members/1 or /members/1.json

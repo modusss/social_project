@@ -1,45 +1,43 @@
-<% if family.nil? %>
-  <p>Não há membros adicionados para esta família</p>
-<% else %>
-  <h6 class="text-lg font-bold">Membros da família: <%= family.members.count %> <%= family.members.count == 1 ? 'pessoa' : 'pessoas' %></h6>
-<% members_data = family.members.reject { |member| member.name.blank? }.map do |member|
-    [
-      { header: 'Nome', content: member.name, id: "member-name-#{member.id}" },
-      { header: 'Idade', content: member.age, id: "member-age-#{member.id}" },
-      { header: 'Papel', content: member.role.presence || '', id: "member-role-#{member.id}" },
-      { 
-        header: 'Já aceitou Jesus?', 
-        content: tag.div(class: "flex justify-center items-center", data: { controller: "toggle-member" }) do
-          check_box_tag(
-            "member_firm_in_faith_#{member.id}",
-            "1",
-            member.firm_in_faith,
-            data: {
-              action: "change->toggle-member#toggle",
-              member_id: member.id,
-              family_id: family.id,
-              toggle_member_target: "checkbox"
-            },
-            class: "sr-only peer"
-          ) +
-          label_tag(
-            "member_firm_in_faith_#{member.id}",
-            class: "flex w-[51px] h-[31px] bg-gray-200 peer-focus:outline-none rounded-full peer 
-                   peer-checked:after:translate-x-[20px] peer-checked:bg-blue-600 
-                   after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                   after:bg-white after:border after:rounded-full after:h-[27px] after:w-[27px] 
-                   after:transition-all relative cursor-pointer"
-          ) do
-            tag.span(member.firm_in_faith ? "Sim" : "Não",
-                    class: "absolute left-[60px] top-[5px] text-sm",
-                    data: { toggle_member_target: "status" })
-          end
-        end,
-        id: "member-faith-#{member.id}"
-      }
-    ]
-  end %>
+
+
+<div id="members_table">
+  <% valid_members = family.members.reject { |member| member.name.blank? } %>
+  <h3 class="text-lg font-medium mb-4">
+    <i class="fas fa-users text-indigo-600 mr-2"></i><%= valid_members.count %> pessoas
+  </h3>
   
-  <%= data_table(members_data) %>
-<% end %>
+  <% rows = valid_members.map do |member| %>
+    <% [
+      { 
+        header: '<i class="fas fa-user text-indigo-500 mr-1"></i> Nome'.html_safe, 
+        content: raw(member.name.to_s + (member.firm_in_faith ? 
+          "<span class='ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'>
+            <i class='fas fa-cross text-green-600 mr-1'></i>
+            Aceita Jesus
+          </span>" : "")),
+        id: "member-name-#{member.id}" 
+      },
+      { 
+        header: '<i class="fas fa-birthday-cake text-indigo-500 mr-1"></i> Idade'.html_safe, 
+        content: raw("#{member.age || (member.birth_date.present? ? ((Date.today - member.birth_date) / 365.25).floor : 'Não informado')}
+          #{member.birth_date.present? ? "<span class='text-xs text-gray-400 block'><i class='far fa-calendar-alt mr-1'></i>#{member.birth_date.strftime('%d/%m/%Y')}</span>" : ''}"),
+        id: "member-age-#{member.id}" 
+      },
+      { 
+        header: '<i class="fas fa-id-badge text-indigo-500 mr-1"></i> Papel'.html_safe, 
+        content: raw(member.role.present? ? 
+          "<span class='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800'><i class='fas fa-user-tag text-blue-600 mr-1'></i>#{member.role.capitalize}</span>" : 
+          "<span class='text-gray-400'><i class='fas fa-question-circle mr-1'></i>Não definido</span>"),
+        id: "member-role-#{member.id}" 
+      },
+      { 
+        header: '<i class="fas fa-info-circle text-indigo-500 mr-1"></i> Detalhes'.html_safe, 
+        content: render(partial: 'members/details', locals: { member: member }),
+        id: "member-details-#{member.id}" 
+      }
+    ] %>
+  <% end %>
+  
+  <%= data_table(rows) %>
+</div>
 

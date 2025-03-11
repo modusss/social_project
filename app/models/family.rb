@@ -7,11 +7,16 @@ class Family < ApplicationRecord
     has_many :needs, dependent: :destroy
     has_many :observations, through: :visits
     has_many :pending_needs, through: :visits
-    accepts_nested_attributes_for :members, reject_if: :all_blank, allow_destroy: true
+    
+    # Rejeita membros sem nome na criação e marca para exclusão na edição
+    accepts_nested_attributes_for :members, 
+                                 reject_if: ->(attributes) { attributes['name'].blank? && attributes['id'].blank? }, 
+                                 allow_destroy: true
     accepts_nested_attributes_for :needs, reject_if: :all_blank, allow_destroy: true
 
     before_save :clear_irrelevant_housing_values
     before_save :calculate_total_income
+    before_save :mark_empty_name_members_for_destruction
 
     def last_observation
         observations.order(created_at: :desc).first&.observation
@@ -32,6 +37,13 @@ class Family < ApplicationRecord
     end
 
     private
+
+    # Marca membros com nome vazio para exclusão
+    def mark_empty_name_members_for_destruction
+        members.each do |member|
+            member.mark_for_destruction if member.name.blank?
+        end
+    end
 
     def clear_irrelevant_housing_values
         # Se for casa própria, limpar valor do aluguel

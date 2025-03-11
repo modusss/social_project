@@ -3,6 +3,8 @@ class Member < ApplicationRecord
   
   attr_accessor :index  # Adiciona um atributo virtual que não é salvo no banco de dados
 
+  validates :name, presence: true
+
   before_save :update_age_from_birth_date
   before_save :clear_irrelevant_values
 
