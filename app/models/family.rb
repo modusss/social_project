@@ -11,6 +11,7 @@ class Family < ApplicationRecord
     accepts_nested_attributes_for :needs, reject_if: :all_blank, allow_destroy: true
 
     before_save :clear_irrelevant_housing_values
+    before_save :calculate_total_income
 
     def last_observation
         observations.order(created_at: :desc).first&.observation
@@ -18,6 +19,16 @@ class Family < ApplicationRecord
 
     def recent_pending_needs
         pending_needs.order(created_at: :desc).limit(3)
+    end
+
+    def calculate_total_income
+        # Soma todas as rendas dos membros
+        member_income = members.sum do |member|
+            (member.income || 0) + (member.has_benefit ? (member.benefit_value || 0) : 0)
+        end
+        
+        # Atualiza a renda familiar com a soma calculada
+        self.family_income = member_income
     end
 
     private

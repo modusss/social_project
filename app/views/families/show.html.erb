@@ -17,6 +17,11 @@
     </div>
 
     <div class="mb-6">
+      <h2 class="text-xl font-semibold">Renda Familiar</h2>
+      <p><strong>Total:</strong> <%= number_to_currency(@family.family_income, unit: "R$", separator: ",", delimiter: ".") %></p>
+    </div>
+
+    <div class="mb-6">
       <h2 class="text-xl font-semibold">Endereço</h2>
       <% if @family.street.present? && @family.house_number.present? %>
         <p><strong>Rua:</strong> <%= @family.street %>, casa <%= @family.house_number %></p>
