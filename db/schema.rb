@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_27_234241) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_16_182358) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,9 +55,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_27_234241) do
     t.boolean "lives_with_partner", default: false
     t.string "cpf"
     t.boolean "attends_church", default: false
-    t.string "clothing_size"
+    t.string "shirt_size"
     t.string "shoe_size"
     t.string "disability"
+    t.integer "pants_size"
     t.index ["family_id"], name: "index_members_on_family_id"
   end
 
