@@ -20,7 +20,7 @@
     </div>
 
     <!-- Cards de informações principais -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <!-- Card de Renda Familiar -->
       <div class="bg-blue-50 rounded-lg p-4 border border-blue-100 shadow-sm">
         <div class="flex items-center mb-2">
@@ -65,6 +65,93 @@
         <% else %>
           <p class="text-sm text-purple-600 mt-1">Nenhuma visita registrada</p>
         <% end %>
+      </div>
+    </div>
+
+    <!-- New Food Basket Card -->
+    <div class="bg-amber-50 rounded-lg p-5 mb-8 border border-amber-100 shadow-sm">
+      <div class="flex items-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <h3 class="text-lg font-medium text-amber-800">Cesta Básica</h3>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <div class="mb-4">
+            <p class="text-sm text-amber-700 mb-1">Status</p>
+            <div class="mt-1">
+              <%= food_basket_status_badge(@family.food_basket_status) %>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-sm text-amber-700 mb-1">Período</p>
+            <% if @family.food_basket_start_date.present? && @family.food_basket_duration_months.present? %>
+              <p class="font-medium text-amber-900">
+                <%= @family.food_basket_start_date.strftime('%d/%m/%Y') %> até 
+                <%= (@family.food_basket_start_date + @family.food_basket_duration_months.months).strftime('%d/%m/%Y') %>
+              </p>
+              <p class="text-sm text-amber-600 mt-1">
+                Duração: <%= @family.food_basket_duration_months %> <%= @family.food_basket_duration_months == 1 ? 'mês' : 'meses' %>
+              </p>
+            <% else %>
+              <p class="text-amber-600">Não definido</p>
+            <% end %>
+          </div>
+        </div>
+
+        <div>
+          <div class="mb-4">
+            <p class="text-sm text-amber-700 mb-1">Situação Atual</p>
+            <% 
+              today = Date.today
+              if @family.food_basket_start_date.present? && @family.food_basket_duration_months.present?
+                end_date = @family.food_basket_start_date + @family.food_basket_duration_months.months
+                days_remaining = (end_date - today).to_i
+                days_since_start = (today - @family.food_basket_start_date).to_i
+                
+                if days_remaining > 0 && days_since_start >= 0
+                  status_text = "#{days_remaining} dias restantes"
+                  progress_percentage = ((days_since_start.to_f / (@family.food_basket_duration_months * 30)) * 100).round
+                  progress_color = "bg-green-500"
+                elsif days_since_start < 0
+                  status_text = "Inicia em #{days_since_start.abs} dias"
+                  progress_percentage = 0
+                  progress_color = "bg-yellow-500"
+                else
+                  status_text = "Encerrado há #{days_remaining.abs} dias"
+                  progress_percentage = 100
+                  progress_color = "bg-red-500"
+                end
+              else
+                status_text = "Não iniciado"
+                progress_percentage = 0
+                progress_color = "bg-gray-300"
+              end
+            %>
+            
+            <p class="font-medium text-amber-900"><%= status_text %></p>
+            
+            <% if @family.food_basket_start_date.present? && @family.food_basket_duration_months.present? %>
+              <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                <div class="<%= progress_color %> h-2.5 rounded-full" style="width: <%= progress_percentage %>%"></div>
+              </div>
+              <p class="text-xs text-amber-600 mt-1"><%= progress_percentage %>% concluído</p>
+            <% end %>
+          </div>
+
+          <div>
+            <p class="text-sm text-amber-700 mb-1">Ações</p>
+            <%= link_to edit_family_path(@family, anchor: "food_basket"), class: "inline-flex items-center px-3 py-1.5 bg-amber-100 text-amber-800 rounded-md hover:bg-amber-200 transition-colors text-sm font-medium" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+              Atualizar informações
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
 
