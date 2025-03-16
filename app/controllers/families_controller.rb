@@ -126,36 +126,76 @@ class FamiliesController < ApplicationController
   end
 
   def search
-    base_query = Family.left_joins(:visits)
-                       .select('families.*, 
-                                MAX(visits.visit_date) as last_visit_date,
-                                MAX(visits.id) as last_visit_id')
+    @search_type = params[:search_type] || 'Nome'
+    @query = params[:query]
 
-    @families = case params[:search_type]
-                when 'Nome'
-                  base_query.left_joins(:members)
-                           .where('families.reference_name ILIKE :query OR 
-                                  members.name ILIKE :query', 
-                                 query: "%#{params[:query]}%")
-                when 'Telefone'
-                  base_query.where('families.phone1 ILIKE :query OR 
-                                   families.phone2 ILIKE :query', 
-                                  query: "%#{params[:query]}%")
-                when 'Necessidade'
-                  base_query.joins(:needs)
-                           .where('needs.name ILIKE :query AND needs.attended = false', 
-                                 query: "%#{params[:query]}%")
-                else
-                  base_query.none
-                end
+    if @query.present?
+      case @search_type
+      when 'Nome'
+        @families = Family.joins(:members)
+                         .where('families.name ILIKE ? OR members.name ILIKE ?', "%#{@query}%", "%#{@query}%")
+                         .distinct
+      when 'Telefone'
+        @families = Family.where('phone ILIKE ?', "%#{@query}%")
+      when 'Necessidade'
+        @families = Family.joins(:needs)
+                         .where('needs.name ILIKE ?', "%#{@query}%")
+                         .distinct
+      when 'CPF'
+        # Normalize CPF by removing dots and dashes
+        normalized_cpf = normalize_cpf(@query)
+        
+        # Use a database function to normalize stored CPFs for comparison
+        # This approach works with PostgreSQL
+        @families = Family.joins(:members)
+                         .where("REGEXP_REPLACE(members.cpf, '[^0-9]', '', 'g') LIKE ?", "%#{normalized_cpf}%")
+                         .distinct
+      end
+    else
+      @families = Family.all
+    end
 
-    @families = @families.group('families.id')
-                         .order('last_visit_date DESC NULLS LAST')
-                         .includes(:members, :observations, :pending_needs, visits: :region)
-                         .page(params[:page])
-                         .per(100)
+    @families = @families.order(created_at: :desc).page(params[:page])
 
-    @rows = build_rows(@families)
+    @rows = @families.map do |family|
+      last_visit = family.visits.order(visit_date: :desc).first
+      last_visit_region = last_visit.present? ? (last_visit&.region&.name || 'Sem região') : 'Sem região'
+      last_visit_observation = last_visit.present? ? (last_visit.observations.last&.observation&.truncate(50) || 'Sem observações') : 'Sem observações'
+      [
+        { 
+          header: 'Família', 
+          content: helpers.link_to(
+            if family.members.count == 1
+              family.members.first.name
+            else
+              if family.reference_name.present?
+                "#{family.reference_name} (#{family.members.count} pessoas)"
+              else
+                "#{family.members.first.name} (#{family.members.count} pessoas)"
+              end
+            end,
+            family_path(family), 
+            class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
+          ), 
+          id: "family-#{family.id}" 
+        },
+        { 
+          header: 'Telefones', 
+          content: [
+            helpers.phone_links(family.phone1),
+            helpers.phone_links(family.phone2)
+          ].reject(&:blank?).join(' / ').html_safe, 
+          id: "family-phones-#{family.id}" 
+        },
+        { header: 'Última visita', content: last_visit.present? ? last_visit.visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
+        { header: 'Qtd. visitas', content: family.visits.count, id: "family-visits-count-#{family.id}" },
+        { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
+        { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}", class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left" },
+        { header: 'Necessidades Pendentes', content: family.needs.where(attended: false).pluck(:name).join(", "), id: "family-needs-#{family.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
+        { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" }#,
+        # { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
+      ]
+    end
 
     respond_to do |format|
       format.turbo_stream { 
@@ -262,5 +302,10 @@ class FamiliesController < ApplicationController
           #{ header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
         ]
       end
+    end
+
+    # Helper method to normalize CPF by removing non-digit characters
+    def normalize_cpf(cpf)
+      cpf.to_s.gsub(/[^0-9]/, '')
     end
 end
