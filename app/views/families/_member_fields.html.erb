@@ -142,8 +142,11 @@
         <%= f.label :attends_church, "Congrega em igreja?", 
             class: "ml-2 text-sm text-gray-700" %>
       </div>
+    </div>
 
-      <div>
+    <%# Campo de deficiência física - Modificado para ocupar metade da largura com espaçamento %>
+    <div class="my-6">
+      <div class="w-full md:w-1/2">
         <%= f.label :disability, "Deficiência física ou doença", 
             class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.text_field :disability, 
@@ -152,7 +155,8 @@
       </div>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <%# Campos de tamanho de roupa e calçado - Reorganizados em uma única linha %>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
       <div>
         <%= f.label :shirt_size, "Tamanho de camisa", class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= f.select :shirt_size, 
@@ -168,13 +172,13 @@
             min: 34, max: 60, step: 2,
             placeholder: "Ex: 38, 40, 42, etc." %>
       </div>
-    </div>
-
-    <div class="mt-4">
-      <%= f.label :shoe_size, "Tamanho do calçado", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_field :shoe_size, 
-          class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-          placeholder: "Ex: 38, 42, etc." %>
+      
+      <div>
+        <%= f.label :shoe_size, "Tamanho do calçado", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :shoe_size, 
+            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+            placeholder: "Ex: 38, 42, etc." %>
+      </div>
     </div>
   </div>
 
