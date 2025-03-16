@@ -53,11 +53,19 @@
     <div class="flex flex-col sm:flex-row sm:justify-between">
       <div class="mb-2 sm:mb-0 sm:w-1/2">
         <i class="fas fa-tshirt text-gray-500 mr-1"></i>
-        <span class="font-medium text-gray-700">Tamanho de roupa:</span> 
-        <span class="text-gray-900 ml-1"><%= member.clothing_size.present? ? member.clothing_size : "Não informado" %></span>
+        <span class="font-medium text-gray-700">Tamanho de camisa:</span> 
+        <span class="text-gray-900 ml-1"><%= member.shirt_size.present? ? member.shirt_size : "Não informado" %></span>
       </div>
       
       <div class="sm:w-1/2">
+        <i class="fas fa-ruler text-gray-500 mr-1"></i>
+        <span class="font-medium text-gray-700">Tamanho de calça:</span> 
+        <span class="text-gray-900 ml-1"><%= member.pants_size.present? ? member.pants_size : "Não informado" %></span>
+      </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row sm:justify-between">
+      <div class="mb-2 sm:mb-0 sm:w-1/2">
         <i class="fas fa-shoe-prints text-gray-500 mr-1"></i>
         <span class="font-medium text-gray-700">Tamanho de calçado:</span> 
         <span class="text-gray-900 ml-1"><%= member.shoe_size.present? ? member.shoe_size : "Não informado" %></span>

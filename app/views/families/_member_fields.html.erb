@@ -154,19 +154,27 @@
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
-        <%= f.label :clothing_size, "Tamanho da roupa", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.select :clothing_size, 
+        <%= f.label :shirt_size, "Tamanho de camisa", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :shirt_size, 
             [["PP", "PP"], ["P", "P"], ["M", "M"], ["G", "G"], ["GG", "GG"], ["XG", "XG"], ["XXG", "XXG"]], 
             { include_blank: "Selecione" }, 
             { class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" } %>
       </div>
 
       <div>
-        <%= f.label :shoe_size, "Tamanho do sapato", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :shoe_size, 
+        <%= f.label :pants_size, "Tamanho de calça", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :pants_size, 
             class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-            placeholder: "Ex: 38, 42, etc." %>
+            min: 34, max: 60, step: 2,
+            placeholder: "Ex: 38, 40, 42, etc." %>
       </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.label :shoe_size, "Tamanho do calçado", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :shoe_size, 
+          class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
+          placeholder: "Ex: 38, 42, etc." %>
     </div>
   </div>
 

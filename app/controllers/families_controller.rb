@@ -188,8 +188,8 @@ class FamiliesController < ApplicationController
         members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, 
                             :profession, :employed, :income, :has_benefit, :benefit_value, 
                             :can_read, :lives_in_house, :lives_with_partner, :cpf,
-                            :attends_church, :disability, :clothing_size, :shoe_size, :_destroy],
-        needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
+                            :attends_church, :disability, :shirt_size, :pants_size, :shoe_size, :_destroy],
+                            needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
       ).tap do |whitelisted|
         whitelisted[:members_attributes]&.each do |_, member_attrs|
           member_attrs[:role] = nil if member_attrs[:role].blank?
