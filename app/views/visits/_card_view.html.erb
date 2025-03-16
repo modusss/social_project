@@ -1,0 +1,83 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% visits.each do |visit| %>
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200 hover:shadow-md transition-shadow duration-300">
+      <div class="p-5 border-b border-gray-200">
+        <div class="flex justify-between items-start">
+          <h3 class="text-lg font-semibold text-blue-600">
+            <%= link_to family_path(visit.family), class: "hover:underline" do %>
+              <% if visit.family.members.count == 1 %>
+                <%= visit.family.members.first.name %>
+              <% else %>
+                <% if visit.family.reference_name.present? %>
+                  <%= visit.family.reference_name %> (<%= visit.family.members.count %> pessoas)
+                <% else %>
+                  <%= visit.family.members.first.name %> (<%= visit.family.members.count %> pessoas)
+                <% end %>
+              <% end %>
+            <% end %>
+          </h3>
+          <div>
+            <%= food_basket_status_badge(visit.family.food_basket_status) %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="p-5">
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <p class="text-sm text-gray-500 mb-1">Data da Visita</p>
+            <p class="font-medium"><%= visit.visit_date.strftime('%d/%m/%Y') %></p>
+          </div>
+          
+          <div>
+            <p class="text-sm text-gray-500 mb-1">Visitante</p>
+            <p class="font-medium"><%= visit.user.name %></p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <p class="text-sm text-gray-500 mb-1">Região</p>
+            <p class="font-medium"><%= visit.visited_project&.region&.name || "Não definida" %></p>
+          </div>
+          
+          <div>
+            <p class="text-sm text-gray-500 mb-1">Projeto</p>
+            <p class="font-medium"><%= visit.visited_project&.project&.name || "Não definido" %></p>
+          </div>
+        </div>
+        
+        <div class="mb-4">
+          <p class="text-sm text-gray-500 mb-1">Necessidades Pendentes</p>
+          <p class="text-sm">
+            <% if visit.family.needs.where(attended: false).any? %>
+              <%= visit.family.needs.where(attended: false).pluck(:name).join(", ") %>
+            <% else %>
+              <span class="text-gray-400">Sem necessidades pendentes</span>
+            <% end %>
+          </p>
+        </div>
+        
+        <div class="mb-4">
+          <p class="text-sm text-gray-500 mb-1">Observações</p>
+          <p class="text-sm text-gray-700">
+            <%= visit.observations.first&.observation&.truncate(100) || "Sem observações" %>
+          </p>
+        </div>
+        
+        <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+          <div class="text-sm text-gray-500">
+            <span class="font-medium"><%= visit.family.visits.count %></span> visitas totais
+          </div>
+          
+          <%= link_to new_family_visit_path(visit.family), class: "inline-flex items-center text-sm text-blue-600 hover:text-blue-800" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Nova visita
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div> 

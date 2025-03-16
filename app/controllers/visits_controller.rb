@@ -8,6 +8,11 @@ class VisitsController < ApplicationController
                    .page(params[:page])
                    .per(100)
 
+    # Apply food basket status filter if present
+    if params[:food_basket_status].present?
+      @visits = @visits.joins(:family).where(families: { food_basket_status: params[:food_basket_status] })
+    end
+
     @visits_data = build_visits_data(@visits)
   end
 
@@ -117,9 +122,15 @@ class VisitsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream { 
-        render turbo_stream: turbo_stream.replace('visits_table', 
-               partial: 'visits/table_index', 
-               locals: { visits_data: @visits_data })
+        if params[:view] == 'card'
+          render turbo_stream: turbo_stream.replace('visits_content', 
+                 partial: 'visits/card_view', 
+                 locals: { visits: @visits, visits_data: @visits_data })
+        else
+          render turbo_stream: turbo_stream.replace('visits_content', 
+                 partial: 'visits/table_index', 
+                 locals: { visits_data: @visits_data })
+        end
       }
     end
   end
