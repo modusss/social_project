@@ -20,6 +20,9 @@ class FamiliesController < ApplicationController
       @families = @families.where(food_basket_status: params[:food_basket_status])
     end
 
+    # Set card view as default if no view parameter is provided
+    params[:view] = 'card' if params[:view].blank?
+
     @rows = build_rows(@families)
   end
 

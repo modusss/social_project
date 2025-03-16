@@ -13,6 +13,9 @@ class VisitsController < ApplicationController
       @visits = @visits.joins(:family).where(families: { food_basket_status: params[:food_basket_status] })
     end
 
+    # Set card view as default if no view parameter is provided
+    params[:view] = 'card' if params[:view].blank?
+
     @visits_data = build_visits_data(@visits)
   end
 
