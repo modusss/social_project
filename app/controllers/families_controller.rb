@@ -109,20 +109,17 @@ class FamiliesController < ApplicationController
       case @search_type
       when 'Nome'
         @families = Family.joins(:members)
-                         .where('families.name ILIKE ? OR members.name ILIKE ?', "%#{@query}%", "%#{@query}%")
+                         .where('families.reference_name ILIKE :query OR members.name ILIKE :query', 
+                                query: "%#{@query}%")
                          .distinct
       when 'Telefone'
-        @families = Family.where('phone ILIKE ?', "%#{@query}%")
+        @families = Family.where('phone1 ILIKE ? OR phone2 ILIKE ?', "%#{@query}%", "%#{@query}%")
       when 'Necessidade'
         @families = Family.joins(:needs)
                          .where('needs.name ILIKE ?', "%#{@query}%")
                          .distinct
       when 'CPF'
-        # Normalize CPF by removing dots and dashes
         normalized_cpf = normalize_cpf(@query)
-        
-        # Use a database function to normalize stored CPFs for comparison
-        # This approach works with PostgreSQL
         @families = Family.joins(:members)
                          .where("REGEXP_REPLACE(members.cpf, '[^0-9]', '', 'g') LIKE ?", "%#{normalized_cpf}%")
                          .distinct
@@ -131,6 +128,8 @@ class FamiliesController < ApplicationController
       @families = Family.all
     end
 
+    @families = @families.presence || Family.none
+    
     @families = @families.order(created_at: :desc).page(params[:page])
 
     @rows = build_rows(@families)

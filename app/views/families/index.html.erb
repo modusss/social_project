@@ -23,7 +23,7 @@
             
             <div data-controller="radio">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <% ['Nome', 'Telefone', 'Necessidade', 'CPF'].each do |type| %>
+                <% ['Nome', 'Telefone', 'Tipo de necessidade', 'CPF'].each do |type| %>
                   <div class="radio-option <%= 'selected' if params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>" data-action="click->radio#select" data-radio-target="option" data-type="<%= type %>">
                     <%= f.radio_button :search_type, type, class: "hidden", checked: params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>
                     <div class="flex items-center">

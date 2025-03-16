@@ -3,34 +3,41 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <% content_for :title, "Visits" %>
+  <% content_for :title, "Visitas" %>
 
-  <h1 class="text-3xl font-bold text-center mb-6">Lista de últimas visitas</h1>
+  <h1 class="text-3xl font-bold text-center mb-6">Lista de Visitas</h1>
 
-  <div class="flex justify-center space-x-4 mb-6">
+  <div class="flex justify-center space-x-4 mb-8">
     <%= link_to "Listar por família", families_path, 
         class: "px-4 py-2 #{current_page?(families_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
     <%= link_to "Listar por visitas", visits_path, 
         class: "px-4 py-2 #{current_page?(visits_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
   </div>
 
-  <div class="card mb-6">
-    <div class="flex justify-between items-center">
+  <div class="card mb-8">
+    <div class="flex justify-between items-start">
       <div class="w-2/3">
         <%= form_with url: search_visits_path, method: :post, class: "space-y-6", data: { turbo_stream: true } do |f| %>
           <div class="space-y-4">
             <h2 class="text-lg font-semibold text-gray-700 mb-4">Buscar visitas por:</h2>
             
             <div data-controller="radio">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <% ['Nome', 'Telefone', 'Tipo de necessidade'].each do |type| %>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <% ['Nome', 'Telefone', 'Tipo de necessidade', 'CPF'].each do |type| %>
                   <div class="radio-option <%= 'selected' if params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>" data-action="click->radio#select" data-radio-target="option" data-type="<%= type %>">
                     <%= f.radio_button :search_type, type, class: "hidden", checked: params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>
                     <div class="flex items-center">
                       <div class="circle"></div>
                       <div class="flex flex-col ml-3">
                         <span class="text-lg font-semibold"><%= type.capitalize %></span>
-                        <span class="text-sm text-gray-500"><%= type == 'Nome' ? 'Família ou membro' : type == 'Telefone' ? 'Número de contato' : 'Emprego, cesta básica, etc.' %></span>
+                        <span class="text-sm text-gray-500">
+                          <%= case type
+                              when 'Nome' then 'Família ou membro'
+                              when 'Telefone' then 'Número de contato'
+                              when 'Tipo de necessidade' then 'Emprego, cesta básica, etc.'
+                              when 'CPF' then 'Documento de identificação'
+                              end %>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -52,18 +59,40 @@
           </div>
         <% end %>
       </div>
+
+      <div class="flex items-center">
+        <%= link_to new_family_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-all" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Nova família
+        <% end %>
+      </div>
     </div>
   </div>
 
-  <div>
-    <%= render 'table_index', visits_data: @visits_data %>
-    
-    <div class="mt-6 flex justify-center">
-      <%= paginate @visits, theme: 'tailwind', window: 2,
-        class: "pagination",
-        previous_label: '← Anterior',
-        next_label: 'Próxima →' %>
+  <div class="card mb-8">
+    <div class="p-6">
+      <h2 class="text-lg font-semibold text-gray-700 mb-4">Filtrar por status da cesta básica</h2>
+      <div class="flex flex-wrap gap-3">
+        <%= link_to "Todos", visits_path, 
+            class: "px-4 py-2 #{params[:food_basket_status].blank? ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+        
+        <% ["recebendo", "lista_de_espera", "desenquadrados", "não_receberam"].each do |status| %>
+          <%= link_to food_basket_status_label(status), visits_path(food_basket_status: status), 
+              class: "px-4 py-2 #{params[:food_basket_status] == status ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+        <% end %>
+      </div>
     </div>
+  </div>
+
+  <%= render 'table_index', visits_data: @visits_data %>
+  
+  <div class="mt-6 flex justify-center">
+    <%= paginate @visits, theme: 'tailwind', window: 2,
+      class: "pagination",
+      previous_label: '← Anterior',
+      next_label: 'Próxima →' %>
   </div>
 </div>
 

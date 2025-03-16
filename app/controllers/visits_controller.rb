@@ -93,9 +93,21 @@ class VisitsController < ApplicationController
                base_query.joins(family: :needs)
                         .where('needs.name ILIKE :query AND needs.attended = false', 
                               query: "%#{params[:query]}%")
+             when 'CPF'
+               # Normalize CPF by removing dots and dashes
+               normalized_cpf = normalize_cpf(params[:query])
+               
+               # Use a database function to normalize stored CPFs for comparison
+               # This approach works with PostgreSQL
+               base_query.where("REGEXP_REPLACE(members.cpf, '[^0-9]', '', 'g') LIKE ?", "%#{normalized_cpf}%")
              else
                base_query.none
              end
+
+    # Apply food basket status filter if present
+    if params[:food_basket_status].present?
+      @visits = @visits.where(families: { food_basket_status: params[:food_basket_status] })
+    end
 
     @visits = @visits.order(visit_date: :desc)
                      .page(params[:page])
@@ -169,6 +181,11 @@ class VisitsController < ApplicationController
               ].reject(&:blank?).join(' / ').html_safe, 
               id: "family-phones-#{visit.family.id}" 
             },
+          { 
+            header: 'Status da Cesta', 
+            content: helpers.food_basket_status_badge(visit.family.food_basket_status), 
+            id: "family-food-basket-status-#{visit.family.id}" 
+          },
           { header: 'Data da visita', content: visit.visit_date.strftime('%d/%m/%Y'), id: "visit-date-#{visit.id}" },
           { header: 'Nome do visitante', content: visit.user.name, id: "visitor-name-#{visit.id}" },
           { header: 'Região', content: visit.visited_project&.region&.name, id: "region-#{visit.id}" },
@@ -182,5 +199,10 @@ class VisitsController < ApplicationController
           }
         ]
       end
+    end
+
+    # Helper method to normalize CPF by removing non-digit characters
+    def normalize_cpf(cpf)
+      cpf.to_s.gsub(/[^0-9]/, '')
     end
 end
