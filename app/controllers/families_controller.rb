@@ -136,9 +136,15 @@ class FamiliesController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream { 
-        render turbo_stream: turbo_stream.replace('families_table', 
-               partial: 'families/table', 
-               locals: { rows: @rows })
+        if params[:view] == 'card'
+          render turbo_stream: turbo_stream.replace('families_content', 
+                 partial: 'families/card_view', 
+                 locals: { families: @families, rows: @rows })
+        else
+          render turbo_stream: turbo_stream.replace('families_content', 
+                 partial: 'families/table', 
+                 locals: { rows: @rows })
+        end
       }
     end
   end
