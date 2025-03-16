@@ -15,45 +15,12 @@ class FamiliesController < ApplicationController
                       .page(params[:page])
                       .per(100)
 
-    @rows = @families.map do |family|
-      last_visit = family.visits.order(visit_date: :desc).first
-      last_visit_region = last_visit.present? ? (last_visit&.region&.name || 'Sem região') : 'Sem região'
-      last_visit_observation = last_visit.present? ? (last_visit.observations.last&.observation&.truncate(50) || 'Sem observações') : 'Sem observações'
-      [
-        { 
-          header: 'Família', 
-          content: helpers.link_to(
-            if family.members.count == 1
-              family.members.first.name
-            else
-              if family.reference_name.present?
-                "#{family.reference_name} (#{family.members.count} pessoas)"
-              else
-                "#{family.members.first.name} (#{family.members.count} pessoas)"
-              end
-            end,
-            family_path(family), 
-            class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
-          ), 
-          id: "family-#{family.id}" 
-        },
-        { 
-          header: 'Telefones', 
-          content: [
-            helpers.phone_links(family.phone1),
-            helpers.phone_links(family.phone2)
-          ].reject(&:blank?).join(' / ').html_safe, 
-          id: "family-phones-#{family.id}" 
-        },
-        { header: 'Última visita', content: last_visit.present? ? last_visit.visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
-        { header: 'Qtd. visitas', content: family.visits.count, id: "family-visits-count-#{family.id}" },
-        { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
-        { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}", class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left" },
-        { header: 'Necessidades Pendentes', content: family.needs.where(attended: false).pluck(:name).join(", "), id: "family-needs-#{family.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
-        { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" }#,
-        # { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
-      ]
+    # Apply food basket status filter if present
+    if params[:food_basket_status].present?
+      @families = @families.where(food_basket_status: params[:food_basket_status])
     end
+
+    @rows = build_rows(@families)
   end
 
   # GET /families/1 or /families/1.json
@@ -77,6 +44,11 @@ class FamiliesController < ApplicationController
   def create
     @family = Family.new(family_params)
 
+    # Auto-update status based on dates if requested
+    if params[:family][:auto_update_status] == "1"
+      @family.update_food_basket_status!
+    end
+
     respond_to do |format|
       if @family.save
         format.html { redirect_to @family, notice: "Family was successfully created." }
@@ -92,6 +64,10 @@ class FamiliesController < ApplicationController
   def update
     respond_to do |format|
       if @family.update(family_params)
+        # Auto-update status based on dates if requested
+        if params[:family][:auto_update_status] == "1"
+          @family.update_food_basket_status!
+        end
         format.html { redirect_to @family, notice: "Family was successfully updated." }
         format.json { render :show, status: :ok, location: @family }
       else
@@ -157,45 +133,7 @@ class FamiliesController < ApplicationController
 
     @families = @families.order(created_at: :desc).page(params[:page])
 
-    @rows = @families.map do |family|
-      last_visit = family.visits.order(visit_date: :desc).first
-      last_visit_region = last_visit.present? ? (last_visit&.region&.name || 'Sem região') : 'Sem região'
-      last_visit_observation = last_visit.present? ? (last_visit.observations.last&.observation&.truncate(50) || 'Sem observações') : 'Sem observações'
-      [
-        { 
-          header: 'Família', 
-          content: helpers.link_to(
-            if family.members.count == 1
-              family.members.first.name
-            else
-              if family.reference_name.present?
-                "#{family.reference_name} (#{family.members.count} pessoas)"
-              else
-                "#{family.members.first.name} (#{family.members.count} pessoas)"
-              end
-            end,
-            family_path(family), 
-            class: "text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out"
-          ), 
-          id: "family-#{family.id}" 
-        },
-        { 
-          header: 'Telefones', 
-          content: [
-            helpers.phone_links(family.phone1),
-            helpers.phone_links(family.phone2)
-          ].reject(&:blank?).join(' / ').html_safe, 
-          id: "family-phones-#{family.id}" 
-        },
-        { header: 'Última visita', content: last_visit.present? ? last_visit.visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
-        { header: 'Qtd. visitas', content: family.visits.count, id: "family-visits-count-#{family.id}" },
-        { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
-        { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}", class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left" },
-        { header: 'Necessidades Pendentes', content: family.needs.where(attended: false).pluck(:name).join(", "), id: "family-needs-#{family.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
-        { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" }#,
-        # { header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
-      ]
-    end
+    @rows = build_rows(@families)
 
     respond_to do |format|
       format.turbo_stream { 
@@ -225,6 +163,7 @@ class FamiliesController < ApplicationController
         :neighborhood, :housing_type, :financed_house, :financing_value,
         :rent_value, :has_loan, :loan_value, :family_income,
         :food_basket_start_date, :food_basket_duration_months,
+        :food_basket_status,
         members_attributes: [:id, :name, :age, :role, :birth_date, :firm_in_faith, 
                             :profession, :employed, :income, :has_benefit, :benefit_value, 
                             :can_read, :lives_in_house, :lives_with_partner, :cpf,
@@ -293,13 +232,17 @@ class FamiliesController < ApplicationController
             ].reject(&:blank?).join(' / ').html_safe, 
             id: "family-phones-#{family.id}" 
           },
+          { 
+            header: 'Status da Cesta', 
+            content: helpers.food_basket_status_badge(family.food_basket_status), 
+            id: "family-food-basket-status-#{family.id}" 
+          },
           { header: 'Última visita', content: last_visit.present? ? last_visit.visit_date.strftime('%d/%m/%Y') : 'Sem visitas', id: "family-last-visit-#{family.id}" },
           { header: 'Qtd. visitas', content: family.visits.count, id: "family-visits-count-#{family.id}" },
           { header: 'Região da última visita', content: last_visit_region, id: "family-last-visit-region-#{family.id}" },
           { header: 'Última Observação', content: last_visit_observation, id: "family-last-observation-#{family.id}", class: "px-6 py-4 text-sm text-gray-500 max-w-[450px] whitespace-normal break-words text-left" },
           { header: 'Necessidades Pendentes', content: family.needs.where(attended: false).pluck(:name).join(", "), id: "family-needs-#{family.id}", class: "max-w-[450px] whitespace-normal break-words text-left" },
-          { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" }#,
-          #{ header: 'Ações', content: render_to_string(partial: 'families/actions', locals: { family: family }), id: "family-actions-#{family.id}" }
+          { header: 'Registrar nova visita', content: helpers.link_to('Nova visita', new_family_visit_path(family), class: 'text-blue-600 hover:text-blue-800 hover:underline transition duration-300 ease-in-out'), id: "family-new-visit-#{family.id}" }
         ]
       end
     end

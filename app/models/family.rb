@@ -18,6 +18,8 @@ class Family < ApplicationRecord
     before_save :calculate_total_income
     before_save :mark_empty_name_members_for_destruction
 
+    validates :food_basket_status, inclusion: { in: %w[recebendo lista_de_espera desenquadrados não_receberam] }
+
     def last_observation
         observations.order(created_at: :desc).first&.observation
     end
@@ -34,6 +36,28 @@ class Family < ApplicationRecord
         
         # Atualiza a renda familiar com a soma calculada
         self.family_income = member_income
+    end
+
+    def update_food_basket_status!
+        today = Date.today
+        
+        if food_basket_start_date.present? && food_basket_duration_months.present?
+            end_date = food_basket_start_date + food_basket_duration_months.months
+            
+            new_status = if food_basket_start_date <= today && today <= end_date
+                           "recebendo"
+                         elsif food_basket_start_date > today
+                           "lista_de_espera"
+                         elsif today > end_date
+                           "desenquadrados"
+                         end
+            
+            # Only update if the status has changed
+            update(food_basket_status: new_status) if food_basket_status != new_status
+        else
+            # If no dates are set, mark as "não_receberam"
+            update(food_basket_status: "não_receberam") if food_basket_status != "não_receberam"
+        end
     end
 
     private

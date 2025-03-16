@@ -1,0 +1,49 @@
+<div class="w-full">
+  <h1 class="text-3xl font-bold text-center mb-6">Relatório de Cestas Básicas</h1>
+  
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+    <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+      <h3 class="text-lg font-medium text-gray-900">Resumo</h3>
+    </div>
+    
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <% ["recebendo", "lista_de_espera", "desenquadrados", "não_receberam"].each do |status| %>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <h4 class="font-medium text-gray-900 mb-1"><%= status_label(status) %></h4>
+            <p class="text-2xl font-bold text-blue-600"><%= Family.where(food_basket_status: status).count %></p>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="mt-8">
+        <h4 class="font-medium text-gray-900 mb-4">Cestas por mês</h4>
+        <div class="h-64">
+          <!-- Chart would go here - using a charting library like Chart.js -->
+          <canvas id="basketsChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Tables for each status -->
+  <% ["recebendo", "lista_de_espera", "desenquadrados", "não_receberam"].each do |status| %>
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+      <div class="border-b border-gray-200 bg-gray-50 px-6 py-4 flex justify-between items-center">
+        <h3 class="text-lg font-medium text-gray-900"><%= status_label(status) %></h3>
+        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+          <%= Family.where(food_basket_status: status).count %>
+        </span>
+      </div>
+      
+      <div class="p-6">
+        <!-- Render a table with families of this status -->
+        <%= render 'families/table', rows: Family.where(food_basket_status: status).limit(5).map { |family| build_family_row(family) } %>
+        
+        <div class="mt-4 text-right">
+          <%= link_to "Ver todos", families_path(food_basket_status: status), class: "text-sm text-blue-600 hover:text-blue-800" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div> 

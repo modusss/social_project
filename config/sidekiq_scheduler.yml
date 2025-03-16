@@ -1,0 +1,4 @@
+update_food_basket_statuses:
+  cron: '0 0 * * *'  # Midnight every day
+  class: UpdateFoodBasketStatusesJob
+  queue: default 
