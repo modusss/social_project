@@ -25,9 +25,13 @@ class NeedsController < ApplicationController
   def create
     @needs = if params[:needs].present?
       params[:needs].map do |need_params|
+        # Explicitly set attended to false if not provided
+        need_params[:attended] = false unless need_params.key?(:attended)
         @family.needs.build(need_params.permit(:name, :beneficiary, :attended))
       end
     else
+      # Explicitly set attended to false for single need creation
+      need_params[:attended] = false unless need_params.key?(:attended)
       [@family.needs.build(need_params)]
     end
 
