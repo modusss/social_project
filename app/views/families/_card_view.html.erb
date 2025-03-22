@@ -31,12 +31,23 @@
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
             <p class="text-sm text-gray-500 mb-1">Telefones</p>
-            <p class="font-medium">
-              <%= [
-                phone_links(family.phone1),
-                phone_links(family.phone2)
-              ].reject(&:blank?).join(' / ').html_safe %>
-            </p>
+            <div class="font-medium break-words">
+              <% if family.phone1.present? %>
+                <div class="flex items-center mb-1">
+                  <%= phone_links(family.phone1).html_safe %>
+                </div>
+              <% end %>
+              
+              <% if family.phone2.present? %>
+                <div class="flex items-center">
+                  <%= phone_links(family.phone2).html_safe %>
+                </div>
+              <% end %>
+              
+              <% if !family.phone1.present? && !family.phone2.present? %>
+                <span class="text-gray-400">Sem telefones</span>
+              <% end %>
+            </div>
           </div>
           
           <div>
