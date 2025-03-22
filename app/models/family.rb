@@ -18,7 +18,12 @@ class Family < ApplicationRecord
     before_save :calculate_total_income
     before_save :mark_empty_name_members_for_destruction
 
-    validates :food_basket_status, inclusion: { in: %w[recebendo lista_de_espera desenquadrados não_receberam] }
+    # Define the class method before using it in validation
+    def self.valid_food_basket_statuses
+        %w[recebendo lista_de_espera repescagem nao_necessita]
+    end
+
+    validates :food_basket_status, inclusion: { in: valid_food_basket_statuses }
 
     def last_observation
         observations.order(created_at: :desc).first&.observation
@@ -49,7 +54,7 @@ class Family < ApplicationRecord
                          elsif food_basket_start_date > today
                            "lista_de_espera"
                          elsif today > end_date
-                           "desenquadrados"
+                           "repescagem"
                          end
             
             # Only update if the status has changed

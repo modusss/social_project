@@ -24,10 +24,10 @@ module FamiliesHelper
       "Recebendo"
     when "lista_de_espera"
       "Lista de Espera"
-    when "desenquadrados"
-      "Desenquadrados"
-    when "não_receberam"
-      "Não Receberam"
+    when "repescagem"
+      "Repescagem"
+    when "nao_necessita"
+      "Não Necessita"
     else
       status.humanize
     end
@@ -41,9 +41,9 @@ module FamiliesHelper
       "#{base_class} bg-green-100 text-green-800"
     when "lista_de_espera"
       "#{base_class} bg-yellow-100 text-yellow-800"
-    when "desenquadrados"
-      "#{base_class} bg-red-100 text-red-800"
-    when "não_receberam"
+    when "repescagem"
+      "#{base_class} bg-purple-100 text-purple-800"
+    when "nao_necessita"
       "#{base_class} bg-gray-100 text-gray-800"
     else
       "#{base_class} bg-blue-100 text-blue-800"
@@ -59,9 +59,9 @@ module FamiliesHelper
                   "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
                 when "lista_de_espera"
                   "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
-                when "desenquadrados"
-                  "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"
-                when "não_receberam"
+                when "repescagem"
+                  "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800"
+                when "nao_necessita"
                   "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
                 else
                   "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
@@ -76,10 +76,10 @@ module FamiliesHelper
       "Recebendo"
     when "lista_de_espera"
       "Lista de Espera"
-    when "desenquadrados"
-      "Desenquadrados"
-    when "não_receberam"
-      "Não Receberam"
+    when "repescagem"
+      "Repescagem"
+    when "nao_necessita"
+      "Não Necessita"
     else
       status.to_s.humanize
     end

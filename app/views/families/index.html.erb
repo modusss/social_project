@@ -98,7 +98,7 @@
         <%= link_to "Todos", families_path, 
             class: "px-4 py-2 #{params[:food_basket_status].blank? ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
         
-        <% ["recebendo", "lista_de_espera", "desenquadrados", "não_receberam"].each do |status| %>
+        <% Family.valid_food_basket_statuses.each do |status| %>
           <%= link_to status_label(status), families_path(food_basket_status: status), 
               class: "px-4 py-2 #{params[:food_basket_status] == status ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
         <% end %>
