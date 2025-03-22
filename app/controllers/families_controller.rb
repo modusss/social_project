@@ -117,7 +117,7 @@ class FamiliesController < ApplicationController
                          .distinct
       when 'Telefone'
         @families = Family.where('phone1 ILIKE ? OR phone2 ILIKE ?', "%#{@query}%", "%#{@query}%")
-      when 'Necessidade'
+      when 'Tipo de necessidade'
         @families = Family.joins(:needs)
                          .where('needs.name ILIKE ?', "%#{@query}%")
                          .distinct
