@@ -95,9 +95,11 @@
       </div>
       
       <div class="p-6">
-        <div id="member_fields" class="space-y-6 mb-6">
+        <div id="member_fields" class="space-y-6 mb-6" data-controller="nested-form member-form">
           <%= form.fields_for :members do |member_form| %>
-            <%= render 'member_fields', f: member_form %>
+            <div class="member-fields" data-member-index="<%= member_form.object.id || member_form.index %>" data-controller="member-form">
+              <%= render 'member_fields', f: member_form %>
+            </div>
           <% end %>
         </div>
       </div>

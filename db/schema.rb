@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_16_191019) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_23_111420) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,7 +61,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_16_191019) do
     t.string "shoe_size"
     t.string "disability"
     t.integer "pants_size"
+    t.string "gender"
     t.index ["family_id"], name: "index_members_on_family_id"
+    t.index ["gender"], name: "index_members_on_gender"
   end
 
   create_table "needs", force: :cascade do |t|
