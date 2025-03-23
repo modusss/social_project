@@ -2,6 +2,9 @@ class Family < ApplicationRecord
     include ActionView::Helpers
     include FamiliesHelper
 
+    # Associação para o usuário que criou esta família
+    belongs_to :created_by_user, class_name: 'User', optional: true
+    
     has_many :visits, dependent: :destroy
     has_many :members, dependent: :destroy
     has_many :needs, dependent: :destroy
