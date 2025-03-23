@@ -2,8 +2,8 @@ class Family < ApplicationRecord
     include ActionView::Helpers
     include FamiliesHelper
 
-    # Associação para o usuário que criou esta família
-    belongs_to :created_by_user, class_name: 'User', optional: true
+    # Modificação da associação para evitar conflito com helpers
+    belongs_to :creator_user, class_name: 'User', foreign_key: 'created_by_user_id', optional: true
     
     has_many :visits, dependent: :destroy
     has_many :members, dependent: :destroy
