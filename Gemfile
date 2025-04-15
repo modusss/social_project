@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
-ruby "3.3.0"
+# Define a versão do Ruby para o projeto
+ruby "3.2.3"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.0"
@@ -63,6 +64,13 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem 'capistrano', '~> 3.17'
+  gem 'capistrano-rails', '~> 1.6'
+  gem 'capistrano-bundler', '~> 2.1'
+  gem 'capistrano-rbenv', '~> 2.2' # se você usa rbenv
+  # ou
+  # gem 'capistrano-rvm', '~> 0.1' # se você usa rvm
+  gem 'capistrano3-puma', '~> 5.2' # se você usa Puma como servidor
 end
 
 group :test do
