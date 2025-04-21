@@ -54,8 +54,10 @@ Rails.application.configure do
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
-  # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new(STDOUT)
+  # Configura o logger para escrever em shared/log/production.log
+  # Use Rails.root.join('../../shared/log', 'production.log') para sair de 'current'
+  log_path = Rails.root.join('../../shared/log', 'production.log')
+  config.logger = ActiveSupport::Logger.new(log_path, 'daily')
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
     .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
@@ -77,6 +79,8 @@ Rails.application.configure do
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.
   config.action_mailer.perform_caching = false
+
+  config.action_mailer.default_url_options = { host: 'www.candeiasesperanca.com' }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
