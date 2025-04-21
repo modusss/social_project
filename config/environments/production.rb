@@ -87,8 +87,6 @@ Rails.application.configure do
   routes.default_url_options[:host] = 'candeiasesperanca.com'
   routes.default_url_options[:protocol] = 'https'
   
-  config.action_controller.forgery_protection_origin_check = false
-
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
