@@ -112,10 +112,10 @@ GEM
       capistrano (>= 3.9.0)
       capistrano-bundler
       sidekiq (>= 6.0)
-    capistrano3-puma (5.2.0)
+    capistrano3-puma (6.0.0)
       capistrano (~> 3.7)
       capistrano-bundler
-      puma (>= 4.0, < 6.0)
+      puma (>= 5.1, < 7.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -239,7 +239,7 @@ GEM
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
-    puma (5.6.9)
+    puma (6.6.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
@@ -421,7 +421,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.6)
   capistrano-rbenv (~> 2.2)
   capistrano-sidekiq
-  capistrano3-puma (~> 5.2)
+  capistrano3-puma (>= 6.0)
   capybara
   cocoon
   debug
@@ -432,7 +432,7 @@ DEPENDENCIES
   jbuilder
   kaminari
   pg (~> 1.1)
-  puma (>= 5.0)
+  puma (>= 6.0)
   rails (~> 7.2.0)
   rubocop-rails-omakase
   sassc

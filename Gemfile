@@ -10,7 +10,7 @@ gem "sprockets-rails"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
+gem "puma", ">= 6.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
@@ -70,7 +70,7 @@ group :development do
   gem 'capistrano-rbenv', '~> 2.2' # se você usa rbenv
   # ou
   # gem 'capistrano-rvm', '~> 0.1' # se você usa rvm
-  gem 'capistrano3-puma', '~> 5.2' # se você usa Puma como servidor
+  gem 'capistrano3-puma', '>= 6.0'
   gem 'ed25519', '~> 1.3'
   gem 'bcrypt_pbkdf', '~> 1.1'
 end
