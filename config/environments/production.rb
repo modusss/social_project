@@ -80,7 +80,12 @@ Rails.application.configure do
   # caching is enabled.
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: 'www.candeiasesperanca.com' }
+  config.action_mailer.default_url_options = { host: 'candeiasesperanca.com', protocol: 'https' }
+
+  # Although primarily for mailers, Devise might use this too.
+  # Sometimes needed directly for ActionController as well:
+  routes.default_url_options[:host] = 'candeiasesperanca.com'
+  routes.default_url_options[:protocol] = 'https'
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
