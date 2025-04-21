@@ -7,7 +7,7 @@ server "95.216.185.157",
   user: "deploy",
   roles: %w{app db web},
   ssh_options: {
-    keys: %w(~/.ssh/id_rsa),
+    keys: %w(~/.ssh/id_ed25519),
     forward_agent: true,
     auth_methods: %w(publickey)
   }
