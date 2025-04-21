@@ -7,7 +7,7 @@ set :repo_url, 'git@github.com:modusss/social_project.git'
 
 # Configurações de deploy
 set :deploy_to, '/var/www/candeiasesperanca'
-set :branch, 'main'  # ou 'master', dependendo da sua branch principal
+set :branch, '27_out_24'  # ou 'master', dependendo da sua branch principal
 
 # Configurações do rbenv/rvm
 # set :rbenv_type, :user
