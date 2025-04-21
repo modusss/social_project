@@ -40,7 +40,7 @@ set :puma_error_log, "#{release_path}/log/puma.error.log"
 # set :pty, true
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { path: "/usr/local/bin/bundle:$PATH" }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }

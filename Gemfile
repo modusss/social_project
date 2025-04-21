@@ -71,6 +71,8 @@ group :development do
   # ou
   # gem 'capistrano-rvm', '~> 0.1' # se você usa rvm
   gem 'capistrano3-puma', '~> 5.2' # se você usa Puma como servidor
+  gem 'ed25519', '~> 1.3'
+  gem 'bcrypt_pbkdf', '~> 1.1'
 end
 
 group :test do
