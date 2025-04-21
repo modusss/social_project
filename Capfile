@@ -44,3 +44,22 @@ require "capistrano/rails/assets"
 require "capistrano/rails/migrations"
 require "capistrano/puma"
 install_plugin Capistrano::Puma
+
+# Load Rails specific tasks
+require 'capistrano/rails'
+require 'capistrano/rails/assets'
+require 'capistrano/rails/migrations'
+
+require 'capistrano/rails/console'
+
+
+# Load Bundler tasks
+require 'capistrano/bundler'
+
+# Load RVM integration (if you use RVM)
+# require 'capistrano/rvm'
+# Ou Load rbenv integration (if you use rbenv)
+# require 'capistrano/rbenv'
+
+# Load other custom tasks or gems like passenger, puma, etc.
+# require 'capistrano/passenger'
