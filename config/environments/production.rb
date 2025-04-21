@@ -86,6 +86,8 @@ Rails.application.configure do
   # Sometimes needed directly for ActionController as well:
   routes.default_url_options[:host] = 'candeiasesperanca.com'
   routes.default_url_options[:protocol] = 'https'
+  
+  config.action_controller.forgery_protection_origin_check = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -102,10 +104,10 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
+  config.hosts = [
+    "candeiasesperanca.com",     # Allow requests from example.com
+    /.*\.candeiasesperanca\.com/ # Allow requests from subdomains like `www.example.com`
+  ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
