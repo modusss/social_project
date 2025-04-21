@@ -10,8 +10,11 @@ set :deploy_to, '/var/www/candeiasesperanca'
 set :branch, '27_out_24'  # ou 'master', dependendo da sua branch principal
 
 # Configurações do rbenv/rvm
-# set :rbenv_type, :user
-#set :rbenv_ruby, '3.2.2' # sua versão do Ruby
+set :rbenv_type, :user # Assumindo que rbenv está instalado para o usuário deploy
+set :rbenv_ruby, '3.3.0'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails puma pumactl} # Adicione puma/pumactl
+set :rbenv_roles, :all # default value
 
 # Configurações padrão
 set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key')
