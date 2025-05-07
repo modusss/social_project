@@ -34,7 +34,9 @@
   </head> 
 
   <body>
-    <%= render 'shared/navigation' %>
+    <% if user_signed_in? %>
+      <%= render 'shared/navigation' %>
+    <% end %>
 
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
