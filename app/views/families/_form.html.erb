@@ -83,24 +83,27 @@
 
     <%# Seção de Membros %>
     <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
-      <div class="border-b border-gray-200 bg-gray-50 px-6 py-4 flex justify-between items-center">
+      <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
         <h3 class="text-lg font-medium text-gray-900">Membros da Família</h3>
-        <%= link_to_add_association 'Adicionar membro', form, :members, 
-            class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200",
-            data: { 
-              association_insertion_node: '#member_fields', 
-              association_insertion_method: 'append',
-              action: "click->member-numbering#memberAdded"
-            } %>
       </div>
       
       <div class="p-6">
-        <div id="member_fields" class="space-y-6 mb-6" data-controller="nested-form member-form">
+        <div id="member_fields" class="space-y-6" data-controller="nested-form member-form">
           <%= form.fields_for :members do |member_form| %>
             <div class="member-fields" data-member-index="<%= member_form.object.id || member_form.index %>" data-controller="member-form">
               <%= render 'member_fields', f: member_form %>
             </div>
           <% end %>
+        </div>
+        
+        <div class="mt-6">
+          <%= link_to_add_association 'Adicionar membro', form, :members, 
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200",
+              data: { 
+                association_insertion_node: '#member_fields', 
+                association_insertion_method: 'append',
+                action: "click->member-numbering#memberAdded"
+              } %>
         </div>
       </div>
     </div>
