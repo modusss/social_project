@@ -1,290 +1,466 @@
-<div class="member-container nested-fields bg-gray-50 border border-gray-200 rounded-lg p-6 relative" data-member-container>
-  <%# Número do membro no canto superior esquerdo %>
-  <div class="top-2 left-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium member-number" style="margin-bottom: 15px;">
-    <%= f.object.index %>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <%# Nome %>
-    <div>
-      <%= f.label :name, "Nome", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= f.text_field :name, 
-          class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-          placeholder: "Nome completo" %>
-    </div>
-
-    <%# Data de Nascimento %>
-    <div>
-      <%= f.label :birth_date, "Data de Nascimento", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <div class="flex items-center gap-4">
-        <%= f.date_field :birth_date, 
-            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
-        <span class="text-sm text-gray-500">ou</span>
-        <%= f.number_field :age, 
-            class: "block w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-            placeholder: "Idade" %>
-      </div>
-    </div>
-  </div>
-
-  <%# CPF - Novo campo %>
-  <div class="mb-6">
-    <%= f.label :cpf, "CPF", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <div class="w-[150px]">
-      <%= f.text_field :cpf, 
-          class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-          placeholder: "000.000.000-00",
-          maxlength: "14",
-          data: { controller: "input-mask", input_mask_type_value: "cpf" } %>
-    </div>
-  </div>
-
-  <%# Papel na Família %>
-  <div class="mb-6">
-    <%= f.label :role, "Papel na Família", class: "block text-sm font-medium text-gray-700 mb-2" %>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-3">
-      <%# Pai e Mãe %>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "pai", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio" %>
-        <%= f.label :role_pai, "Pai", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "mãe", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio" %>
-        <%= f.label :role_mãe, "Mãe", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      
-      <%# Marido e Esposa %>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "marido", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio" %>
-        <%= f.label :role_marido, "Marido", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "esposa", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio" %>
-        <%= f.label :role_esposa, "Esposa", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      
-      <%# Filho e Filha %>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "filho", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio" %>
-        <%= f.label :role_filho, "Filho", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "filha", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio" %>
-        <%= f.label :role_filha, "Filha", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      
-      <%# Acompanhante e Paciente %>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "acompanhante", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio gender-neutral" %>
-        <%= f.label :role_acompanhante, "Acompanhante", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      <div class="flex items-center">
-        <%= f.radio_button :role, "paciente", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio gender-neutral" %>
-        <%= f.label :role_paciente, "Paciente", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      
-      <%# Não definir (sozinho na última linha) %>
-      <div class="flex items-center col-span-2 md:col-span-4 mt-2">
-        <%= f.radio_button :role, "", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 role-radio gender-neutral" %>
-        <%= f.label :role_, "Não definir", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-    </div>
-  </div>
-
-  <%# Campo de seleção de sexo (inicialmente oculto) %>
-  <div id="gender-field-<%= f.object.index || 'new' %>" class="mb-6 hidden">
-    <%= f.label :gender, "Sexo", class: "block text-sm font-medium text-gray-700 mb-2" %>
-    <div class="grid grid-cols-4 gap-x-6">
-      <div class="flex items-center">
-        <%= f.radio_button :gender, "masculino", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
-        <%= f.label :gender_masculino, "Masculino", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-      <div class="flex items-center">
-        <%= f.radio_button :gender, "feminino", 
-            class: "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500" %>
-        <%= f.label :gender_feminino, "Feminino", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-    </div>
-  </div>
-
-  <%# Informações Adicionais %>
-  <div class="border-t border-gray-200 pt-4 mb-6">
-    <h4 class="text-sm font-medium text-gray-900 mb-4">Informações Adicionais</h4>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-      <div class="flex items-center">
-        <%= f.check_box :can_read, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-        <%= f.label :can_read, "Sabe ler?", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-
-      <div class="flex items-center">
-        <%= f.check_box :lives_in_house, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-        <%= f.label :lives_in_house, "Mora na casa?", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-
-      <div class="flex items-center">
-        <%= f.check_box :lives_with_partner, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-        <%= f.label :lives_with_partner, "Vive com cônjuge/parceiro?", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-    </div>
-    
-    <%# Novos campos adicionais %>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-      <div class="flex items-center">
-        <%= f.check_box :attends_church, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-        <%= f.label :attends_church, "Congrega em igreja?", 
-            class: "ml-2 text-sm text-gray-700" %>
-      </div>
-    </div>
-
-    <%# Campo de deficiência física - Modificado para ocupar metade da largura com espaçamento %>
-    <div class="my-6">
-      <div class="w-full md:w-1/2">
-        <%= f.label :disability, "Deficiência física ou doença", 
-            class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :disability, 
-            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-            placeholder: "Descreva a deficiência ou doença" %>
-      </div>
-    </div>
-    
-    <%# Campos de tamanho de roupa e calçado com largura ajustada e apenas numéricos %>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-      <div>
-        <%= f.label :shirt_size, "Tamanho de camisa", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <div class="w-[120px]">
-          <%= f.select :shirt_size, 
-              [["PP", "PP"], ["P", "P"], ["M", "M"], ["G", "G"], ["GG", "GG"], ["XG", "XG"], ["XXG", "XXG"]], 
-              { include_blank: "Selecione" }, 
-              { class: "w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" } %>
+<div class="member-container nested-fields bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden" data-member-container>
+  <!-- Header do Membro -->
+  <div class="relative bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 border-b border-gray-100 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <!-- Número do membro com design premium -->
+        <div class="flex-shrink-0">
+          <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+            <span class="text-white text-lg font-bold member-number"><%= f.object.index %></span>
+          </div>
         </div>
-      </div>
-
-      <div>
-        <%= f.label :pants_size, "Tamanho de calça", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <div class="w-[120px]">
-          <%= f.number_field :pants_size, 
-              class: "w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-              min: 34, max: 60, step: 2,
-              placeholder: "Ex: 38, 40, 42" %>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Membro da Família</h3>
+          <p class="text-sm text-gray-600">Preencha as informações pessoais</p>
         </div>
       </div>
       
-      <div>
-        <%= f.label :shoe_size, "Tamanho do calçado", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <div class="w-[120px]">
-          <%= f.number_field :shoe_size, 
-              class: "w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-              min: 15, max: 50, step: 1,
-              placeholder: "Ex: 38, 42" %>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <%# Informações de Emprego e Renda - Novos campos %>
-  <div class="border-t border-gray-200 pt-4 mb-6">
-    <h4 class="text-sm font-medium text-gray-900 mb-4">Informações de Emprego e Renda</h4>
-    
-    <div class="mb-6">
-      <%# Profissão %>
-      <div class="mb-4">
-        <%= f.label :profession, "Profissão", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.text_field :profession, 
-            class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm",
-            placeholder: "Ex: Pedreiro, Professora, etc." %>
-      </div>
-    </div>
-
-    <%# Renda %>
-    <%# Está empregado? %>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <%= f.label :employed, class: "flex items-center" do %>
-        <%= f.check_box :employed, 
-            class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2",
-            data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "income-field-#{f.object_id}" } %>
-        <span class="text-sm text-gray-700">Está empregado?</span>
+      <!-- Botão Remover no header -->
+      <%= link_to_remove_association f, 
+          class: "inline-flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all duration-200 border border-red-200 hover:border-red-300", 
+          data: { action: "click->member-numbering#updateNumbers" } do %>
+        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+        Remover
       <% end %>
-    <div id="income-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.employed %> mb-6">
-      <%= f.label :income, "Renda", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <div class="relative rounded-md shadow-sm">
-        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <span class="text-gray-500 sm:text-sm">R$</span>
+    </div>
+  </div>
+
+  <div class="p-8 space-y-8">
+    <!-- Seção 1: Informações Básicas -->
+    <div class="space-y-6">
+      <div class="flex items-center space-x-3 mb-6">
+        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
         </div>
-        <%= f.number_field :income, step: '0.01', 
-            class: "block w-full rounded-md border-gray-300 pl-8 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+        <h4 class="text-lg font-semibold text-gray-900">Dados Pessoais</h4>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Nome -->
+        <div class="group relative">
+          <%= f.label :name, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            Nome Completo <span class="text-red-500">*</span>
+          <% end %>
+          <%= f.text_field :name, 
+              class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 sm:text-sm bg-gray-50 focus:bg-white",
+              placeholder: "Digite o nome completo",
+              required: true %>
+        </div>
+
+        <!-- Data de Nascimento e Idade -->
+        <div class="group relative">
+          <%= f.label :birth_date, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            Data de Nascimento
+          <% end %>
+          <div class="flex items-center space-x-3">
+            <%= f.date_field :birth_date, 
+                class: "flex-1 rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 sm:text-sm bg-gray-50 focus:bg-white" %>
+            <span class="text-sm text-gray-500 font-medium">ou</span>
+            <%= f.number_field :age, 
+                class: "w-20 rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 sm:text-sm bg-gray-50 focus:bg-white",
+                placeholder: "Idade",
+                min: 0, max: 120 %>
+          </div>
+        </div>
+      </div>
+
+      <!-- CPF -->
+      <div class="group relative max-w-xs">
+        <%= f.label :cpf, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+          <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          CPF
+        <% end %>
+        <%= f.text_field :cpf, 
+            class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 sm:text-sm bg-gray-50 focus:bg-white",
+            placeholder: "000.000.000-00",
+            maxlength: "14",
+            data: { controller: "input-mask", input_mask_type_value: "cpf" } %>
       </div>
     </div>
+
+    <!-- Seção 2: Papel na Família -->
+    <div class="space-y-6">
+      <div class="flex items-center space-x-3 mb-6">
+        <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+        </div>
+        <h4 class="text-lg font-semibold text-gray-900">Papel na Família</h4>
+      </div>
+
+      <div class="bg-gray-50 rounded-xl p-6">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 role-group">
+          <% [
+            ["pai", "Pai", "👨"],
+            ["mãe", "Mãe", "👩"],
+            ["marido", "Marido", "🤵"],
+            ["esposa", "Esposa", "👰"],
+            ["filho", "Filho", "👦"],
+            ["filha", "Filha", "👧"],
+            ["acompanhante", "Acompanhante", "🤝"],
+            ["paciente", "Paciente", "🏥"]
+          ].each do |value, label, emoji| %>
+            <label class="role-option relative flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group">
+              <%= f.radio_button :role, value, class: "sr-only role-radio" %>
+              <div class="flex flex-col items-center space-y-2 w-full">
+                <span class="text-2xl"><%= emoji %></span>
+                <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700 text-center"><%= label %></span>
+              </div>
+              <!-- Indicador de seleção -->
+              <div class="absolute top-2 right-2 w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center selection-indicator">
+                <div class="w-2.5 h-2.5 bg-blue-600 rounded-full hidden selection-dot"></div>
+              </div>
+            </label>
+          <% end %>
+          
+          <!-- Opção "Não definir" -->
+          <label class="role-option relative flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group col-span-2 md:col-span-3 lg:col-span-4">
+            <%= f.radio_button :role, "", class: "sr-only role-radio" %>
+            <div class="flex items-center justify-center space-x-2 w-full">
+              <span class="text-xl">❓</span>
+              <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700">Não definir</span>
+            </div>
+            <div class="absolute top-2 right-2 w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center selection-indicator">
+              <div class="w-2.5 h-2.5 bg-blue-600 rounded-full hidden selection-dot"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Campo de sexo (condicional) -->
+      <div id="gender-field-<%= f.object.index || 'new' %>" class="hidden transition-all duration-300">
+        <div class="bg-blue-50 rounded-xl p-6">
+          <%= f.label :gender, class: "block text-sm font-semibold text-gray-700 mb-4" do %>
+            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            Sexo
+          <% end %>
+          <div class="grid grid-cols-2 gap-4 gender-group">
+            <label class="gender-option relative flex items-center p-4 border-2 border-blue-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-100 transition-all duration-200 group">
+              <%= f.radio_button :gender, "masculino", class: "sr-only gender-radio" %>
+              <div class="flex items-center space-x-3 w-full">
+                <span class="text-xl">♂️</span>
+                <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700">Masculino</span>
+              </div>
+              <div class="absolute top-2 right-2 w-5 h-5 border-2 border-blue-300 rounded-full flex items-center justify-center selection-indicator">
+                <div class="w-2.5 h-2.5 bg-blue-600 rounded-full hidden selection-dot"></div>
+              </div>
+            </label>
+            <label class="gender-option relative flex items-center p-4 border-2 border-blue-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-100 transition-all duration-200 group">
+              <%= f.radio_button :gender, "feminino", class: "sr-only gender-radio" %>
+              <div class="flex items-center space-x-3 w-full">
+                <span class="text-xl">♀️</span>
+                <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700">Feminino</span>
+              </div>
+              <div class="absolute top-2 right-2 w-5 h-5 border-2 border-blue-300 rounded-full flex items-center justify-center selection-indicator">
+                <div class="w-2.5 h-2.5 bg-blue-600 rounded-full hidden selection-dot"></div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <%# Possui benefício? %>
-      <div>
-        <%= f.label :has_benefit, class: "flex items-center" do %>
-          <%= f.check_box :has_benefit, 
-              class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2",
-              data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "benefit-value-field-#{f.object_id}" } %>
-          <span class="text-sm text-gray-700">Possui benefício?</span>
+    <!-- Seção 3: Informações Complementares -->
+    <div class="space-y-6">
+      <div class="flex items-center space-x-3 mb-6">
+        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h4 class="text-lg font-semibold text-gray-900">Informações Complementares</h4>
+      </div>
+
+      <!-- Checkboxes em cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% [
+          [:can_read, "Sabe ler?", "📚"],
+          [:lives_in_house, "Mora na casa?", "🏠"],
+          [:lives_with_partner, "Vive com cônjuge?", "💑"],
+          [:attends_church, "Congrega em igreja?", "⛪"],
+          [:firm_in_faith, "Já aceitou Jesus?", "✝️"]
+        ].each do |field, label, emoji| %>
+          <label class="checkbox-option relative flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-green-300 hover:bg-green-50 transition-all duration-200 group">
+            <%= f.check_box field, class: "sr-only custom-checkbox" %>
+            <div class="flex items-center space-x-3 w-full">
+              <span class="text-xl"><%= emoji %></span>
+              <span class="text-sm font-medium text-gray-700 group-hover:text-green-700 flex-1"><%= label %></span>
+              <div class="w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center checkbox-indicator">
+                <svg class="w-3 h-3 text-green-600 hidden checkmark" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+          </label>
         <% end %>
       </div>
 
-      <%# Valor do benefício %>
-      <div id="benefit-value-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.has_benefit %>">
-        <%= f.label :benefit_value, "Valor do benefício", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <div class="relative rounded-md shadow-sm">
-          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <span class="text-gray-500 sm:text-sm">R$</span>
+      <!-- Campo de deficiência -->
+      <div class="bg-yellow-50 rounded-xl p-6">
+        <%= f.label :disability, class: "block text-sm font-semibold text-gray-700 mb-3" do %>
+          <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Deficiência física ou doença
+        <% end %>
+        <%= f.text_area :disability, 
+            class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-200 sm:text-sm bg-white",
+            placeholder: "Descreva alguma deficiência ou doença (opcional)",
+            rows: 3 %>
+      </div>
+    </div>
+
+    <!-- Seção 4: Tamanhos e Vestuário -->
+    <div class="space-y-6">
+      <div class="flex items-center space-x-3 mb-6">
+        <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+          </svg>
+        </div>
+        <h4 class="text-lg font-semibold text-gray-900">Tamanhos de Roupa</h4>
+      </div>
+
+      <div class="bg-indigo-50 rounded-xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Tamanho de camisa -->
+          <div class="group">
+            <%= f.label :shirt_size, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+              👕 Camisa
+            <% end %>
+            <%= f.select :shirt_size, 
+                [["PP", "PP"], ["P", "P"], ["M", "M"], ["G", "G"], ["GG", "GG"], ["XG", "XG"], ["XXG", "XXG"]], 
+                { include_blank: "Selecione" }, 
+                { class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 sm:text-sm bg-white" } %>
           </div>
-          <%= f.number_field :benefit_value, step: '0.01', 
-              class: "block w-full rounded-md border-gray-300 pl-8 focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+
+          <!-- Tamanho de calça -->
+          <div class="group">
+            <%= f.label :pants_size, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+              👖 Calça
+            <% end %>
+            <%= f.number_field :pants_size, 
+                class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 sm:text-sm bg-white",
+                min: 34, max: 60, step: 2,
+                placeholder: "Ex: 38, 40, 42" %>
+          </div>
+          
+          <!-- Tamanho do calçado -->
+          <div class="group">
+            <%= f.label :shoe_size, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+              👟 Calçado
+            <% end %>
+            <%= f.number_field :shoe_size, 
+                class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 sm:text-sm bg-white",
+                min: 15, max: 50, step: 1,
+                placeholder: "Ex: 38, 42" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção 5: Informações Profissionais -->
+    <div class="space-y-6">
+      <div class="flex items-center space-x-3 mb-6">
+        <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6z"/>
+          </svg>
+        </div>
+        <h4 class="text-lg font-semibold text-gray-900">Informações Profissionais</h4>
+      </div>
+
+      <div class="bg-amber-50 rounded-xl p-6 space-y-6">
+        <!-- Profissão -->
+        <div class="group">
+          <%= f.label :profession, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+            💼 Profissão
+          <% end %>
+          <%= f.text_field :profession, 
+              class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all duration-200 sm:text-sm bg-white",
+              placeholder: "Ex: Pedreiro, Professora, Estudante..." %>
+        </div>
+
+        <!-- Status de emprego e renda -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <!-- Checkbox empregado -->
+            <label class="checkbox-option flex items-center p-4 bg-white border-2 border-amber-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-all duration-200 group">
+              <%= f.check_box :employed, 
+                  class: "sr-only custom-checkbox",
+                  data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "income-field-#{f.object_id}" } %>
+              <div class="flex items-center space-x-3 w-full">
+                <span class="text-xl">💰</span>
+                <span class="text-sm font-medium text-gray-700 group-hover:text-amber-700 flex-1">Está empregado?</span>
+                <div class="w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center checkbox-indicator">
+                  <svg class="w-3 h-3 text-amber-600 hidden checkmark" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+              </div>
+            </label>
+
+            <!-- Campo de renda (condicional) -->
+            <div id="income-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.employed %> transition-all duration-300">
+              <%= f.label :income, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+                💵 Renda mensal
+              <% end %>
+              <div class="relative">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                  <span class="text-gray-500 sm:text-sm font-medium">R$</span>
+                </div>
+                <%= f.number_field :income, step: '0.01', 
+                    class: "block w-full rounded-xl border-gray-300 pl-12 shadow-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all duration-200 sm:text-sm bg-white",
+                    placeholder: "0,00" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Checkbox benefício -->
+            <label class="checkbox-option flex items-center p-4 bg-white border-2 border-amber-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-all duration-200 group">
+              <%= f.check_box :has_benefit, 
+                  class: "sr-only custom-checkbox",
+                  data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "benefit-value-field-#{f.object_id}" } %>
+              <div class="flex items-center space-x-3 w-full">
+                <span class="text-xl">🎁</span>
+                <span class="text-sm font-medium text-gray-700 group-hover:text-amber-700 flex-1">Recebe benefício social?</span>
+                <div class="w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center checkbox-indicator">
+                  <svg class="w-3 h-3 text-amber-600 hidden checkmark" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+              </div>
+            </label>
+
+            <!-- Campo de valor do benefício (condicional) -->
+            <div id="benefit-value-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.has_benefit %> transition-all duration-300">
+              <%= f.label :benefit_value, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
+                💰 Valor do benefício
+              <% end %>
+              <div class="relative">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                  <span class="text-gray-500 sm:text-sm font-medium">R$</span>
+                </div>
+                <%= f.number_field :benefit_value, step: '0.01', 
+                    class: "block w-full rounded-xl border-gray-300 pl-12 shadow-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all duration-200 sm:text-sm bg-white",
+                    placeholder: "0,00" %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="flex items-center justify-between">
-    <%# Já aceitou Jesus %>
-    <div class="flex items-center">
-      <%= f.check_box :firm_in_faith, 
-          class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
-      <%= f.label :firm_in_faith, "Já aceitou Jesus", 
-          class: "ml-2 text-sm text-gray-700" %>
-    </div>
-
-    <%# Botão Remover %>
-    <%= link_to_remove_association f, class: "inline-flex items-center text-sm text-red-600 hover:text-red-900", data: { action: "click->member-numbering#updateNumbers" } do %>
-      <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-      </svg>
-      Remover membro
-    <% end %>
-  </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Função para lidar com radio buttons customizados
+  function setupRadioButtons() {
+    // Radio buttons de papel na família
+    document.querySelectorAll('.role-radio').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.checked) {
+          // Remove seleção de todos os outros no mesmo grupo
+          const container = this.closest('.role-group');
+          container.querySelectorAll('.role-option').forEach(option => {
+            option.classList.remove('border-blue-500', 'bg-blue-50');
+            option.querySelector('.selection-indicator').classList.remove('border-blue-500', 'bg-blue-50');
+            option.querySelector('.selection-dot').classList.add('hidden');
+          });
+          
+          // Adiciona seleção ao atual
+          const currentOption = this.closest('.role-option');
+          currentOption.classList.add('border-blue-500', 'bg-blue-50');
+          currentOption.querySelector('.selection-indicator').classList.add('border-blue-500', 'bg-blue-50');
+          currentOption.querySelector('.selection-dot').classList.remove('hidden');
+        }
+      });
+    });
+
+    // Radio buttons de gênero
+    document.querySelectorAll('.gender-radio').forEach(radio => {
+      radio.addEventListener('change', function() {
+        if (this.checked) {
+          // Remove seleção de todos os outros no mesmo grupo
+          const container = this.closest('.gender-group');
+          container.querySelectorAll('.gender-option').forEach(option => {
+            option.classList.remove('border-blue-500', 'bg-blue-100');
+            option.querySelector('.selection-indicator').classList.remove('border-blue-500', 'bg-blue-50');
+            option.querySelector('.selection-dot').classList.add('hidden');
+          });
+          
+          // Adiciona seleção ao atual
+          const currentOption = this.closest('.gender-option');
+          currentOption.classList.add('border-blue-500', 'bg-blue-100');
+          currentOption.querySelector('.selection-indicator').classList.add('border-blue-500', 'bg-blue-50');
+          currentOption.querySelector('.selection-dot').classList.remove('hidden');
+        }
+      });
+    });
+  }
+
+  // Função para lidar com checkboxes customizados
+  function setupCheckboxes() {
+    document.querySelectorAll('.custom-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const option = this.closest('.checkbox-option');
+        const indicator = option.querySelector('.checkbox-indicator');
+        const checkmark = option.querySelector('.checkmark');
+        
+        if (this.checked) {
+          option.classList.add('border-green-500', 'bg-green-50');
+          indicator.classList.add('border-green-500', 'bg-green-500');
+          checkmark.classList.remove('hidden');
+        } else {
+          option.classList.remove('border-green-500', 'bg-green-50');
+          indicator.classList.remove('border-green-500', 'bg-green-500');
+          checkmark.classList.add('hidden');
+        }
+      });
+    });
+  }
+
+  // Função para inicializar estados existentes
+  function initializeExistingValues() {
+    // Inicializar radio buttons já selecionados
+    document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+      radio.dispatchEvent(new Event('change'));
+    });
+    
+    // Inicializar checkboxes já marcados
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+      checkbox.dispatchEvent(new Event('change'));
+    });
+  }
+
+  // Configurar tudo
+  setupRadioButtons();
+  setupCheckboxes();
+  
+  // Pequeno delay para garantir que o DOM esteja completamente carregado
+  setTimeout(initializeExistingValues, 100);
+
+  // Reconfigurar quando novos membros são adicionados
+  document.addEventListener('cocoon:after-insert', function() {
+    setupRadioButtons();
+    setupCheckboxes();
+  });
+});
+</script>
