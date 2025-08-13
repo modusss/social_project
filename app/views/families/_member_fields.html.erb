@@ -141,7 +141,7 @@
       </div>
 
       <!-- Campo de sexo (condicional) -->
-      <div id="gender-field-<%= f.object.index || 'new' %>" class="hidden transition-all duration-300">
+      <div id="gender-field-<%= f.index %>" class="hidden transition-all duration-300">
         <div class="bg-blue-50 rounded-xl p-6">
           <%= f.label :gender, class: "block text-sm font-semibold text-gray-700 mb-4" do %>
             <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -303,7 +303,7 @@
             <label class="checkbox-option flex items-center p-4 bg-white border-2 border-amber-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-all duration-200 group">
               <%= f.check_box :employed, 
                   class: "sr-only custom-checkbox",
-                  data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "income-field-#{f.object_id}" } %>
+                  data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "income-field-#{f.index}" } %>
               <div class="flex items-center space-x-3 w-full">
                 <span class="text-xl">💰</span>
                 <span class="text-sm font-medium text-gray-700 group-hover:text-amber-700 flex-1">Está empregado?</span>
@@ -316,7 +316,7 @@
             </label>
 
             <!-- Campo de renda (condicional) -->
-            <div id="income-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.employed %> transition-all duration-300">
+            <div id="income-field-<%= f.index %>" class="<%= 'hidden' unless f.object.employed %> transition-all duration-300">
               <%= f.label :income, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
                 💵 Renda mensal
               <% end %>
@@ -336,7 +336,7 @@
             <label class="checkbox-option flex items-center p-4 bg-white border-2 border-amber-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50 transition-all duration-200 group">
               <%= f.check_box :has_benefit, 
                   class: "sr-only custom-checkbox",
-                  data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "benefit-value-field-#{f.object_id}" } %>
+                  data: { controller: "toggle", action: "toggle#toggle", "toggle-target": "checkbox", "toggle-show": "benefit-value-field-#{f.index}" } %>
               <div class="flex items-center space-x-3 w-full">
                 <span class="text-xl">🎁</span>
                 <span class="text-sm font-medium text-gray-700 group-hover:text-amber-700 flex-1">Recebe benefício social?</span>
@@ -349,7 +349,7 @@
             </label>
 
             <!-- Campo de valor do benefício (condicional) -->
-            <div id="benefit-value-field-<%= f.object_id %>" class="<%= 'hidden' unless f.object.has_benefit %> transition-all duration-300">
+            <div id="benefit-value-field-<%= f.index %>" class="<%= 'hidden' unless f.object.has_benefit %> transition-all duration-300">
               <%= f.label :benefit_value, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
                 💰 Valor do benefício
               <% end %>
@@ -370,7 +370,8 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+// Reexecuta corretamente com Turbo e quando Cocoon insere novos campos
+function initMemberFieldInteractions() {
   // Função para lidar com radio buttons customizados
   function setupRadioButtons() {
     // Radio buttons de papel na família
@@ -453,14 +454,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // Configurar tudo
   setupRadioButtons();
   setupCheckboxes();
-  
   // Pequeno delay para garantir que o DOM esteja completamente carregado
   setTimeout(initializeExistingValues, 100);
+}
 
-  // Reconfigurar quando novos membros são adicionados
-  document.addEventListener('cocoon:after-insert', function() {
-    setupRadioButtons();
-    setupCheckboxes();
-  });
+// Primeira carga (Turbo)
+document.addEventListener('turbo:load', initMemberFieldInteractions);
+// Fallback para páginas fora do Turbo
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(initMemberFieldInteractions, 0);
+}
+// Reconfigurar quando novos membros são adicionados via Cocoon
+document.addEventListener('cocoon:after-insert', function() {
+  initMemberFieldInteractions();
 });
 </script>
