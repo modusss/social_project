@@ -26,7 +26,9 @@ class Family < ApplicationRecord
         %w[recebendo lista_de_espera repescagem nao_necessita]
     end
 
-    validates :food_basket_status, inclusion: { in: valid_food_basket_statuses }
+    # Campo opcional: permite nil ou vazio. Também normalizamos o valor padrão do BD.
+    before_validation :normalize_optional_food_basket
+    validates :food_basket_status, inclusion: { in: valid_food_basket_statuses }, allow_nil: true, allow_blank: true
 
     def last_observation
         observations.order(created_at: :desc).first&.observation
@@ -63,7 +65,7 @@ class Family < ApplicationRecord
             # Only update if the status has changed
             update(food_basket_status: new_status) if food_basket_status != new_status
         else
-            # If no dates are set, mark as "não_receberam"
+            # If no dates are set and auto-update was requested, mark as "não_receberam"
             update(food_basket_status: "não_receberam") if food_basket_status != "não_receberam"
         end
     end
@@ -93,5 +95,10 @@ class Family < ApplicationRecord
         if !financed_house
             self.financing_value = nil
         end
+    end
+
+    # Transforma o default do BD ("não_receberam") ou vazio em nil, tornando o campo realmente opcional
+    def normalize_optional_food_basket
+        self.food_basket_status = nil if food_basket_status.blank? || food_basket_status == "não_receberam"
     end
 end
