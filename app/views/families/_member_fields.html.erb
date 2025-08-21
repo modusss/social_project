@@ -191,7 +191,7 @@
         <% [
           [:can_read, "Sabe ler?", "📚"],
           [:lives_in_house, "Mora na casa?", "🏠"],
-          [:lives_with_partner, "Vive com cônjuge?", "💑"],
+
           [:attends_church, "Congrega em igreja?", "⛪"],
           [:firm_in_faith, "Já aceitou Jesus?", "✝️"]
         ].each do |field, label, emoji| %>
@@ -216,7 +216,7 @@
           <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          Deficiência física ou doença
+          Deficiência e/ou doença
         <% end %>
         <%= f.text_area :disability, 
             class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-200 sm:text-sm bg-white",

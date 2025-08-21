@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_23_232309) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_21_231125) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -56,7 +56,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_23_232309) do
     t.decimal "benefit_value", precision: 10, scale: 2
     t.boolean "can_read", default: true
     t.boolean "lives_in_house", default: true
-    t.boolean "lives_with_partner", default: false
     t.string "cpf"
     t.boolean "attends_church", default: false
     t.string "shirt_size"
