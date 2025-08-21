@@ -43,13 +43,12 @@
       <div class="p-6 space-y-6">
         <div class="group">
           <%= form.label :reference_name, class: "block text-sm font-medium text-gray-700 mb-2" do %>
-            Nome de Referência <span class="text-red-500">*</span>
+            Nome de Referência
           <% end %>
           <%= form.text_field :reference_name, 
               class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 sm:text-sm",
-              placeholder: "Ex: Família da Maria, Casa do João",
-              required: true %>
-          <p class="mt-1 text-xs text-gray-500">Como esta família é conhecida na comunidade</p>
+              placeholder: "Ex: Família da Maria, Casa do João" %>
+          <p class="mt-1 text-xs text-gray-500">Para facilitar a busca, esta família é conhecida na comunidade</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
