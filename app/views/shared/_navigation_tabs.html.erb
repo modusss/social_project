@@ -1,0 +1,6 @@
+<div class="flex justify-center space-x-4 mb-8">
+  <%= link_to "Listar por família", families_path, 
+      class: "px-4 py-2 #{current_page?(families_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+  <%= link_to "Listar por visitas", visits_path, 
+      class: "px-4 py-2 #{current_page?(visits_path) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+</div>

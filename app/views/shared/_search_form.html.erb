@@ -1,0 +1,57 @@
+<div class="card mb-8">
+  <div class="flex justify-between items-start">
+    <div class="w-2/3">
+      <%= form_with url: search_url_for_context, method: :post, class: "space-y-6", data: { turbo_stream: true } do |f| %>
+        <%= hidden_field_tag :view, params[:view] %>
+        <div class="space-y-4">
+          <h2 class="text-lg font-semibold text-gray-700 mb-4">Buscar <%= search_type_for_context %> por:</h2>
+          
+          <div data-controller="radio">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <% ['Nome', 'Telefone', 'Tipo de necessidade', 'CPF'].each do |type| %>
+                <div class="radio-option <%= 'selected' if params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>" data-action="click->radio#select" data-radio-target="option" data-type="<%= type %>">
+                  <%= f.radio_button :search_type, type, class: "hidden", checked: params[:search_type] == type || (params[:search_type].nil? && type == 'Nome') %>
+                  <div class="flex items-center">
+                    <div class="circle"></div>
+                    <div class="flex flex-col ml-3">
+                      <span class="text-lg font-semibold"><%= type.capitalize %></span>
+                      <span class="text-sm text-gray-500">
+                        <%= case type
+                            when 'Nome' then 'Família ou membro'
+                            when 'Telefone' then 'Número de contato'
+                            when 'Tipo de necessidade' then 'Emprego, cesta básica, etc.'
+                            when 'CPF' then 'Documento de identificação'
+                            end %>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="flex gap-3 mt-6">
+            <%= f.text_field :query, 
+                placeholder: "Digite sua busca...", 
+                class: "flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all",
+                data: { 
+                  action: "keyup->search#submit",
+                  search_target: "input" 
+                } %>
+            <%= f.submit "Buscar", 
+                class: "px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium transition-all cursor-pointer" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex items-center">
+      <%= link_to new_family_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-all" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Nova família
+      <% end %>
+    </div>
+  </div>
+</div>
