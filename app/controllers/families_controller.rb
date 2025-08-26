@@ -10,7 +10,6 @@ class FamiliesController < ApplicationController
                                MAX(visits.visit_date) as last_visit_date,
                                MAX(visits.id) as last_visit_id')
                       .group('families.id')
-                      .order('last_visit_date DESC NULLS LAST')
                       .includes(:members, :observations, :pending_needs, visits: :region)
                       .page(params[:page])
                       .per(100)
@@ -19,6 +18,9 @@ class FamiliesController < ApplicationController
     if params[:food_basket_status].present?
       @families = @families.where(food_basket_status: params[:food_basket_status])
     end
+
+    # Apply sorting
+    @families = apply_sorting(@families)
 
     # Set card view as default if no view parameter is provided
     params[:view] = 'card' if params[:view].blank?
@@ -259,5 +261,24 @@ class FamiliesController < ApplicationController
     # Helper method to normalize CPF by removing non-digit characters
     def normalize_cpf(cpf)
       cpf.to_s.gsub(/[^0-9]/, '')
+    end
+
+    def apply_sorting(families)
+      case params[:sort_by]
+      when 'per_capita_income_asc'
+        families.order(Arel.sql('CASE WHEN families.total_family_income IS NULL OR families.total_family_income = 0 THEN 1 ELSE 0 END, CASE WHEN families.members_count > 0 AND families.total_family_income > 0 THEN families.total_family_income / families.members_count ELSE 0 END ASC'))
+      when 'per_capita_income_desc'
+        families.order(Arel.sql('CASE WHEN families.total_family_income IS NULL OR families.total_family_income = 0 THEN 1 ELSE 0 END, CASE WHEN families.members_count > 0 AND families.total_family_income > 0 THEN families.total_family_income / families.members_count ELSE 0 END DESC'))
+      when 'members_count_asc'
+        families.order('families.members_count ASC')
+      when 'members_count_desc'
+        families.order('families.members_count DESC')
+      when 'last_visit_desc'
+        families.order('last_visit_date DESC NULLS LAST')
+      when 'last_visit_asc'
+        families.order('last_visit_date ASC NULLS LAST')
+      else
+        families.order('last_visit_date DESC NULLS LAST')
+      end
     end
 end

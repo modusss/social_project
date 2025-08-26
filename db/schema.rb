@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_21_231125) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_26_142013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,6 +36,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_21_231125) do
     t.string "housing_type"
     t.string "food_basket_status", default: "não_receberam"
     t.bigint "created_by_user_id"
+    t.integer "members_count", default: 0, null: false
+    t.decimal "total_family_income", precision: 10, scale: 2, default: "0.0", null: false
     t.index ["created_by_user_id"], name: "index_families_on_created_by_user_id"
     t.index ["food_basket_status"], name: "index_families_on_food_basket_status"
   end

@@ -1,0 +1,32 @@
+<div class="card mb-8">
+  <div class="p-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">Ordenar por</h2>
+    <div class="flex flex-wrap gap-3">
+      <%= link_to "Renda per capita (menor)", path_with_params(sort_by: 'per_capita_income_asc'), 
+          class: "px-4 py-2 #{params[:sort_by] == 'per_capita_income_asc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+      
+      <%= link_to "Renda per capita (maior)", path_with_params(sort_by: 'per_capita_income_desc'), 
+          class: "px-4 py-2 #{params[:sort_by] == 'per_capita_income_desc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+      
+      <%= link_to "Menos pessoas", path_with_params(sort_by: 'members_count_asc'), 
+          class: "px-4 py-2 #{params[:sort_by] == 'members_count_asc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+      
+      <%= link_to "Mais pessoas", path_with_params(sort_by: 'members_count_desc'), 
+          class: "px-4 py-2 #{params[:sort_by] == 'members_count_desc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+      
+      <% if controller_name == 'families' %>
+        <%= link_to "Última visita (recente)", path_with_params(sort_by: 'last_visit_desc'), 
+            class: "px-4 py-2 #{params[:sort_by] == 'last_visit_desc' || params[:sort_by].blank? ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+        
+        <%= link_to "Última visita (antiga)", path_with_params(sort_by: 'last_visit_asc'), 
+            class: "px-4 py-2 #{params[:sort_by] == 'last_visit_asc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+      <% else %>
+        <%= link_to "Data da visita (recente)", path_with_params(sort_by: 'visit_date_desc'), 
+            class: "px-4 py-2 #{params[:sort_by] == 'visit_date_desc' || params[:sort_by].blank? ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+        
+        <%= link_to "Data da visita (antiga)", path_with_params(sort_by: 'visit_date_asc'), 
+            class: "px-4 py-2 #{params[:sort_by] == 'visit_date_asc' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} rounded-lg hover:bg-blue-700 hover:text-white transition duration-300" %>
+      <% end %>
+    </div>
+  </div>
+</div>

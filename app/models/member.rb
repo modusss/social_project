@@ -8,6 +8,8 @@ class Member < ApplicationRecord
   before_save :update_age_from_birth_date
   before_save :clear_irrelevant_values
   before_save :set_gender_from_role
+  after_save :update_family_totals
+  after_destroy :update_family_totals
 
   # Mapeamento de papéis para gêneros
   ROLE_GENDER_MAPPING = {
@@ -55,5 +57,11 @@ class Member < ApplicationRecord
     if role.present? && ROLE_GENDER_MAPPING.key?(role) && ROLE_GENDER_MAPPING[role].present?
       self.gender = ROLE_GENDER_MAPPING[role]
     end
+  end
+
+  # Atualiza os totais da família quando um membro é alterado
+  def update_family_totals
+    family.update_members_count
+    family.update_total_family_income
   end
 end

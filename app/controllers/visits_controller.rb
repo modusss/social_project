@@ -3,15 +3,21 @@ class VisitsController < ApplicationController
 
   # GET /visits or /visits.json
   def index
-    @visits = Visit.includes(:user, :family, :pending_needs, :observations, visited_project: [:region, :project])
-                   .order(visit_date: :desc)
+    @visits = Visit.joins(:family)
+                   .select('visits.*, 
+                           families.members_count,
+                           families.total_family_income')
+                   .includes(:user, :family, :pending_needs, :observations, visited_project: [:region, :project])
                    .page(params[:page])
                    .per(100)
 
     # Apply food basket status filter if present
     if params[:food_basket_status].present?
-      @visits = @visits.joins(:family).where(families: { food_basket_status: params[:food_basket_status] })
+      @visits = @visits.where(families: { food_basket_status: params[:food_basket_status] })
     end
+
+    # Apply sorting
+    @visits = apply_sorting(@visits)
 
     # Set card view as default if no view parameter is provided
     params[:view] = 'card' if params[:view].blank?
@@ -218,5 +224,24 @@ class VisitsController < ApplicationController
     # Helper method to normalize CPF by removing non-digit characters
     def normalize_cpf(cpf)
       cpf.to_s.gsub(/[^0-9]/, '')
+    end
+
+    def apply_sorting(visits)
+      case params[:sort_by]
+      when 'per_capita_income_asc'
+        visits.order(Arel.sql('CASE WHEN families.total_family_income IS NULL OR families.total_family_income = 0 THEN 1 ELSE 0 END, CASE WHEN families.members_count > 0 AND families.total_family_income > 0 THEN families.total_family_income / families.members_count ELSE 0 END ASC'))
+      when 'per_capita_income_desc'
+        visits.order(Arel.sql('CASE WHEN families.total_family_income IS NULL OR families.total_family_income = 0 THEN 1 ELSE 0 END, CASE WHEN families.members_count > 0 AND families.total_family_income > 0 THEN families.total_family_income / families.members_count ELSE 0 END DESC'))
+      when 'members_count_asc'
+        visits.order('families.members_count ASC')
+      when 'members_count_desc'
+        visits.order('families.members_count DESC')
+      when 'visit_date_desc'
+        visits.order('visits.visit_date DESC')
+      when 'visit_date_asc'
+        visits.order('visits.visit_date ASC')
+      else
+        visits.order('visits.visit_date DESC')
+      end
     end
 end

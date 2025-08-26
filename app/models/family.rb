@@ -20,6 +20,7 @@ class Family < ApplicationRecord
     before_save :clear_irrelevant_housing_values
     before_save :calculate_total_income
     before_save :mark_empty_name_members_for_destruction
+    after_save :update_members_count, :update_total_family_income
 
     # Define the class method before using it in validation
     def self.valid_food_basket_statuses
@@ -70,13 +71,59 @@ class Family < ApplicationRecord
         end
     end
 
-    private
 
     # Marca membros com nome vazio para exclusão
     def mark_empty_name_members_for_destruction
         members.each do |member|
             member.mark_for_destruction if member.name.blank?
         end
+    end
+
+    def clear_irrelevant_housing_values
+        # Se for casa própria, limpar valor do aluguel
+        if housing_type == 'own'
+            self.rent_value = nil
+        end
+        
+        # Se for casa alugada, limpar valor do financiamento e desmarcar financiada
+        if housing_type == 'rented'
+            self.financing_value = nil
+            self.financed_house = false
+        end
+        
+        # Se não for financiada, limpar valor do financiamento
+        if !financed_house
+            self.financing_value = nil
+        end
+    end
+
+    def update_members_count
+        update_column(:members_count, members.count) if persisted?
+    end
+
+    def update_total_family_income
+        total_income = members.sum(:income) || 0.0
+        update_column(:total_family_income, total_income) if persisted?
+    end
+
+    private
+
+    # Transforma o default do BD ("não_receberam") ou vazio em nil, tornando o campo realmente opcional
+    def normalize_optional_food_basket
+        self.food_basket_status = nil if food_basket_status.blank? || food_basket_status == "não_receberam"
+    end
+
+    def mark_empty_name_members_for_destruction
+        members.each do |member|
+            if member.name.blank? && member.persisted?
+                member.mark_for_destruction
+            end
+        end
+    end
+
+    def calculate_total_income
+        # Este método pode ser removido se não estiver sendo usado
+        # pois agora usamos o campo total_family_income
     end
 
     def clear_irrelevant_housing_values
