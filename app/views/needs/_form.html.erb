@@ -12,8 +12,14 @@
 
   <div id="needs-container" data-controller="nested-form need">
     <div data-nested-form-target="entries">
-      <div class="need-fields mb-4 p-4 border rounded-lg bg-gray-50">
+      <div class="need-fields mb-4 p-4 border rounded-lg bg-gray-50 relative">
         <% if need.new_record? %>
+          <button type="button" 
+                  data-action="nested-form#remove"
+                  class="absolute top-3 right-3 text-gray-400 hover:text-red-500 hover:bg-gray-100 rounded-full p-2 transition-all duration-200 opacity-70 hover:opacity-100 shadow-sm hover:shadow-md"
+                  title="Remover necessidade">
+            <i class="fas fa-times text-xs"></i>
+          </button>
           <%= fields_for 'needs[]', need do |need_fields| %>
             <div class="my-5">
               <%= need_fields.label :name, "Nome da necessidade", class: "block text-gray-700" %>
@@ -74,7 +80,13 @@
     <% if need.new_record? %>
       <template data-nested-form-target="template">
         <%= fields_for 'needs[]', Need.new, child_index: 'NEW_RECORD' do |need_fields| %>
-          <div class="need-fields mb-4 p-4 border rounded-lg bg-gray-50">
+          <div class="need-fields mb-4 p-4 border rounded-lg bg-gray-50 relative">
+            <button type="button" 
+                    data-action="nested-form#remove"
+                    class="absolute top-3 right-3 text-gray-400 hover:text-red-500 hover:bg-gray-100 rounded-full p-2 transition-all duration-200 opacity-70 hover:opacity-100 shadow-sm hover:shadow-md"
+                    title="Remover necessidade">
+              <i class="fas fa-times text-xs"></i>
+            </button>
             <div class="my-5">
               <%= need_fields.label :name, "Nome da necessidade", class: "block text-gray-700" %>
               <%= need_fields.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>

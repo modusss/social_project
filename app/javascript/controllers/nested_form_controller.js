@@ -9,4 +9,13 @@ export default class extends Controller {
     const content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime())
     this.entriesTarget.insertAdjacentHTML('beforeend', content)
   }
+
+  remove(event) {
+    event.preventDefault()
+    
+    const needField = event.target.closest('.need-fields')
+    if (needField) {
+      needField.remove()
+    }
+  }
 }
