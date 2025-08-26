@@ -46,6 +46,7 @@ class FamiliesController < ApplicationController
   # POST /families or /families.json
   def create
     @family = Family.new(family_params)
+    @family.creator_user = current_user
 
     # Auto-update status based on dates if requested
     if params[:family][:auto_update_status] == "1"
