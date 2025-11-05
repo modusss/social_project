@@ -243,10 +243,10 @@
             <%= f.label :shirt_size, class: "block text-sm font-semibold text-gray-700 mb-2" do %>
               👕 Camisa
             <% end %>
-            <%= f.select :shirt_size, 
-                [["PP", "PP"], ["P", "P"], ["M", "M"], ["G", "G"], ["GG", "GG"], ["XG", "XG"], ["XXG", "XXG"]], 
-                { include_blank: "Selecione" }, 
-                { class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 sm:text-sm bg-white" } %>
+            <%= f.text_field :shirt_size, 
+                class: "block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 sm:text-sm bg-white",
+                placeholder: "PP, P, M, G, GG ou 8, 10, 12" %>
+            <p class="mt-1 text-xs text-gray-500">Adulto: PP, P, M, G, GG | Infantil: 8, 10, 12, etc.</p>
           </div>
 
           <!-- Tamanho de calça -->
