@@ -182,7 +182,12 @@ class FamiliesController < ApplicationController
                             needs_attributes: [:id, :name, :beneficiary, :attended, :_destroy]
       ).tap do |whitelisted|
         whitelisted[:members_attributes]&.each do |_, member_attrs|
-          member_attrs[:role] = nil if member_attrs[:role].blank?
+          # Se custom_role estiver preenchido, garantir que role seja "outros"
+          if member_attrs[:custom_role].present?
+            member_attrs[:role] = "outros"
+          end
+          # Se role estiver em branco e custom_role também, definir role como nil
+          member_attrs[:role] = nil if member_attrs[:role].blank? && member_attrs[:custom_role].blank?
         end
       end
     end

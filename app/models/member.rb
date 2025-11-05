@@ -7,6 +7,7 @@ class Member < ApplicationRecord
 
   before_save :update_age_from_birth_date
   before_save :handle_age_without_birth_date
+  before_save :handle_custom_role
   before_save :clear_irrelevant_values
   before_save :set_gender_from_role
   after_save :update_family_totals
@@ -79,6 +80,18 @@ class Member < ApplicationRecord
       if age_registered_at.blank? || age_changed?
         self.age_registered_at = Date.current
       end
+    end
+  end
+
+  def handle_custom_role
+    # Se custom_role estiver preenchido, garantir que role seja "outros"
+    if custom_role.present? && role != "outros"
+      self.role = "outros"
+    end
+    
+    # Se role não for "outros", limpar custom_role
+    if role != "outros"
+      self.custom_role = nil
     end
   end
   
