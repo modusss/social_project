@@ -6,6 +6,7 @@ class Member < ApplicationRecord
   validates :name, presence: true
 
   before_save :update_age_from_birth_date
+  before_save :handle_age_without_birth_date
   before_save :clear_irrelevant_values
   before_save :set_gender_from_role
   after_save :update_family_totals
@@ -33,15 +34,43 @@ class Member < ApplicationRecord
   end
 
   def calculate_age
-    return nil if birth_date.nil?
     now = Time.now.utc.to_date
-    now.year - birth_date.year - (now.month > birth_date.month || (now.month == birth_date.month && now.day >= birth_date.day) ? 0 : 1)
+    
+    # Se tiver data de nascimento, calcular idade baseada nela
+    if birth_date.present?
+      return now.year - birth_date.year - (now.month > birth_date.month || (now.month == birth_date.month && now.day >= birth_date.day) ? 0 : 1)
+    end
+    
+    # Se não tiver data de nascimento mas tiver idade registrada e data de registro
+    if age.present? && age_registered_at.present?
+      years_passed = now.year - age_registered_at.year - 
+                     (now.month > age_registered_at.month || 
+                      (now.month == age_registered_at.month && now.day >= age_registered_at.day) ? 0 : 1)
+      return age + years_passed
+    end
+    
+    # Se tiver apenas idade sem data de registro, retornar a idade armazenada
+    age
   end
 
   private
 
   def update_age_from_birth_date
-    self.age = calculate_age if birth_date_changed?
+    # Se tiver data de nascimento, calcular idade e limpar age_registered_at
+    if birth_date.present?
+      self.age = calculate_age if birth_date_changed?
+      self.age_registered_at = nil # Limpar data de registro se tiver data de nascimento
+    end
+  end
+
+  def handle_age_without_birth_date
+    # Se idade foi informada mas não há data de nascimento
+    if age.present? && birth_date.blank?
+      # Registrar a data atual se ainda não foi registrada ou se a idade mudou
+      if age_registered_at.blank? || age_changed?
+        self.age_registered_at = Date.current
+      end
+    end
   end
   
   def clear_irrelevant_values
