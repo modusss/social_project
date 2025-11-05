@@ -25,8 +25,8 @@
       },
       { 
         header: '<i class="fas fa-id-badge text-indigo-500 mr-1"></i> Papel'.html_safe, 
-        content: raw(member.role.present? ? 
-          "<span class='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800'><i class='fas fa-user-tag text-blue-600 mr-1'></i>#{member.role.capitalize}</span>" : 
+        content: raw(member.display_role.present? ? 
+          "<span class='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800'><i class='fas fa-user-tag text-blue-600 mr-1'></i>#{member.display_role.capitalize}</span>" : 
           "<span class='text-gray-400'><i class='fas fa-question-circle mr-1'></i>Não definido</span>"),
         id: "member-role-#{member.id}" 
       },

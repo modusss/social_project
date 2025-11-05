@@ -53,6 +53,15 @@ class Member < ApplicationRecord
     age
   end
 
+  # Retorna o papel correto (custom_role se role for 'outros', senão role)
+  def display_role
+    if role == "outros" && custom_role.present?
+      custom_role
+    else
+      role
+    end
+  end
+
   private
 
   def update_age_from_birth_date

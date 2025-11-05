@@ -7,6 +7,22 @@ export default class extends Controller {
     console.log("Controlador member-numbering conectado")
     // Atualizar números iniciais quando o controlador conecta
     setTimeout(() => this.updateNumbers(), 100)
+    // Mostrar campos personalizados se "outros" estiver selecionado
+    setTimeout(() => this.initializeCustomRoleFields(), 100)
+  }
+
+  // Inicializar campos personalizados para membros existentes
+  initializeCustomRoleFields() {
+    const memberContainers = document.querySelectorAll('[data-member-container]')
+    memberContainers.forEach(container => {
+      const outrosRadio = container.querySelector('input[type="radio"][value="outros"]')
+      if (outrosRadio && outrosRadio.checked) {
+        const customRoleField = container.querySelector('.custom-role-field')
+        if (customRoleField) {
+          customRoleField.style.display = 'block'
+        }
+      }
+    })
   }
   
   // Método chamado quando um novo membro é adicionado
@@ -39,5 +55,32 @@ export default class extends Controller {
         console.log(`Elemento .member-number não encontrado para o membro ${index + 1}`)
       }
     })
+  }
+
+  // Mostrar campo de papel personalizado
+  showCustomRole(event) {
+    const memberCard = event.target.closest('[data-member-container]')
+    if (memberCard) {
+      const customRoleField = memberCard.querySelector('.custom-role-field')
+      if (customRoleField) {
+        customRoleField.style.display = 'block'
+      }
+    }
+  }
+
+  // Ocultar campo de papel personalizado
+  hideCustomRole(event) {
+    const memberCard = event.target.closest('[data-member-container]')
+    if (memberCard) {
+      const customRoleField = memberCard.querySelector('.custom-role-field')
+      if (customRoleField) {
+        customRoleField.style.display = 'none'
+        // Limpar o valor do campo quando oculto
+        const customRoleInput = customRoleField.querySelector('input[type="text"]')
+        if (customRoleInput) {
+          customRoleInput.value = ''
+        }
+      }
+    }
   }
 } 

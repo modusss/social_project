@@ -114,7 +114,7 @@
             ["paciente", "Paciente", "🏥"]
           ].each do |value, label, emoji| %>
             <label class="role-option relative flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group">
-              <%= f.radio_button :role, value, class: "sr-only role-radio" %>
+              <%= f.radio_button :role, value, class: "sr-only role-radio", data: { action: "change->member-numbering#hideCustomRole" } %>
               <div class="flex flex-col items-center space-y-2 w-full">
                 <span class="text-2xl"><%= emoji %></span>
                 <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700 text-center"><%= label %></span>
@@ -127,8 +127,8 @@
           <% end %>
           
           <!-- Opção "Não definir" -->
-          <label class="role-option relative flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group col-span-2 md:col-span-3 lg:col-span-4">
-            <%= f.radio_button :role, "", class: "sr-only role-radio" %>
+          <label class="role-option relative flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group">
+            <%= f.radio_button :role, "", class: "sr-only role-radio", data: { action: "change->member-numbering#hideCustomRole" } %>
             <div class="flex items-center justify-center space-x-2 w-full">
               <span class="text-xl">❓</span>
               <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700">Não definir</span>
@@ -137,6 +137,27 @@
               <div class="w-2.5 h-2.5 bg-blue-600 rounded-full hidden selection-dot"></div>
             </div>
           </label>
+
+          <!-- Opção "Outros" com campo de texto -->
+          <label class="role-option relative flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 group">
+            <%= f.radio_button :role, "outros", class: "sr-only role-radio", data: { action: "change->member-numbering#showCustomRole" } %>
+            <div class="flex items-center justify-center space-x-2 w-full">
+              <span class="text-xl">✏️</span>
+              <span class="text-sm font-medium text-gray-700 group-hover:text-blue-700">Outros</span>
+            </div>
+            <div class="absolute top-2 right-2 w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center selection-indicator">
+              <div class="w-2.5 h-2.5 bg-blue-600 rounded-full hidden selection-dot"></div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Campo de texto para papel personalizado -->
+        <% show_custom_role = f.object.role == "outros" || f.object.custom_role.present? %>
+        <div class="mt-4 custom-role-field" style="<%= show_custom_role ? 'display: block;' : 'display: none;' %>">
+          <%= f.label :custom_role, "Especifique o papel:", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= f.text_field :custom_role, 
+              class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 sm:text-sm",
+              placeholder: "Ex: Tio, Avô, Primo, etc." %>
         </div>
       </div>
 
